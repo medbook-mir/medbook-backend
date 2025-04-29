@@ -1,2 +1,3 @@
 .env
 backend/staticfiles
+.idea

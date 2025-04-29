@@ -3,7 +3,7 @@ version: '3.8'
 services:
   redis:
     image: redis:6-alpine
-    command: redis-server --save 60 1 --loglevel warning
+    command: redis-server --save 60 1 --loglevel warning --ignore-warnings ARM64-COW-BUG
     volumes:
       - redis_data:/data
 
@@ -28,7 +28,7 @@ services:
     env_file: .env
     volumes:
       - ./backend:/app
-      - static_volume:/app/staticfiles 
+      - static_volume:/app/staticfiles
     ports:
       - "8000:8000"
     depends_on:
@@ -36,24 +36,52 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-    command: ["sh", "-c", "cd src && python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"]  # Добавлен collectstatic
+    command: ["sh", "-c", "cd src && python manage.py migrate && python manage.py collectstatic --no-input && python manage.py runserver 0.0.0.0:8000"]
 
-  # celery:
-  #   build: ./backend
-  #   env_file: .env
-  #   volumes:
-  #     - ./backend:/app
-  #   depends_on:
-  #     - db
-  #     - redis
-  #   command: ["sh", "-c", "cd src && celery -A medbook worker --loglevel=info"]
+  celery-worker:
+    build: ./backend
+    env_file: .env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    command: ["sh", "-c", "cd src && celery -A medbook worker --loglevel=info -P solo"]
+    healthcheck:
+      test: ["CMD-SHELL", "celery --app=medbook inspect ping -d celery@$$HOSTNAME | grep -q 'pong' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  celery-beat:
+    build: ./backend
+    env_file: .env
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - db
+      - redis
+    command: ["sh", "-c", "cd src && celery -A medbook beat --loglevel=info --scheduler django_celery_beat.schedulers:DatabaseScheduler"]
+    restart: unless-stopped
+
+  flower:
+    build: ./backend
+    env_file: .env
+    ports:
+      - "5555:5555"
+    environment:
+      - FLOWER_BASIC_AUTH=admin:password123  # Защита авторизацией <- потом убери это уязвимост для гита такие вещи не должны попаст в гит Мир
+    depends_on:
+      - redis
+    command: ["sh", "-c", "cd src && celery -A medbook flower --port=5555 --broker=redis://redis:6379/0"]
+    restart: unless-stopped
 
   frontend:
-    build: 
+    build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment: 
-      - VITE_API_URL=http://localhost:8000  
+    environment:
+      - VITE_API_URL=http://localhost:8000
     ports:
       - "3000:3000"
     depends_on:
@@ -62,4 +90,4 @@ services:
 volumes:
   postgres_data:
   redis_data:
-  static_volume: 
+  static_volume:
