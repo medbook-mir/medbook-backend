@@ -11,6 +11,9 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from rest_framework_simplejwt.views import TokenObtainPairView
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -30,6 +33,35 @@ def public_endpoint(request):
 @api_view(['GET'])
 def private_endpoint(request):
     return Response({'message': 'This is a private endpoint'})
+
+class DecoratedTokenObtainPairView(TokenObtainPairView):
+    @swagger_auto_schema(
+        operation_description="Получение JWT токена по username и password",
+        request_body=openapi.Schema(
+            type=openapi.TYPE_OBJECT,
+            required=['username', 'password'],
+            properties={
+                'username': openapi.Schema(type=openapi.TYPE_STRING),
+                'password': openapi.Schema(type=openapi.TYPE_STRING),
+            },
+        ),
+        responses={
+            200: openapi.Response(
+                description="Токены получены",
+                schema=openapi.Schema(
+                    type=openapi.TYPE_OBJECT,
+                    properties={
+                        'refresh': openapi.Schema(type=openapi.TYPE_STRING),
+                        'access': openapi.Schema(type=openapi.TYPE_STRING),
+                    },
+                ),
+            ),
+            400: "Неверные учетные данные",
+        }
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
