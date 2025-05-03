@@ -12,8 +12,10 @@ from rest_framework_simplejwt.views import (
 )
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-
 from medbook.views import SomeProtectedView
+from medbook.views import TestListView
+
+
 schema_view = get_schema_view(
    openapi.Info(
       title="MedBook API",
@@ -72,4 +74,6 @@ urlpatterns = [
     path('api/token/',permission_classes([AllowAny])(TokenObtainPairView.as_view()), name='token_obtain_pair'),
     path('api/token/refresh/',permission_classes([AllowAny])(TokenRefreshView.as_view()), name='token_refresh'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
+    
+    path('tests/', TestListView.as_view(), name='test-list'),
 ]
