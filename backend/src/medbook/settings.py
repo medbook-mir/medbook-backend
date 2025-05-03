@@ -30,6 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
@@ -41,14 +44,22 @@ SWAGGER_SETTINGS = {
             'type': 'apiKey',
             'name': 'Authorization',
             'in': 'header',
+            'description': 'Введите только токен без "Bearer"',
+            'bearerFormat': 'JWT' 
+        },
+            'Basic': {
+            'type': 'basic'
         }
     },
     'USE_SESSION_AUTH': False,
     'LOGIN_URL': '/api/token/',  
     'LOGOUT_URL': '/api/logout/',
-       'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ), 
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 CELERY_BEAT_SCHEDULE = {
@@ -169,3 +180,7 @@ CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 AUTH_USER_MODEL = 'medbook.User'
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8000", 
+    "http://127.0.0.1:8000",
+]

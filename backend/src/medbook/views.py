@@ -18,3 +18,9 @@ class ProtectedView(APIView):
 
     def get(self, request):
         return Response({"message": "Доступ разрешен!"})
+    
+class SomeProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request):
+        return Response({"message": "Это защищенный эндпоинт"})    
