@@ -1,7 +1,9 @@
 import pytest
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model 
 from rest_framework.test import APIClient
-from medbook.models import MedicalTest 
+from medbook.models import MedicalTest
+
+User = get_user_model()
 
 @pytest.mark.django_db
 def test_protected_test_list_view():
