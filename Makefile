@@ -4,6 +4,8 @@ up:
 	docker compose up
 down:
 	docker compose down
+test:
+	docker compose exec backend pytest src/medbook/tests/ -v --color=yes	
 # restart:
 #     down up
 logs-frontend:

@@ -5,4 +5,4 @@ from .models import MedicalTest
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalTest
-        fields = ['id', 'name', 'age', 'created_at']
+        fields = '__all__'
