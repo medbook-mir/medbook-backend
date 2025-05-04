@@ -75,5 +75,5 @@ urlpatterns = [
     path('api/token/refresh/',permission_classes([AllowAny])(TokenRefreshView.as_view()), name='token_refresh'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
     
-    path('api/medical-test/', TestListView.as_view(), name='test-list'),
+    path('api/medical-tests/', TestListView.as_view(), name='medical-tests-list'),
 ]
