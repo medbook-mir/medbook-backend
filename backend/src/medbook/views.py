@@ -29,6 +29,7 @@ class SomeProtectedView(APIView):
         return Response({"message": "Это защищенный эндпоинт"})    
         
 class TestListView(generics.ListAPIView):
+    queryset = MedicalTest.objects.all()  
     serializer_class = TestSerializer
     permission_classes = [IsAuthenticated]
 

@@ -12,11 +12,11 @@ def test_protected_test_list_view():
     MedicalTest.objects.create(name='Test 2')
 
     client = APIClient()
+    
+    response = client.get('/api/medical-tests/')
+    assert response.status_code == 401  
+    
     client.force_authenticate(user=user)
-    
-    response = client.get('/medical-test/')
-    
+    response = client.get('/api/medical-tests/')
     assert response.status_code == 200
-    assert 'data' in response.data
-    assert len(response.data['data']) == 2
-    assert response.data['message'] == "Это защищенный эндпоинт"
+    assert len(response.data) == 2  
