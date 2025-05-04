@@ -1,8 +1,8 @@
 # myapp/serializers.py
 from rest_framework import serializers
-from .models import Test
+from .models import MedicalTest
 
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Test
-        fields = ['id', 'name', 'age', 'created_at']
+        model = MedicalTest
+        fields = '__all__'

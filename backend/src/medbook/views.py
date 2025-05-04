@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import Test
+from .models import MedicalTest
 from .serializers import TestSerializer
 from rest_framework import generics
 
@@ -29,6 +29,7 @@ class SomeProtectedView(APIView):
         return Response({"message": "Это защищенный эндпоинт"})    
         
 class TestListView(generics.ListAPIView):
+    queryset = MedicalTest.objects.all()  
     serializer_class = TestSerializer
     permission_classes = [IsAuthenticated]
 
