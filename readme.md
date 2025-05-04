@@ -39,7 +39,6 @@
     make build
 
 # Остановка
-
     make down
 
 ## Services & Ports
