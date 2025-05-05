@@ -51,4 +51,5 @@
 | PostgreSQL | `host: localhost`                              | 5432 | Database               |
 | Redis      | -                                              | 6379 | Celery task broker     |
 | Flower     | [http://localhost:5555](http://localhost:5555) | 5555 | Celery task monitoring |
+| Swagger     | [http://localhost:8000](http://localhost:8000/swagger) | 8000 | Swagger task api |
 
