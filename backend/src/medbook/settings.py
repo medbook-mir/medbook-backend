@@ -27,8 +27,6 @@ SECRET_KEY = 'django-insecure-ic$x3f-&ajn6(p5&7pxjjcv!+v%m*kxiv4=qp50x8bj=k)e105
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
@@ -187,3 +185,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000", 
     "http://127.0.0.1:8000",
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+SITE_ID = 1
