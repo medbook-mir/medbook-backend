@@ -6,15 +6,10 @@ from drf_yasg.views import get_schema_view
 from django.views.generic import TemplateView
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
-from medbook.views import SomeProtectedView
-from medbook.views import TestListView
-
+from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, CustomTokenObtainPairView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -53,27 +48,16 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-# @api_view(['GET'])
-# @permission_classes([AllowAny])
-# def public_endpoint(request):
-#     return Response({'message': 'This is a public endpoint'})
-
-# @api_view(['GET'])
-# def private_endpoint(request):
-#     return Response({'message': 'This is a private endpoint'})
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name='index.html')),
     path('admin/', admin.site.urls),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', DecoratedTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    # path('api/public/', public_endpoint, name='public-endpoint'),
-    # path('api/private/', private_endpoint, name='private-endpoint'),
-    path('api/token/',permission_classes([AllowAny])(TokenObtainPairView.as_view()), name='token_obtain_pair'),
-    path('api/token/refresh/',permission_classes([AllowAny])(TokenRefreshView.as_view()), name='token_refresh'),
+    path('api/signup/', SignupView.as_view(), name='signup'),
+    path('api/verify-code/', VerifyCodeView.as_view(), name='verify_code'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
-    
     path('api/medical-tests/', TestListView.as_view(), name='medical-tests-list'),
 ]
