@@ -23,4 +23,5 @@ COPY . .
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"]
+# CMD ["sh", "-c", "python manage.py migrate && gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"]
+CMD ["sh", "-c", "sleep 10 && python manage.py check_db_connection && gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT"]
