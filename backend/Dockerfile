@@ -22,3 +22,5 @@ RUN chmod +x entrypoint.sh
 COPY . .
 
 ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["sh", "-c", "python manage.py migrate && gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"]
