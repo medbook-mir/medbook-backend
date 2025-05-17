@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 from celery.schedules import crontab
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,7 +118,6 @@ WSGI_APPLICATION = 'medbook.wsgi.application'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Database
-# https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
@@ -125,10 +125,13 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'medbook'),
         'USER': os.getenv('POSTGRES_USER', 'medbook_user'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
-        'HOST': os.getenv('POSTGRES_HOST', 'db'),  # Имя сервиса в Docker Compose
+        'HOST': os.getenv('POSTGRES_HOST', 'db'),  # Name of the service in Docker Compose
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
+DATABASE_URL = os.getenv('DATABASE_URL')
+if DATABASE_URL:
+    DATABASES['default'] = dj_database_url.config(default=DATABASE_URL)
 
 
 # Password validation
