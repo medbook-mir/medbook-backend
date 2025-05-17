@@ -11,4 +11,19 @@ python manage.py collectstatic --noinput
 python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL || true
 python manage.py runserver 0.0.0.0:8000
 
+
+if ! command -v pg_isready &> /dev/null; then
+    apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+fi
+
+echo "Ожидание PostgreSQL..."
+until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB -t 5; do
+    echo "Попытка подключения к PostgreSQL..."
+    sleep 5
+done
+
+python manage.py migrate
+python manage.py collectstatic --noinput
+
+
 exec gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT --timeout 120
