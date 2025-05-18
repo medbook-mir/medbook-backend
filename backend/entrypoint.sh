@@ -1,67 +1,75 @@
 #!/bin/bash
-set -e  
+set -e
 
-# Безопасный вывод DATABASE_URL (скрываем пароль)
+echo "=== Запуск инициализации ==="
+
+# Безопасный вывод DATABASE_URL
 echo "DATABASE_URL: ${DATABASE_URL//:[^@]*@/:<hidden>@}"
 
-# Проверяем, установлена ли переменная DATABASE_URL
+# Проверка обязательных переменных
 if [ -z "$DATABASE_URL" ]; then
-    echo "Ошибка: DATABASE_URL не установлена!"
+    echo "❌ Ошибка: DATABASE_URL не установлена!"
     exit 1
 fi
 
-# Извлекаем хост и порт из DATABASE_URL
+# Извлекаем компоненты подключения
 DB_HOST=$(echo $DATABASE_URL | awk -F[@] '{print $2}' | awk -F[:/] '{print $1}')
-DB_PORT=5432  # Стандартный порт PostgreSQL
+DB_PORT=5432
 
-echo "Ожидание PostgreSQL ($DB_HOST:$DB_PORT)..."
+echo "🔍 Проверка доступности PostgreSQL на $DB_HOST:$DB_PORT..."
 
-# Альтернативная проверка доступности порта без nc
+# Альтернативный метод проверки (без /dev/tcp)
 timeout 120 bash -c "
-    while ! (echo > /dev/tcp/$DB_HOST/$DB_PORT) >/dev/null 2>&1; do 
-        echo 'Попытка подключения к $DB_HOST:$DB_PORT...';
+    while ! (psql -t -c '\q' 2>/dev/null); do 
+        echo '⏳ Ожидание PostgreSQL... ($DB_HOST:$DB_PORT)';
         sleep 2; 
     done
 " || {
-    echo "Не удалось подключиться к PostgreSQL по адресу $DB_HOST:$DB_PORT!"
-    echo "Проверьте:"
-    echo "1. Что сервис PostgreSQL запущен"
-    echo "2. Что хост и порт указаны правильно"
-    echo "3. Что нет проблем с сетью/файрволлом"
-    echo "4. Что ваш контейнер имеет доступ к внутренней сети Render"
+    echo "❌ Не удалось подключиться к PostgreSQL!"
+    echo "Возможные причины:"
+    echo "1. Сервис PostgreSQL не запущен или не готов"
+    echo "2. Неправильные параметры подключения в DATABASE_URL"
+    echo "3. Проблемы с сетью между сервисами"
+    echo "4. Ограничения firewall в Render"
+    
+    # Дополнительная диагностика
+    echo "=== ДИАГНОСТИКА ==="
+    echo "Попытка разрешения DNS:"
+    nslookup $DB_HOST || echo "⚠ Не удалось разрешить имя хоста"
+    echo "Попытка ping (может не работать в Render):"
+    ping -c 2 $DB_HOST || echo "⚠ Ping не доступен"
+    
     exit 1
 }
 
-# Проверяем возможность подключения через psql
-echo "Проверка аутентификации в PostgreSQL..."
-timeout 30 psql "$DATABASE_URL" -c '\q' || {
-    echo "Не удалось аутентифицироваться в PostgreSQL!"
-    echo "Проверьте правильность учетных данных в DATABASE_URL"
-    exit 1
-}
-echo "PostgreSQL готов и доступен!"
+echo "✅ PostgreSQL доступен!"
 
-cd src || true
+# Основные команды Django
+cd src
 
-echo "Применение миграций..."
+echo "🔄 Применение миграций..."
 python manage.py migrate
 
-echo "Сбор статических файлов..."
+echo "📦 Сбор статических файлов..."
 python manage.py collectstatic --noinput
 
-# Создаем суперпользователя только если не в production или для теста
+# Создание суперпользователя (только для разработки)
 if [ "$DJANGO_ENV" != "production" ]; then
-    echo "Создание суперпользователя..."
-    python manage.py createsuperuser --noinput \
+    echo "👑 Создание суперпользователя..."
+    python manage.py createsuperuser \
+        --noinput \
         --username "$DJANGO_SUPERUSER_USERNAME" \
         --email "$DJANGO_SUPERUSER_EMAIL" \
-        --password "$DJANGO_SUPERUSER_PASSWORD" || \
-    echo "Суперпользователь уже существует или произошла ошибка"
+        --password "$DJANGO_SUPERUSER_PASSWORD" 2>/dev/null || \
+    echo "ℹ Суперпользователь уже существует или ошибка"
 fi
 
-echo "Запуск Gunicorn..."
-exec gunicorn medbook.wsgi:application --bind 0.0.0.0:"${PORT:-8000}" --workers 2 --timeout 120
-
+echo "🚀 Запуск Gunicorn..."
+exec gunicorn medbook.wsgi:application \
+    --bind 0.0.0.0:${PORT:-8000} \
+    --workers 2 \
+    --timeout 120 \
+    --access-logfile -
 
 # #!/bin/bash
 # echo 'Waiting for PostgreSQL...'
