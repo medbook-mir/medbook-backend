@@ -1,24 +1,26 @@
 #!/bin/bash
-apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
+set -e  
+
+echo "DATABASE_URL: ${DATABASE_URL//:[^@]*@/:<hidden>@}"
 
 
-echo "Проверка разрешения имени хоста..."
-nslookup dpg-d0kap7je5dua73bk1vg0-a.frankfurt-postgres.render.com
-
-
-echo "Ожидание PostgreSQL ($POSTGRES_HOST)..."
-timeout 30 sh -c "until pg_isready -h $POSTGRES_HOST -p $POSTGRES_PORT -U $POSTGRES_USER -d $POSTGRES_DB; do sleep 2; done" || {
+echo "Ожидание PostgreSQL..."
+timeout 60 sh -c "until psql \"$DATABASE_URL\" -c '\q' 2>/dev/null; do sleep 2; done" || {
     echo "Не удалось подключиться к PostgreSQL!"
     exit 1
 }
+echo "PostgreSQL готов!"
 
+
+cd src || true
 
 python manage.py migrate
 python manage.py collectstatic --noinput
 
+python manage.py createsuperuser --noinput --username "$DJANGO_SUPERUSER_USERNAME" --email "$DJANGO_SUPERUSER_EMAIL" --password "$DJANGO_SUPERUSER_PASSWORD" || true
 
-exec gunicorn medbook.wsgi:application --bind 0.0.0.0:$PORT --workers 4 --timeout 120
 
+exec gunicorn medbook.wsgi:application --bind 0.0.0.0:"${PORT:-8000}" --workers 2 --timeout 120
 
 # #!/bin/bash
 # echo 'Waiting for PostgreSQL...'
