@@ -1,70 +1,78 @@
 #!/bin/bash
 set -e
 
-echo "=== Запуск инициализации ==="
+echo "=== Starting Initialization ==="
 
-# Безопасный вывод DATABASE_URL
+# Secure DATABASE_URL display
 echo "DATABASE_URL: ${DATABASE_URL//:[^@]*@/:<hidden>@}"
 
-# Проверка обязательных переменных
-if [ -z "$DATABASE_URL" ]; then
-    echo "❌ Ошибка: DATABASE_URL не установлена!"
+# Verify DATABASE_URL format
+if [[ ! "$DATABASE_URL" =~ ^postgres(ql)?:// ]]; then
+    echo "❌ Error: Invalid DATABASE_URL format. Must start with postgres:// or postgresql://"
     exit 1
 fi
 
-# Извлекаем компоненты подключения
-DB_HOST=$(echo $DATABASE_URL | awk -F[@] '{print $2}' | awk -F[:/] '{print $1}')
+echo "🔍 Testing PostgreSQL connection..."
+
+# Extract components from DATABASE_URL
+DB_HOST=$(echo $DATABASE_URL | cut -d@ -f2 | cut -d: -f1)
 DB_PORT=5432
 
-echo "🔍 Проверка доступности PostgreSQL на $DB_HOST:$DB_PORT..."
+# Install psql if not present (for testing)
+if ! command -v psql &> /dev/null; then
+    echo "Installing postgresql-client..."
+    apt-get update && apt-get install -y postgresql-client
+fi
 
-# Альтернативный метод проверки (без /dev/tcp)
-timeout 120 bash -c "
-    while ! (psql -t -c '\q' 2>/dev/null); do 
-        echo '⏳ Ожидание PostgreSQL... ($DB_HOST:$DB_PORT)';
-        sleep 2; 
-    done
-" || {
-    echo "❌ Не удалось подключиться к PostgreSQL!"
-    echo "Возможные причины:"
-    echo "1. Сервис PostgreSQL не запущен или не готов"
-    echo "2. Неправильные параметры подключения в DATABASE_URL"
-    echo "3. Проблемы с сетью между сервисами"
-    echo "4. Ограничения firewall в Render"
+# Wait for PostgreSQL with improved diagnostics
+max_attempts=30
+attempt=1
+connected=false
+
+while [ $attempt -le $max_attempts ]; do
+    if psql "$DATABASE_URL" -c '\q' 2>/dev/null; then
+        connected=true
+        break
+    fi
     
-    # Дополнительная диагностика
-    echo "=== ДИАГНОСТИКА ==="
-    echo "Попытка разрешения DNS:"
-    nslookup $DB_HOST || echo "⚠ Не удалось разрешить имя хоста"
-    echo "Попытка ping (может не работать в Render):"
-    ping -c 2 $DB_HOST || echo "⚠ Ping не доступен"
-    
+    echo "⏳ Attempt $attempt/$max_attempts - Waiting for PostgreSQL..."
+    sleep 2
+    attempt=$((attempt + 1))
+done
+
+if [ "$connected" = false ]; then
+    echo "❌ Failed to connect to PostgreSQL after $max_attempts attempts!"
+    echo "Troubleshooting steps:"
+    echo "1. Verify PostgreSQL service is running in Render dashboard"
+    echo "2. Check the 'Links' section in your web service settings"
+    echo "3. Try recreating the PostgreSQL service"
+    echo "4. Contact Render support with these logs"
     exit 1
-}
+fi
 
-echo "✅ PostgreSQL доступен!"
+echo "✅ PostgreSQL connection established!"
 
-# Основные команды Django
+# Django commands
 cd src
 
-echo "🔄 Применение миграций..."
+echo "🔄 Applying migrations..."
 python manage.py migrate
 
-echo "📦 Сбор статических файлов..."
+echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Создание суперпользователя (только для разработки)
+# Create superuser only in non-production
 if [ "$DJANGO_ENV" != "production" ]; then
-    echo "👑 Создание суперпользователя..."
+    echo "👑 Creating superuser..."
     python manage.py createsuperuser \
         --noinput \
         --username "$DJANGO_SUPERUSER_USERNAME" \
         --email "$DJANGO_SUPERUSER_EMAIL" \
         --password "$DJANGO_SUPERUSER_PASSWORD" 2>/dev/null || \
-    echo "ℹ Суперпользователь уже существует или ошибка"
+    echo "ℹ Superuser already exists or error occurred"
 fi
 
-echo "🚀 Запуск Gunicorn..."
+echo "🚀 Starting Gunicorn..."
 exec gunicorn medbook.wsgi:application \
     --bind 0.0.0.0:${PORT:-8000} \
     --workers 2 \
