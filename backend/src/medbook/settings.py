@@ -26,7 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-ic$x3f-&ajn6(p5&7pxjjcv!+v%m*kxiv4=qp50x8bj=k)e105'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 1
+DEBUG = os.getenv('DJANGO_DEBUG', '0') == '1'
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
@@ -117,13 +118,12 @@ TEMPLATES = [
 WSGI_APPLICATION = 'medbook.wsgi.application'
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+DATABASE_URL = os.getenv('DATABASE_URL')
+if not DATABASE_URL:
+    raise ValueError("DATABASE_URL не установлена в переменных окружения")
 
-print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
-        conn_max_age=600
-    )
+    'default': dj_database_url.config(default=DATABASE_URL, conn_max_age=600)
 }
 # DATABASE_URL = os.getenv('DATABASE_URL')
 # if DATABASE_URL:
@@ -186,5 +186,4 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-ALLOWED_HOSTS = ['localhost', '127.0.0.1','medbook-backend-lh62.onrender.com']
 SITE_ID = 1
