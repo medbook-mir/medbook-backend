@@ -31,9 +31,9 @@ jobs:
       POSTGRES_USER: medbook_user
       POSTGRES_PASSWORD: password
       POSTGRES_PORT: 5432
-      DJANGO_SETTINGS_MODULE: medbook.settings  # Changed from src.medbook.settings
+      DJANGO_SETTINGS_MODULE: medbook.settings.production 
       SECRET_KEY: test
-      DEBUG: true
+      DEBUG: "false" 
 
     steps:
     - uses: actions/checkout@v3
