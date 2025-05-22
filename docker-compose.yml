@@ -45,7 +45,7 @@ services:
     volumes:
       - ./backend:/app
       - static_volume:/app/staticfiles
-      - ./backend/coverage:/app/coverage
+      # - ./backend/coverage:/app/coverage
     ports:
       - "8000:8000"
     networks:
@@ -96,7 +96,7 @@ services:
       - TESTING=true
     volumes:
       - ./backend:/app
-      - ./backend/coverage:/app/coverage
+      # - ./backend/coverage:/app/coverage
     networks:
       - app_network
     depends_on:
