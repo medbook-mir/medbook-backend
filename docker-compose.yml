@@ -44,7 +44,7 @@ services:
       - DEBUG=${DEBUG:-false}
     volumes:
       - ./backend:/app
-      - static_volume:/app/static
+      - static_volume:/app/src/staticfiles
       # - ./backend/coverage:/app/coverage
     ports:
       - "8000:8000"
