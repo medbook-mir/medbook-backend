@@ -55,11 +55,11 @@ jobs:
         echo "PostgreSQL is ready!"
     
     - name: Run migrations
-      working-directory: ./backend/src  # Set working directory
+      working-directory: ./backend/src 
       run: |
         python manage.py migrate
 
     - name: Run tests with pytest
-      working-directory: ./backend/src  # Set working directory
+      working-directory: ./backend/src  
       run: |
         PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/backend/src pytest

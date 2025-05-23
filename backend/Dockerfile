@@ -20,6 +20,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY entrypoint.sh .
 RUN chmod +x entrypoint.sh
 COPY . .
+# RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 ENTRYPOINT ["/app/entrypoint.sh"]
 
