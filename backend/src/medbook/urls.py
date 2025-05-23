@@ -1,16 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework.response import Response
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from django.views.generic import TemplateView
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
 from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, CustomTokenObtainPairView
-
+from django.conf import settings
+from django.conf.urls.static import static
 schema_view = get_schema_view(
    openapi.Info(
       title="MedBook API",
@@ -60,4 +58,4 @@ urlpatterns = [
     path('api/verify-code/', VerifyCodeView.as_view(), name='verify_code'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
     path('api/medical-tests/', TestListView.as_view(), name='medical-tests-list'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

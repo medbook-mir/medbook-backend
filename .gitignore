@@ -4,7 +4,8 @@ __pycache__/
 *.log
 celerybeat-schedule
 db.sqlite3
-/backend/src/staticfiles/
+/backend/static/
+/backend/staticfiles/
 /backend/src/celery.py
 
 /frontend/node_modules/

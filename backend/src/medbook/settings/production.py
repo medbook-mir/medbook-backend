@@ -3,7 +3,7 @@ from .base import *
 import dj_database_url
 import os
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# DEBUG = os.getenv('DEBUG', 'False') == 'True'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '$#@django-inse$#$#')
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('DJANGO_ALLOWED_HOSTS') else []
@@ -24,5 +24,8 @@ else:
             'PORT': os.getenv('POSTGRES_PORT', '5432'),
         }
     }
+STATIC_URL = 'staticfiles/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
 
-STATIC_ROOT = '/app/staticfiles'
+]

@@ -2,7 +2,6 @@
 from pathlib import Path
 from celery.schedules import crontab
 import os
-import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -69,7 +68,12 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+
+STATIC_URL = '/staticfiles/ter/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+
+]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
@@ -121,6 +125,6 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000", 
     "http://127.0.0.1:8000",
 ]
-
+DEBUG = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
