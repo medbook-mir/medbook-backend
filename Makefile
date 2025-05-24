@@ -4,17 +4,14 @@ build:
 up:
 	docker compose up
 
-# v:
-# 	docker compose down -v
+v:
+	docker compose down -v
 
 down:
 	docker compose down
 
 test:
 	docker compose exec backend pytest src/medbook/tests/ -v --color=yes
-
-# restart:
-#     down up
 
 logs-frontend:
 	docker logs medbook-frontend-1 --tail=100 -f
