@@ -32,3 +32,4 @@ venv/
 ENV/
 **/__pycache__/
 *.py[cod]
+backend/src/staticfiles
