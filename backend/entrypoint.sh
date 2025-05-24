@@ -14,14 +14,10 @@ fi
 
 echo "🔍 Testing PostgreSQL connection..."
 
-# Extract components from DATABASE_URL
-DB_HOST=$(echo $DATABASE_URL | cut -d@ -f2 | cut -d: -f1)
-DB_PORT=5432
-
 # Install psql if not present (for testing)
 if ! command -v psql &> /dev/null; then
     echo "Installing postgresql-client..."
-    apt-get update && apt-get install -y postgresql-client
+    apt-get update && apt-get install -y postgresql-client && rm -rf /var/lib/apt/lists/*
 fi
 
 # Wait for PostgreSQL with improved diagnostics
@@ -53,22 +49,28 @@ fi
 echo "✅ PostgreSQL connection established!"
 
 # Django commands
-cd src
+cd /app/src
 
 echo "🔄 Applying migrations..."
-python manage.py migrate
+python manage.py migrate --noinput
 
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
-# Create superuser only in non-production
+echo "👑 Creating superuser..."
 if [ "$DJANGO_ENV" != "production" ]; then
-    echo "👑 Creating superuser..."
     python manage.py createsuperuser \
         --noinput \
-        --username "$DJANGO_SUPERUSER_USERNAME" \
-        --email "$DJANGO_SUPERUSER_EMAIL" \
-        --password "$DJANGO_SUPERUSER_PASSWORD" 2>/dev/null || \
+        --username "${DJANGO_SUPERUSER_USERNAME:-admin}" \
+        --email "${DJANGO_SUPERUSER_EMAIL:-admin@example.com}" \
+        --password "${DJANGO_SUPERUSER_PASSWORD:-adminpassword}" 2>/dev/null || \
+    echo "ℹ Superuser already exists or error occurred"
+else
+    python manage.py createsuperuser \
+        --noinput \
+        --username "${DJANGO_SUPERUSER_USERNAME}" \
+        --email "${DJANGO_SUPERUSER_EMAIL}" \
+        --password "${DJANGO_SUPERUSER_PASSWORD}" 2>/dev/null || \
     echo "ℹ Superuser already exists or error occurred"
 fi
 
@@ -78,7 +80,7 @@ exec gunicorn medbook.wsgi:application \
     --workers 2 \
     --timeout 120 \
     --access-logfile -
-
+    
 # #!/bin/bash
 # echo 'Waiting for PostgreSQL...'
 # while ! python -c 'import socket; import os; sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM); result = sock.connect_ex(("db", 5432)); sock.close(); exit(result)'; do 

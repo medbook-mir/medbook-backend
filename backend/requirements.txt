@@ -13,4 +13,6 @@ pytest==8.3.5
 pytest-django==4.11.1
 dj_database_url==2.1.0
 dotenv
-
+drf-spectacular
+drf-spectacular-sidecar
+whitenoise
