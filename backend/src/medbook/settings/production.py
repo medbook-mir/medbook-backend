@@ -39,7 +39,10 @@ STATICFILES_DIRS = []
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+    'django.contrib.auth.middleware.AuthenticationMiddleware', 
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+]+ MIDDLEWARE
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 SECURE_SSL_REDIRECT = True  
