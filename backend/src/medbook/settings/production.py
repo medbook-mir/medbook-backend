@@ -1,4 +1,3 @@
-# medbook/settings/production.py
 from .base import *
 import dj_database_url
 import os
@@ -14,10 +13,7 @@ if DATABASE_URL:
         'default': dj_database_url.config(
             default=DATABASE_URL,
             conn_max_age=600,
-            ssl_require=True, 
-            engine_options={
-                'options': '-c sslmode=require'
-            }
+            ssl_require=True
         )
     }
     print("this is a prod database")
@@ -33,8 +29,7 @@ else:
         }
     }
     print("this is a test database")
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-
-]
+STATICFILES_DIRS = []
