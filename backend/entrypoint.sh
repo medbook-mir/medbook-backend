@@ -19,7 +19,7 @@ if ! command -v psql &> /dev/null; then
     apt-get update && apt-get install -y postgresql-client
 fi
 
-max_attempts=30
+max_attempts=2
 attempt=1
 connected=false
 
@@ -69,5 +69,5 @@ echo "🚀 Starting Gunicorn..."
 exec gunicorn medbook.wsgi:application \
     --bind 0.0.0.0:${PORT:-8000} \
     --workers 2 \
-    --timeout 120 \
+    --timeout 20 \
     --access-logfile -
