@@ -1,3 +1,4 @@
+import os
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import permissions
@@ -9,14 +10,15 @@ from drf_yasg import openapi
 from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, CustomTokenObtainPairView
 from django.conf import settings
 from django.conf.urls.static import static
+
 schema_view = get_schema_view(
-   openapi.Info(
-      title="MedBook API",
-      default_version='v1',
-      description="API for MedBook application",
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="MedBook API",
+        default_version='v1',
+        description="API for MedBook application",
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 class DecoratedTokenObtainPairView(TokenObtainPairView):
@@ -47,15 +49,28 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
 
-urlpatterns = [
-    path('', TemplateView.as_view(template_name='index.html')),
+SERVICE_TYPE = os.getenv('SERVICE_TYPE', 'backend')
+common_patterns = [
     path('admin/', admin.site.urls),
-    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
     path('api/token/', DecoratedTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/signup/', SignupView.as_view(), name='signup'),
     path('api/verify-code/', VerifyCodeView.as_view(), name='verify_code'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
     path('api/medical-tests/', TestListView.as_view(), name='medical-tests-list'),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if SERVICE_TYPE == 'api':
+    urlpatterns = [
+        path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui-alt'),
+        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    ] + common_patterns
+else:
+    urlpatterns = [
+        path('', TemplateView.as_view(template_name='index.html')), 
+        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    ] + common_patterns
+
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
