@@ -44,7 +44,7 @@ class SignupSerializer(serializers.ModelSerializer):
         send_mail(
             'Your Medbook Verification Code',
             f'Your email verification code is: {email_code}',
-            'mir6raid@gmail.com',
+            'example@gmail.com',
             [user.email],
             fail_silently=False,
         )
