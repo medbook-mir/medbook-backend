@@ -66,7 +66,7 @@ class SignupAndVerifyTests(TestCase):
             phone_number="1234567890",
             password=make_password("verifyPassword123"),
             date_joined="2025-05-10T12:00:00Z",
-            is_active=True,
+            is_active=False,
             email_code="123456",
             is_gender=True
         )
