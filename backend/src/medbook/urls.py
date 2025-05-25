@@ -10,6 +10,7 @@ from drf_yasg import openapi
 from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, CustomTokenObtainPairView
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import health_check
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -58,6 +59,7 @@ common_patterns = [
     path('api/verify-code/', VerifyCodeView.as_view(), name='verify_code'),
     path('api/protected-endpoint/', SomeProtectedView.as_view()),
     path('api/medical-tests/', TestListView.as_view(), name='medical-tests-list'),
+    path("ping/", health_check),
 ]
 
 if SERVICE_TYPE == 'api':

@@ -10,8 +10,12 @@ from .models import MedicalTest
 from rest_framework import generics
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.http import JsonResponse
 
 User = get_user_model()
+
+def health_check(request):
+    return JsonResponse({"status": "ok"})
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
