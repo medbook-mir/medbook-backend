@@ -2,17 +2,13 @@
 set -e
 
 echo "=== Starting Initialization ==="
-echo "DATABASE_URL: ${DATABASE_URL//:[^@]*@/:<hidden>@}"
+echo "🔍 Environment: $DJANGO_SETTINGS_MODULE"
+echo "📦 Database: ${DATABASE_URL//:[^@]*@/:<hidden>@}"
 
 if [[ ! "$DATABASE_URL" =~ ^postgres(ql)?:// ]]; then
     echo "❌ Error: Invalid DATABASE_URL format. Must start with postgres:// or postgresql://"
     exit 1
 fi
-
-echo "🔍 Testing PostgreSQL connection..."
-
-DB_HOST=$(echo $DATABASE_URL | cut -d@ -f2 | cut -d: -f1)
-DB_PORT=5432
 
 if ! command -v psql &> /dev/null; then
     echo "Installing postgresql-client..."
@@ -28,42 +24,42 @@ while [ $attempt -le $max_attempts ]; do
         connected=true
         break
     fi
-    
     echo "⏳ Attempt $attempt/$max_attempts - Waiting for PostgreSQL..."
-    sleep 2
+    sleep 5
     attempt=$((attempt + 1))
 done
 
 if [ "$connected" = false ]; then
     echo "❌ Failed to connect to PostgreSQL after $max_attempts attempts!"
-    echo "Troubleshooting steps:"
-    echo "1. Verify PostgreSQL service is running in Render dashboard"
-    echo "2. Check the 'Links' section in your web service settings"
-    echo "3. Try recreating the PostgreSQL service"
-    echo "4. Contact Render support with these logs"
     exit 1
 fi
 
 echo "✅ PostgreSQL connection established!"
 
-
 cd src
-
 echo "🔄 Applying migrations..."
 python manage.py migrate
 
 echo "📦 Collecting static files..."
 python manage.py collectstatic --noinput
 
-if [ "$DJANGO_ENV" != "production" ]; then
-    echo "👑 Creating superuser..."
+echo "👑 Checking superuser..."
+if ! python manage.py shell -c "
+from django.contrib.auth import get_user_model
+User = get_user_model()
+print(User.objects.filter(is_superuser=True, is_active=True).exists())
+" | grep -q "True"; then
+    echo "👑 No active superuser found, creating one..."
+    export DJANGO_SUPERUSER_PASSWORD=$DJANGO_SUPERUSER_PASSWORD
     python manage.py createsuperuser \
         --noinput \
         --username "$DJANGO_SUPERUSER_USERNAME" \
-        --email "$DJANGO_SUPERUSER_EMAIL" \
-        --password "$DJANGO_SUPERUSER_PASSWORD" 2>/dev/null || \
-    echo "ℹ Superuser already exists or error occurred"
+        --email "$DJANGO_SUPERUSER_EMAIL" 2>/dev/null || \
+    echo "❌ Failed to create superuser (check logs for details)"
+else
+    echo "ℹ Active superuser already exists, skipping creation"
 fi
+
 
 echo "🚀 Starting Gunicorn..."
 exec gunicorn medbook.wsgi:application \
