@@ -18,7 +18,7 @@ jobs:
       postgres:
         image: postgres:13-alpine
         env:
-          POSTGRES_DB: "test_db"  # Всегда тестируем на test_db для PR
+          POSTGRES_DB: "test_db" 
           POSTGRES_USER: ${{ secrets.TEST_DB_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
         ports: ["5432:5432"]
