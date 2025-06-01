@@ -19,14 +19,11 @@ if DATABASE_URL:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'test_database_edai',
-            'USER': os.getenv('TEST_DB_USER'),
-            'PASSWORD': os.getenv('TEST_DB_PASSWORD'),
-            'HOST': 'localhost',
-            'PORT': '5432',
-            'TEST': {
-                'NAME': 'test_database_edai',  # Явно указываем имя БД
-            }
+            'NAME': os.getenv('POSTGRES_DB', 'test_database_edai'),
+            'USER': os.getenv('POSTGRES_USER'),
+            'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+            'PORT': os.getenv('POSTGRES_PORT', '5432'),
         }
     }
     print("this is a test database")

@@ -1,4 +1,3 @@
-# backend/src/conftest.py
 import pytest
 from django.conf import settings
 
