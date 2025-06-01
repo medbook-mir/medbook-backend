@@ -17,11 +17,17 @@ if DATABASE_URL:
     #     )
     # }
     DATABASES = {
-        'default': dj_database_url.config(
-            default=os.getenv('DATABASE_URL'),
-            conn_max_age=600,
-            engine='django.db.backends.postgresql'
-        )
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'test_database_edai',
+            'USER': os.getenv('TEST_DB_USER'),
+            'PASSWORD': os.getenv('TEST_DB_PASSWORD'),
+            'HOST': 'localhost',
+            'PORT': '5432',
+            'TEST': {
+                'NAME': 'test_database_edai',  # Явно указываем имя БД
+            }
+        }
     }
     print("this is a test database")
 STATIC_URL = '/static/'
