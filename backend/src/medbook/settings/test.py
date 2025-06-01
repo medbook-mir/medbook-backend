@@ -9,11 +9,18 @@ ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('D
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
+    # DATABASES = {
+    #     'default': dj_database_url.config(
+    #         default=DATABASE_URL,
+    #         conn_max_age=600,
+    #         ssl_require=True
+    #     )
+    # }
     DATABASES = {
         'default': dj_database_url.config(
-            default=DATABASE_URL,
+            default=os.getenv('DATABASE_URL'),
             conn_max_age=600,
-            ssl_require=True
+            engine='django.db.backends.postgresql'
         )
     }
     print("this is a test database")
