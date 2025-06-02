@@ -1,15 +1,21 @@
 import { Box, Typography } from "@mui/material";
+import Header from "../_components/Header";
+import HeroSection from "./components/HeroSection";
 
 export default function HomePage() {
   return (
-    <Box>
-      <Typography variant="h1" component="h1" gutterBottom>
-        Welcome to the Next.js App
-      </Typography>
-      <Typography variant="body1" gutterBottom>
-        This is a simple example of a Next.js application using Material-UI for
-        styling.
-      </Typography>
+    <Box p={"20px"}>
+      <Box
+        sx={{
+          backgroundColor: "#00695C",
+          padding: { xs: 4, md: "52px 80px" },
+          borderRadius: "34px",
+          color: "white"
+        }}
+      >
+        <Header />
+        <HeroSection />
+      </Box>
     </Box>
   );
 }
