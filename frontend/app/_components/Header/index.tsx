@@ -65,7 +65,7 @@ const Header = () => {
               variant="contained"
               sx={{
                 backgroundColor: "#fff",
-                color: "#046D5F",
+                color: "primary.main",
                 borderRadius: "62px",
                 p: "11px 36px",
                 fontSize: "14px",
