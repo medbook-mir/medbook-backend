@@ -1,5 +1,5 @@
-import HomePage from "./home";
+const Home = () => {
+  return <div>Home</div>;
+};
+export default Home;
 
-export default async function Page({}) {
-  return <HomePage />;
-}
