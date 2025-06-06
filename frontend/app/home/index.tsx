@@ -1,6 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import Header from "../_components/Header";
 import HeroSection from "./components/HeroSection";
+import { SolutionsSection } from "./components/SolutionsSection";
 
 export default function HomePage() {
   return (
@@ -16,6 +17,7 @@ export default function HomePage() {
         <Header />
         <HeroSection />
       </Box>
+      <SolutionsSection />
     </Box>
   );
 }

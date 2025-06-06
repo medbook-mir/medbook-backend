@@ -18,7 +18,7 @@ export const HeroLeftSide = () => {
     <Box>
       <Box sx={{ maxWidth: 600 }}>
         <Typography
-          variant="h3"
+          variant="h1"
           sx={{ fontWeight: 600, marginBottom: "24px", fontSize: "56px" }}
         >
           {title}
@@ -42,7 +42,7 @@ export const HeroLeftSide = () => {
           backgroundColor: "white",
           borderRadius: "16px",
           padding: "4px",
-          maxWidth: 790,
+          maxWidth: "70%",
           alignItems: "center"
         }}
       >

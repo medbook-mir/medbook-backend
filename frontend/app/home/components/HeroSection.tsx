@@ -1,23 +1,20 @@
 "use client";
 
 import React from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  InputAdornment,
-  Button,
-  Stack
-} from "@mui/material";
-import { SearchIcon } from "../../_assets/icons/SearchIcon";
-import { LocationIcon } from "../../_assets/icons/LocationIcon";
+import { Box } from "@mui/material";
 import { HeroLeftSide } from "./HeroLeftSide";
 
 const HeroSection = () => {
   return (
-    <Box>
+    <Box position="relative">
       <HeroLeftSide />
-      {/* Right Side: Image... */}
+      <img
+        src="/hero-image.png"
+        alt="Hero Image"
+        width={350}
+        height={250}
+        style={{ position: "absolute", right: -68, bottom: -52, zIndex: 2 }}
+      />
     </Box>
   );
 };
