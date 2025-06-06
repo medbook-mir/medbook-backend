@@ -1,13 +1,5 @@
 import { LocationIcon } from "@/app/_assets/icons/LocationIcon";
 import { SearchIcon } from "@/app/_assets/icons/SearchIcon";
-import {
-  Box,
-  Button,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography
-} from "@mui/material";
 
 const title = "Online booking — the first step towards your health";
 const description =
@@ -15,94 +7,23 @@ const description =
 
 export const HeroLeftSide = () => {
   return (
-    <Box>
-      <Box sx={{ maxWidth: 600 }}>
-        <Typography
-          variant="h1"
-          sx={{ fontWeight: 600, marginBottom: "24px", fontSize: "56px" }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: "16px",
-            lineHeight: "34px",
-            marginBottom: 4,
-            width: "418px"
-          }}
-        >
-          {description}
-        </Typography>
-      </Box>
-
-      <Stack
-        direction={{ xs: "column", sm: "row" }}
-        spacing={2}
-        sx={{
-          backgroundColor: "white",
-          borderRadius: "16px",
-          padding: "4px",
-          maxWidth: "70%",
-          alignItems: "center"
-        }}
-      >
-        <TextField
-          variant="standard"
-          placeholder="Name"
-          InputProps={{
-            disableUnderline: true,
-            startAdornment: (
-              <InputAdornment position="start" sx={{ marginRight: "14px" }}>
-                <SearchIcon />
-              </InputAdornment>
-            )
-          }}
-          sx={{
-            flex: 1,
-            backgroundColor: "white",
-            borderRadius: 2,
-            paddingX: 1
-          }}
+    <div className="flex flex-col items-start justify-center w-full h-full gap-4">
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white md:text-4xl">
+        {title}
+      </h1>
+      <p className="text-lg text-gray-600 dark:text-gray-400">{description}</p>
+      <div className="flex items-center w-full max-w-md gap-2 p-2 border border-gray-300 rounded-lg dark:border-gray-700">
+        <SearchIcon />
+        <input
+          type="text"
+          placeholder="Search for a doctor, clinic, or service"
+          className="w-full bg-transparent outline-none"
         />
-        <TextField
-          variant="standard"
-          placeholder="Location"
-          InputProps={{
-            disableUnderline: true,
-            startAdornment: (
-              <InputAdornment position="start" sx={{ marginRight: "14px" }}>
-                <LocationIcon />
-              </InputAdornment>
-            )
-          }}
-          sx={{
-            flex: 1,
-            backgroundColor: "white",
-            borderRadius: 2,
-            paddingX: 1
-          }}
-        />
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: "#046D5F",
-            color: "white",
-            borderRadius: "16px",
-            textTransform: "none",
-            padding: "11px 28px",
-            whiteSpace: "nowrap",
-            fontSize: "22px",
-            fontWeight: 600,
-            lineHeight: 1,
-            boxShadow: "none",
-            "&:hover": {
-              backgroundColor: "#003d33"
-            }
-          }}
-        >
-          Search
-        </Button>
-      </Stack>
-    </Box>
+      </div>
+      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+        <LocationIcon />
+        <span>Location</span>
+      </div>
+    </div>
   );
 };
