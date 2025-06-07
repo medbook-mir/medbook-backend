@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
+import { getMessages } from "next-intl/server";
 import AntdProvider from "@/providers/antd-provider";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/basic/scroll-to-top";
 import BackToTop from "@/components/basic/back-to-top";
-import { NextIntlClientProvider } from "next-intl";
-import { notFound } from "next/navigation";
-import { i18nConfig } from "@/i18n/config";
+import { routing } from "@/i18n/routing";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -22,14 +23,15 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  let messages;
-  try {
-    messages = (await import(`../../../messages/${locale}.json`)).default;
-  } catch (error) {
+
+  if (!routing.locales.includes(locale as any)) {
     notFound();
   }
 
-  if (!i18nConfig.locales.includes(locale as any)) {
+  let messages;
+  try {
+    messages = await getMessages();
+  } catch (error) {
     notFound();
   }
 

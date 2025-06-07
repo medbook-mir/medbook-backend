@@ -1,9 +1,11 @@
 "use client";
 
-import { useParams, usePathname, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { CustomSelect } from "@/components/ui/select";
 import { icons } from "@/assets";
 import Image from "next/image";
+import { useRouter } from "@/i18n/navigation";
+import { i18nConfig } from "@/i18n/config";
 
 const langOptions = [
   { icon: icons.en, label: "En", value: "en" },
@@ -31,13 +33,20 @@ const renderLangOptions = langOptions.map((option) => ({
 
 export const LangSelect = () => {
   const { locale } = useParams();
-  const pathname = usePathname();
   const router = useRouter();
 
   const handleLangChange = (value: string) => {
-    const newPathname = pathname.replace(`/${locale}`, `/${value}`);
-    router.push(newPathname);
-    localStorage.setItem("language", value);
+    if (!i18nConfig.locales.includes(value as any)) {
+      console.error(`Invalid locale: ${value}`);
+      return;
+    }
+
+    try {
+      router.replace("/", { locale: value });
+      localStorage.setItem("language", value);
+    } catch (error) {
+      console.error("Failed to change language:", error);
+    }
   };
 
   return (
