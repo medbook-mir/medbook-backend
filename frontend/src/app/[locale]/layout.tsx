@@ -7,7 +7,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import ScrollToTop from "@/components/basic/scroll-to-top";
 import BackToTop from "@/components/basic/back-to-top";
-import { routing } from "@/i18n/routing";
+import { routing, Locale } from "@/i18n/routing";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -20,11 +20,11 @@ export default async function RootLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
 
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale)) {
     notFound();
   }
 

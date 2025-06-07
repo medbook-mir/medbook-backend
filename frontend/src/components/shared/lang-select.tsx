@@ -5,7 +5,7 @@ import { CustomSelect } from "@/components/ui/select";
 import { icons } from "@/assets";
 import Image from "next/image";
 import { useRouter } from "@/i18n/navigation";
-import { i18nConfig } from "@/i18n/config";
+import { routing, Locale } from "@/i18n/routing";
 
 const langOptions = [
   { icon: icons.en, label: "En", value: "en" },
@@ -32,11 +32,11 @@ const renderLangOptions = langOptions.map((option) => ({
 }));
 
 export const LangSelect = () => {
-  const { locale } = useParams();
+  const { locale } = useParams<{ locale: Locale }>();
   const router = useRouter();
 
-  const handleLangChange = (value: string) => {
-    if (!i18nConfig.locales.includes(value as any)) {
+  const handleLangChange = (value: Locale) => {
+    if (!routing.locales.includes(value)) {
       console.error(`Invalid locale: ${value}`);
       return;
     }
