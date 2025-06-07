@@ -1,19 +1,17 @@
+"use client";
+
+import { useTranslations } from "next-intl";
 import { LocationIcon } from "@/utils/icons/LocationIcon";
 import { SearchIcon } from "@/utils/icons/SearchIcon";
-import { useTranslation } from "react-i18next";
 
 export const HeroLeftSide = () => {
-  const { t } = useTranslation();
+  const t = useTranslations("home.hero");
 
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-4">
-        <h1 className="typography-h2bold text-primary">
-          {t("home.hero.title")}
-        </h1>
-        <p className="typography-body-xl text-gray">
-          {t("home.hero.description")}
-        </p>
+        <h1 className="typography-h2bold text-primary">{t("title")}</h1>
+        <p className="typography-body-xl text-gray">{t("description")}</p>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -21,14 +19,14 @@ export const HeroLeftSide = () => {
           <SearchIcon />
           <input
             type="text"
-            placeholder={t("home.hero.search_placeholder")}
+            placeholder={t("search_placeholder")}
             className="flex-1 border-none bg-transparent outline-none placeholder:text-gray"
           />
         </div>
 
         <div className="flex items-center gap-2 text-gray">
           <LocationIcon />
-          <span className="typography-body">{t("home.hero.location")}</span>
+          <span className="typography-body">{t("location")}</span>
         </div>
       </div>
     </div>
