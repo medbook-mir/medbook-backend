@@ -1,10 +1,9 @@
 "use client";
 
 import { useParams, usePathname, useRouter } from "next/navigation";
-import { useTranslation } from "react-i18next";
-import Image from "next/image";
 import { CustomSelect } from "@/components/ui/select";
 import { icons } from "@/assets";
+import Image from "next/image";
 
 const langOptions = [
   { icon: icons.en, label: "En", value: "en" },
@@ -19,9 +18,9 @@ const renderLangOptions = langOptions.map((option) => ({
         <Image
           src={option.icon}
           alt={`${option.value} flag`}
-          fill
-          sizes="28px"
-          className="object-cover rounded"
+          className="h-full w-full rounded object-cover"
+          width={20}
+          height={20}
         />
       </div>
       <span className="font-semibold">{option.label}</span>
@@ -31,22 +30,20 @@ const renderLangOptions = langOptions.map((option) => ({
 }));
 
 export const LangSelect = () => {
-  const { i18n } = useTranslation();
-  const { lang } = useParams();
+  const { locale } = useParams();
   const pathname = usePathname();
   const router = useRouter();
 
   const handleLangChange = (value: string) => {
-    const newPathname = pathname.replace(`/${lang}`, `/${value}`);
-    router.replace(newPathname);
-    i18n.changeLanguage(value);
+    const newPathname = pathname.replace(`/${locale}`, `/${value}`);
+    router.push(newPathname);
     localStorage.setItem("language", value);
   };
 
   return (
     <CustomSelect
       style={{ width: 100 }}
-      value={i18n.language}
+      value={locale}
       options={renderLangOptions}
       onSelect={handleLangChange}
       className="lang-select"
