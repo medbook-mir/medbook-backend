@@ -16,18 +16,12 @@ if DATABASE_URL:
             ssl_require=True
         )
     }
+    if 'TEST' not in DATABASES['default']:
+        DATABASES['default']['TEST'] = {}
+    if 'MIRROR' not in DATABASES['default']['TEST']:
+        DATABASES['default']['TEST']['MIRROR'] = False
     print("this is a prod database")
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB', 'test_db'),
-            'USER': os.getenv('POSTGRES_USER', 'medbook_user'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
-            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
-    }
     print("this is a test database")
 
 STATIC_URL = '/static/'
