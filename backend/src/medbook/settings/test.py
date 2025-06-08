@@ -17,8 +17,8 @@ if DATABASE_URL:
     }
 
     DATABASES['default']['TEST'] = {
-        'NAME': 'test_medbook',
-        # 'MIRROR': None,
+        'NAME': 'test_database_edai',
+        'MIRROR': None,
     }
     print("this is a test database")
 
