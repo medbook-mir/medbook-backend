@@ -17,11 +17,12 @@ env:
   DJANGO_SETTINGS_MODULE: "medbook.settings.test"
   SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
   DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
+  PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
 
 jobs:
   setup_and_test:
     runs-on: ubuntu-latest
-    
+
     services:
       postgres:
         image: postgres:13-alpine
@@ -39,7 +40,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Set up Python 3.9
+    - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: "3.9"
@@ -54,18 +55,16 @@ jobs:
       run: |
         echo "Waiting for PostgreSQL to be ready..."
         timeout 30s bash -c 'until pg_isready -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai; do sleep 1; done'
-        echo "PostgreSQL is ready!"
+        echo "✅ PostgreSQL is ready!"
 
     - name: Verify DB connection
-      env:
-        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
       run: |
         psql -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai -c "SELECT 1;"
 
     - name: Debug database settings
       working-directory: ./backend/src
       run: |
-        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print('DATABASES:', settings.DATABASES)"
+        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print('🔧 DATABASES:', settings.DATABASES)"
 
     - name: Run migrations
       working-directory: ./backend/src
@@ -91,10 +90,10 @@ jobs:
         SERVICES: "${{ secrets.RENDER_TEST_BACKEND_ID }} ${{ secrets.RENDER_TEST_API_ID }} ${{ secrets.RENDER_TEST_FRONTEND_ID }}"
       run: |
         for service in $SERVICES; do
-          echo "Deploying service $service"
+          echo " Deploying service $service"
           curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
-            -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
+            -d '{"clearCache": "clear"}' || echo " Deploy failed for $service"
         done
-        echo "Test environment deployment completed"
+        echo " Test environment deployment completed"
