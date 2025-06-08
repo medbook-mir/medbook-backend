@@ -17,12 +17,7 @@ if DATABASE_URL:
     }
     logger.info("Connected to test database")
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db_test.sqlite3'),
-        }
-    }
+    print("Something has gonna wrong!")
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
