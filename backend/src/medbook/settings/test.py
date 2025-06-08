@@ -15,7 +15,7 @@ if DATABASE_URL:
         )
 }
     DATABASES['default'].setdefault('TEST', {})
-    DATABASES['default']['TEST'].setdefault('MIRROR', None)
+    DATABASES['default']['TEST'].setdefault('MIRROR', False)
 
     print("Connected to test database")
 else:
