@@ -7,7 +7,7 @@ User = get_user_model()
 
 @pytest.mark.django_db
 def test_protected_test_list_view():
-    pass
+    True
     # user = User.objects.create_user(username='testuser', password='testpass')
     # MedicalTest.objects.create(name='Test 1')
     # MedicalTest.objects.create(name='Test 2')

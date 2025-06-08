@@ -58,7 +58,7 @@ class SignupAndVerifyTests(TestCase):
         self.assertEqual(code_match.group(1), stored_code)
 
     def test_verify_code_success(self):
-        pass
+        True
         # user = User.objects.create(
         #     username="verifyuser",
         #     first_name="Verify",
@@ -83,7 +83,7 @@ class SignupAndVerifyTests(TestCase):
         # self.assertIsNone(user.email_code)
 
     def test_verify_code_failure(self):
-        pass
+        True
         # user = User.objects.create(
         #     username="verifyfail",
         #     first_name="VerifyFail",
