@@ -55,7 +55,7 @@ jobs:
       run: |
         echo "Waiting for PostgreSQL to be ready..."
         timeout 30s bash -c 'until pg_isready -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai; do sleep 1; done'
-        echo "✅ PostgreSQL is ready!"
+        echo "PostgreSQL is ready!"
 
     - name: Verify DB connection
       run: |
