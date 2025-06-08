@@ -28,7 +28,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 ROOT_URLCONF = 'medbook.urls'
 
 TEMPLATES = [
@@ -71,10 +71,13 @@ USE_TZ = True
 
 
 STATIC_URL = '/staticfiles/ter/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-
-]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = []
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
