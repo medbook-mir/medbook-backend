@@ -1,8 +1,6 @@
-name: Django CI/CD Pipeline
+name: Django Test CI/CD Pipeline
 
 on:
-  push:
-    branches: ["master"]
   pull_request:
     branches: ["master"]
   workflow_dispatch:
@@ -14,10 +12,9 @@ on:
         type: choice
         options:
           - test
-          - prod
 
 env:
-  DJANGO_SETTINGS_MODULE: "medbook.settings.${{ github.event_name == 'pull_request' && 'test' || 'production' }}"
+  DJANGO_SETTINGS_MODULE: "medbook.settings.test"
   SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
 
 jobs:
@@ -100,25 +97,3 @@ jobs:
             -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
         done
         echo "Test environment deployment completed"
-
-  deploy_prod_environment:
-    needs: setup_and_test
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Deploy to Production Environment
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        SERVICES: "${{ secrets.RENDER_PROD_BACKEND_ID }} ${{ secrets.RENDER_PROD_API_ID }} ${{ secrets.RENDER_PROD_FRONTEND_ID }}"
-      run: |
-        for service in $SERVICES; do
-          echo "Deploying service $service"
-          curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
-            -H "Authorization: Bearer $RENDER_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
-        done
-        echo "Production environment deployment completed"

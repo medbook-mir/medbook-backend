@@ -18,16 +18,6 @@ if DATABASE_URL:
     }
     print("this is a prod database")
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB', 'test_db'),
-            'USER': os.getenv('POSTGRES_USER', 'medbook_user'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
-            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
-    }
     print("this is a test database")
 
 STATIC_URL = '/static/'
