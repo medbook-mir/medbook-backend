@@ -17,14 +17,10 @@ if DATABASE_URL:
     #     )
     # }
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('TEST_DB_URL', 'test_database_edai'),
-            'USER': os.getenv('TEST_DB_USER','medbook_user'),
-            'PASSWORD': os.getenv('TEST_DB_PASSWORD','password'),
-            'HOST': os.getenv('TEST_DB_HOST', 'localhost'),
-            'PORT': os.getenv('TEST_DB_PORT', '5432'),
-        }
+    'default': dj_database_url.config(
+        default='postgresql://test_database_edai_user:5H42RaqlJkI1oZf4B2hboPvYn5kPJBPYY@dpg-d0q7338d13ps73bcv1hg-a:5422/test_database_edai',
+        conn_max_age=600
+    )
     }
     print("this is a test database")
 STATIC_URL = '/static/'
