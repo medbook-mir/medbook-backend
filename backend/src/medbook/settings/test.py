@@ -12,12 +12,18 @@ if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
             conn_max_age=600,
-        )
+        ),
+        'replica': { 
+            'ENGINE': 'django.db.backends.postgresql',
+            'TEST': {
+                'MIRROR': 'default',
+            }
+        }
 }
-    if 'TEST' not in DATABASES['default']:
-        DATABASES['default']['TEST'] = {}
-    if 'MIRROR' not in DATABASES['default']['TEST']:
-        DATABASES['default']['TEST']['MIRROR'] = False
+    # if 'TEST' not in DATABASES['default']:
+    #     DATABASES['default']['TEST'] = {}
+    # if 'MIRROR' not in DATABASES['default']['TEST']:
+    #     DATABASES['default']['TEST']['MIRROR'] = 'default'
 
     print("Connected to test database")
 else:
