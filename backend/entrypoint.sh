@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+pytest --cache-clear
 
 echo "=== Starting Initialization ==="
 echo "🔍 Environment: $DJANGO_SETTINGS_MODULE"
