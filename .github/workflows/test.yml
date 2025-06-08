@@ -16,6 +16,7 @@ on:
 env:
   DJANGO_SETTINGS_MODULE: "medbook.settings.test"
   SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+  DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
 
 jobs:
   setup_and_test:
@@ -61,20 +62,20 @@ jobs:
       run: |
         psql -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai -c "SELECT 1;"
 
+    - name: Debug database settings
+      working-directory: ./backend/src
+      run: |
+        python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print('DATABASES:', settings.DATABASES)"
+
     - name: Run migrations
       working-directory: ./backend/src
-      env:
-        DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
-        DJANGO_DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
       run: |
         python manage.py migrate --noinput
 
     - name: Run tests
       working-directory: ./backend/src
-      env:
-        DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
       run: |
-        pytest --reuse-db -v
+        pytest --reuse-db -v --capture=no
 
   deploy_test_environment:
     needs: setup_and_test
