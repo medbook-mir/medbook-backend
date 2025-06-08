@@ -1,27 +1,23 @@
-from .base import BASE_DIR
+from .base import *
 import dj_database_url
 import os
-import logging
-
-logger = logging.getLogger(__name__)
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key') 
 
-ALLOWED_HOSTS = list(filter(None, os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')))
+ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('DJANGO_ALLOWED_HOSTS') else []
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
     DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600),
+        'default': dj_database_url.config(
+            conn_max_age=600,
+        )
     }
-    logger.info("Connected to test database")
+    print(" Connected to test database")
 else:
-    print("Something has gonna wrong!")
-
+    print("Something has gona wrong!")
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
-
-EMAIL_BACKEND = 'django.core.mail.backends.locmem.EmailBackend'
 
 STORAGES = {
     "staticfiles": {
