@@ -16,6 +16,10 @@ if DATABASE_URL:
             ssl_require=True
         )
     }
+    if 'TEST' not in DATABASES['default']:
+        DATABASES['default']['TEST'] = {}
+    if 'MIRROR' not in DATABASES['default']['TEST']:
+        DATABASES['default']['TEST']['MIRROR'] = False
     print("this is a prod database")
 else:
     print("this is a test database")
