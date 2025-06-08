@@ -14,8 +14,10 @@ if DATABASE_URL:
             conn_max_age=600,
         )
 }
-    DATABASES['default'].setdefault('TEST', {})
-    DATABASES['default']['TEST'].setdefault('MIRROR', False)
+    if 'TEST' not in DATABASES['default']:
+        DATABASES['default']['TEST'] = {}
+    if 'MIRROR' not in DATABASES['default']['TEST']:
+        DATABASES['default']['TEST']['MIRROR'] = False
 
     print("Connected to test database")
 else:
