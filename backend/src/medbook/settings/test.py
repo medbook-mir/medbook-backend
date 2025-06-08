@@ -14,12 +14,10 @@ if DATABASE_URL:
             conn_max_age=600,
         )
 }
-    if 'TEST' not in DATABASES['default']:
-        DATABASES['default']['TEST'] = {}
-    if 'MIRROR' not in DATABASES['default']['TEST']:
-        DATABASES['default']['TEST']['MIRROR'] = None
-    print(" Connected to test database")
-    print(" Connected to test database")
+    DATABASES['default'].setdefault('TEST', {})
+    DATABASES['default']['TEST'].setdefault('MIRROR', None)
+
+    print("Connected to test database")
 else:
     print("Something has gona wrong!")
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
