@@ -33,9 +33,3 @@ STORAGES = {
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = []
-
-if os.environ.get('TESTING'):
-    PASSWORD_HASHERS = [
-        'django.contrib.auth.hashers.MD5PasswordHasher',
-    ]
-    DATABASES['default']['TEST']['NAME'] = 'test_db.sqlite3'
