@@ -131,7 +131,7 @@ jobs:
     - name: Post deploy comment
       if: github.event_name == 'issue_comment'
       env:
-        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
       run: |
         curl -X POST \
           -H "Authorization: token $GH_TOKEN" \
