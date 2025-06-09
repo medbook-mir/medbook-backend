@@ -30,11 +30,7 @@ else:
     print("Something has gona wrong!")
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
-STORAGES = {
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
+
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
