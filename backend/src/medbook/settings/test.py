@@ -13,9 +13,7 @@ if DATABASE_URL:
         'default': dj_database_url.config(
             conn_max_age=600,
             default=DATABASE_URL,
-            ssl_require=True
         ),
-        
 }
 
     print("Connected to test database from test.py")

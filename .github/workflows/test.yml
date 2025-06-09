@@ -75,13 +75,10 @@ jobs:
         run: |
           python manage.py migrate --noinput
 
-      - name: Run migrations
+      - name: Run tests
         working-directory: ./backend/src
-        env:
-          DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai?sslmode=disable
-          DJANGO_DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai?sslmode=disable
         run: |
-          python manage.py migrate --noinput
+          pytest
 
   deploy_test_environment:
     needs: setup_and_test
