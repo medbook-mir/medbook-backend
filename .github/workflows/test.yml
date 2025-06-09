@@ -72,10 +72,10 @@ jobs:
         run: |
           python manage.py migrate --noinput
 
-      # - name: Run tests
-      #   working-directory: ./backend/src
-      #   run: |
-      #     pytest --reuse-db -v --capture=no
+      - name: Run tests
+        working-directory: ./backend/src
+        run: |
+          pytest 
 
   deploy_test_environment:
     needs: setup_and_test
