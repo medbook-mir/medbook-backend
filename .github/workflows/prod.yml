@@ -3,6 +3,8 @@ name: Django Production CI/CD Pipeline
 on:
   push:
     branches: ["master"]
+  issue_comment:
+    types: [created]
   workflow_dispatch:
     inputs:
       target:
@@ -19,6 +21,7 @@ env:
 
 jobs:
   setup_and_test:
+    if: github.event_name != 'issue_comment'
     runs-on: ubuntu-latest
     
     services:
@@ -78,22 +81,60 @@ jobs:
 
   deploy_prod_environment:
     needs: setup_and_test
-    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/master') ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'prod') ||
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, 'deploy prod'))
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v3
 
+    - name: Determine services to deploy
+      id: determine_services
+      run: |
+        # Default to all production services
+        SERVICES="${{ secrets.RENDER_PROD_BACKEND_ID }} ${{ secrets.RENDER_PROD_API_ID }} ${{ secrets.RENDER_PROD_FRONTEND_ID }}"
+        
+        # If triggered by comment, check for specific service
+        if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
+          COMMENT="${{ github.event.comment.body }}"
+          
+          # Extract service type from comment
+          if [[ "$COMMENT" =~ (backend|api|frontend) ]]; then
+            SERVICE_TYPE="${BASH_REMATCH[1]}"
+            echo "Selected service: $SERVICE_TYPE"
+            case "$SERVICE_TYPE" in
+              "backend") SERVICES="${{ secrets.RENDER_PROD_BACKEND_ID }}" ;;
+              "api") SERVICES="${{ secrets.RENDER_PROD_API_ID }}" ;;
+              "frontend") SERVICES="${{ secrets.RENDER_PROD_FRONTEND_ID }}" ;;
+            esac
+          fi
+        fi
+        
+        echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+
     - name: Deploy to Production Environment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-        SERVICES: "${{ secrets.RENDER_PROD_BACKEND_ID }} ${{ secrets.RENDER_PROD_API_ID }} ${{ secrets.RENDER_PROD_FRONTEND_ID }}"
       run: |
-        for service in $SERVICES; do
+        for service in ${{ steps.determine_services.outputs.services }}; do
           echo "Deploying service $service"
           curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
         done
-        echo "Production environment deployment completed"
+
+    - name: Post deploy comment
+      if: github.event_name == 'issue_comment'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        curl -X POST \
+          -H "Authorization: token $GH_TOKEN" \
+          -H "Accept: application/vnd.github.v3+json" \
+          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments" \
+          -d '{"body":" Продакшен: запущен деплой сервисов (${{ steps.determine_services.outputs.services }})"}'

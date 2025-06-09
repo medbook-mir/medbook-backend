@@ -3,7 +3,7 @@ import dj_database_url
 import os
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
-SECRET_KEY = 'django-insecure-ic$x3f-&ajn6(p5&7pxjjcv!+v%m*kxiv4=qp50x8bj=k)e105'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'fallback-secret-key') 
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('DJANGO_ALLOWED_HOSTS') else []
 
@@ -18,7 +18,7 @@ if DATABASE_URL:
     }
     print("this is a prod database")
 else:
-    print("this is a test database")
+    print("this is a test database from prod.py")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
