@@ -8,16 +8,16 @@ import Footer from "@/components/footer";
 import ScrollToTop from "@/components/basic/scroll-to-top";
 import BackToTop from "@/components/basic/back-to-top";
 import { routing, Locale } from "@/i18n/routing";
-import "./globals.css";
+import "../globals.css";
 
 export const metadata: Metadata = {
   title: "MedVisit",
-  description: "MedVisit - Your Health Partner"
+  description: "MedVisit - Your Health Partner",
 };
 
 export default async function RootLayout({
   children,
-  params
+  params,
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: Locale }>;
@@ -37,7 +37,7 @@ export default async function RootLayout({
 
   return (
     <html lang={locale}>
-      <body className="mx-auto flex min-h-screen w-full max-w-container flex-col justify-between overflow-x-hidden">
+      <body className="flex min-h-screen w-full flex-col justify-between overflow-x-hidden">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AntdProvider>
             <Header />
