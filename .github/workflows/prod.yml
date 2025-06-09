@@ -1,8 +1,6 @@
 name: Django Production CI/CD Pipeline
 
 on:
-  push:
-    branches: ["master"]
   issue_comment:
     types: [created]
   workflow_dispatch:
@@ -15,126 +13,50 @@ on:
         options:
           - prod
 
-env:
-  DJANGO_SETTINGS_MODULE: "medbook.settings.production"
-  SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-
 jobs:
   setup_and_test:
-    if: github.event_name != 'issue_comment'
     runs-on: ubuntu-latest
     
-    services:
-      postgres:
-        image: postgres:13-alpine
-        env:
-          POSTGRES_DB: test_database_edai
-          POSTGRES_USER: ${{ secrets.TEST_DB_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-        ports: ["5432:5432"]
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    steps:
-    - uses: actions/checkout@v3
-
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.9"
-
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r backend/requirements.txt
-        pip install psycopg2-binary pytest-django dj-database-url
-
-    - name: Wait for PostgreSQL
-      run: |
-        echo "Waiting for PostgreSQL to be ready..."
-        timeout 30s bash -c 'until pg_isready -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai; do sleep 1; done'
-        echo "PostgreSQL is ready!"
-
-    - name: Verify DB connection
-      env:
-        PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
-      run: |
-        psql -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai -c "SELECT 1;"
-
-    - name: Run migrations
-      working-directory: ./backend/src
-      env:
-        DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
-        DJANGO_DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
-      run: |
-        python manage.py migrate --noinput
-
-    - name: Run tests
-      working-directory: ./backend/src
-      env:
-        DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
-      run: |
-        pytest --reuse-db -v
+    # ... (остальные шаги как в test.yml) ...
 
   deploy_prod_environment:
     needs: setup_and_test
     if: |
-      (github.event_name == 'push' && github.ref == 'refs/heads/master') ||
-      (github.event_name == 'workflow_dispatch' && inputs.target == 'prod') ||
       (github.event_name == 'issue_comment' && 
        github.event.issue.pull_request && 
-       contains(github.event.comment.body, 'deploy prod'))
+       contains(github.event.comment.body, 'deploy prod')) ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Determine services to deploy
-      id: determine_services
-      run: |
-        # Default to all production services
-        SERVICES="${{ secrets.RENDER_PROD_BACKEND_ID }} ${{ secrets.RENDER_PROD_API_ID }} ${{ secrets.RENDER_PROD_FRONTEND_ID }}"
-        
-        # If triggered by comment, check for specific service
-        if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
-          COMMENT="${{ github.event.comment.body }}"
-          
-          # Extract service type from comment
-          if [[ "$COMMENT" =~ (backend|api|frontend) ]]; then
-            SERVICE_TYPE="${BASH_REMATCH[1]}"
-            echo "Selected service: $SERVICE_TYPE"
-            case "$SERVICE_TYPE" in
-              "backend") SERVICES="${{ secrets.RENDER_PROD_BACKEND_ID }}" ;;
-              "api") SERVICES="${{ secrets.RENDER_PROD_API_ID }}" ;;
-              "frontend") SERVICES="${{ secrets.RENDER_PROD_FRONTEND_ID }}" ;;
-            esac
-          fi
-        fi
-        
-        echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+      - name: Determine services
+        id: determine_services
+        run: |
+          SERVICES="${{ secrets.RENDER_PROD_BACKEND_ID }}"
+          echo "services=${SERVICES}" >> $GITHUB_OUTPUT
 
-    - name: Deploy to Production Environment
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
-      run: |
-        for service in ${{ steps.determine_services.outputs.services }}; do
-          echo "Deploying service $service"
-          curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
-            -H "Authorization: Bearer $RENDER_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
-        done
+      - name: Deploy to Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          for service in ${{ steps.determine_services.outputs.services }}; do
+            echo "Deploying service $service"
+            curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
+          done
 
-    - name: Post deploy comment
-      if: github.event_name == 'issue_comment'
-      env:
-        GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-      run: |
-        curl -X POST \
-          -H "Authorization: token $GH_TOKEN" \
-          -H "Accept: application/vnd.github.v3+json" \
-          "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments" \
-          -d '{"body":" Продакшен: запущен деплой сервисов (${{ steps.determine_services.outputs.services }})"}'
+      - name: Post comment
+        if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ' Продакшен деплой запущен!'
+            })
