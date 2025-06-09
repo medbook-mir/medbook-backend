@@ -18,7 +18,7 @@ if DATABASE_URL:
     }
     print("this is a prod database")
 else:
-    print("this is a test database from prod.py")
+    print("this is a test database from prod")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

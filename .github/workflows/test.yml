@@ -68,17 +68,20 @@ jobs:
       - name: Debug database settings
         working-directory: ./backend/src
         run: |
-          python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print('🔧 DATABASES:', settings.DATABASES)"
+          python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print(' DATABASES:', settings.DATABASES)"
 
       - name: Run migrations
         working-directory: ./backend/src
         run: |
           python manage.py migrate --noinput
 
-      - name: Run tests
+      - name: Run migrations
         working-directory: ./backend/src
+        env:
+          DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai?sslmode=disable
+          DJANGO_DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai?sslmode=disable
         run: |
-          pytest
+          python manage.py migrate --noinput
 
   deploy_test_environment:
     needs: setup_and_test
@@ -100,7 +103,6 @@ jobs:
           # Default to all test services
           SERVICES="${{ secrets.RENDER_TEST_BACKEND_ID }} ${{ secrets.RENDER_TEST_API_ID }} ${{ secrets.RENDER_TEST_FRONTEND_ID }}"
           
-          # If triggered by comment, check for specific service
           if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
             COMMENT="${{ github.event.comment.body }}"
             

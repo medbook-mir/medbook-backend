@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 
 def main():
     """Run administrative tasks."""
-    load_dotenv()  # Загружаем переменные окружения из .env
+    load_dotenv()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.local')
     try:
         from django.core.management import execute_from_command_line

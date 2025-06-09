@@ -15,12 +15,7 @@ if DATABASE_URL:
             default=DATABASE_URL,
             ssl_require=True
         ),
-        'replica': { 
-            'ENGINE': 'django.db.backends.postgresql',
-            'TEST': {
-                'MIRROR': 'default',
-            }
-        }
+        
 }
 
     print("Connected to test database from test.py")
