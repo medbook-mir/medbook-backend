@@ -2,15 +2,13 @@ from .base import *
 import os
 
 DEBUG = True
-SECRET_KEY = 'django-insecure-ic$x3f-&ajn6(p5&7pxjjcv!+v%m*kxiv4=qp50x8bj=k)e105'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_DIRS = [
-    # os.path.join(BASE_DIR, 'staticfiles'),
-]
+STATICFILES_DIRS = []
 
 DATABASES = {
     'default': {
