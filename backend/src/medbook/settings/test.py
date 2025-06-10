@@ -7,11 +7,11 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'Django_secret_key')
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('DJANGO_ALLOWED_HOSTS') else []
 
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
+DATABASE_URL_TEST = os.getenv('DATABASE_URL_TEST')
+if DATABASE_URL_TEST:
     DATABASES = {
         'default': dj_database_url.config(
-            default=DATABASE_URL,
+            default=DATABASE_URL_TEST,
         )
     }
     print("this is a test db")
