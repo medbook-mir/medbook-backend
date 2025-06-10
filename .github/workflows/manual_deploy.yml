@@ -33,8 +33,8 @@ jobs:
 
       - name: Запустить деплой на Render
         env:
-          RENDER_API_TOKEN: rnd_R0oB2gXj8xiehmmjVaLROSrBsrAf
-          RENDER_SERVICE_ID: srv-d0tdpge3jp1c73eg1ueg
+          RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
+          RENDER_SERVICE_ID: ${{ secrets.RENDER_SERVICE_ID }}
           BRANCH: ${{ steps.pr.outputs.head_branch }} 
         run: |
           echo "Деплою ветку: $BRANCH"
