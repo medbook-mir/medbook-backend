@@ -1,7 +1,7 @@
 name: Test Environment Deployment
 
 on:
-  pull_request:
+  pull_request_target:
     branches: [master]
   issue_comment:
     types: [created]
@@ -94,7 +94,7 @@ jobs:
             const pr = await github.rest.pulls.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: context.issue.number
+              pull_number: context.payload.pull_request.number
             });
             return {
               branch: pr.data.head.ref,
