@@ -1,24 +1,25 @@
-name: Django Test CI/CD Pipeline
+name: Test Environment Deployment
 
 on:
   pull_request:
-    branches: ["master"]
+    branches: [master]
   issue_comment:
     types: [created]
   workflow_dispatch:
     inputs:
       target:
-        description: 'Select environment to deploy'
+        description: 'Environment to deploy'
         required: true
         default: 'test'
         type: choice
         options:
           - test
+          - preview
 
 env:
   DJANGO_SETTINGS_MODULE: "medbook.settings.test"
   SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai
+  DATABASE_URL: postgresql://${{ secrets.TEST_DB_USER }}:${{ secrets.TEST_DB_PASSWORD }}@localhost:5432/test_database_edai?sslmode=disable
   PGPASSWORD: ${{ secrets.TEST_DB_PASSWORD }}
 
 jobs:
@@ -41,8 +42,9 @@ jobs:
           --health-retries 5
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref || 'master' }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -53,22 +55,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r backend/requirements.txt
-          pip install psycopg2-binary pytest-django dj-database-url
+          pip install psycopg2-binary pytest-django
 
       - name: Wait for PostgreSQL
         run: |
-          echo "Waiting for PostgreSQL to be ready..."
           timeout 30s bash -c 'until pg_isready -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai; do sleep 1; done'
-          echo "PostgreSQL is ready!"
-
-      - name: Verify DB connection
-        run: |
-          psql -h localhost -p 5432 -U ${{ secrets.TEST_DB_USER }} -d test_database_edai -c "SELECT 1;"
-
-      - name: Debug database settings
-        working-directory: ./backend/src
-        run: |
-          python -c "import os; import django; os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'medbook.settings.test'); django.setup(); from django.conf import settings; print(' DATABASES:', settings.DATABASES)"
 
       - name: Run migrations
         working-directory: ./backend/src
@@ -80,7 +71,7 @@ jobs:
         run: |
           pytest
 
-  deploy_test_environment:
+  deploy_test:
     needs: setup_and_test
     if: |
       (github.event_name == 'pull_request' && github.event.action != 'closed') ||
@@ -91,49 +82,116 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.event.issue.pull_request.head.ref || 'master' }}
 
-      - name: Determine services to deploy
-        id: determine_services
-        run: |
-          SERVICES="${{ secrets.RENDER_TEST_BACKEND_ID }} ${{ secrets.RENDER_TEST_API_ID }} ${{ secrets.RENDER_TEST_FRONTEND_ID }}"
-          
-          if [[ "${{ github.event_name }}" == "issue_comment" ]]; then
-            COMMENT="${{ github.event.comment.body }}"
-            
-            if [[ "$COMMENT" =~ (backend|api|frontend) ]]; then
-              SERVICE_TYPE="${BASH_REMATCH[1]}"
-              echo "Selected service: $SERVICE_TYPE"
-              case "$SERVICE_TYPE" in
-                "backend") SERVICES="${{ secrets.RENDER_TEST_BACKEND_ID }}" ;;
-                "api") SERVICES="${{ secrets.RENDER_TEST_API_ID }}" ;;
-                "frontend") SERVICES="${{ secrets.RENDER_TEST_FRONTEND_ID }}" ;;
-              esac
-            fi
-          fi
-          
-          echo "services=${SERVICES}" >> $GITHUB_OUTPUT
+      - name: Get PR info
+        id: pr-info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            return {
+              branch: pr.data.head.ref,
+              sha: pr.data.head.sha,
+              pr_number: context.issue.number
+            };
 
-      - name: Deploy to Test Environment
+      - name: Deploy services
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          BACKEND_ID: ${{ secrets.RENDER_TEST_BACKEND_ID }}
+          API_ID: ${{ secrets.RENDER_TEST_API_ID }}
+          FRONTEND_ID: ${{ secrets.RENDER_TEST_FRONTEND_ID }}
         run: |
-          for service in ${{ steps.determine_services.outputs.services }}; do
+          services=($BACKEND_ID $API_ID $FRONTEND_ID)
+          for service in "${services[@]}"; do
             echo "Deploying service $service"
-            curl -s -X POST "https://api.render.com/v1/services/$service/deploys" \
+            curl -X POST "https://api.render.com/v1/services/$service/deploys" \
               -H "Authorization: Bearer $RENDER_API_KEY" \
               -H "Content-Type: application/json" \
-              -d '{"clearCache": "clear"}' || echo "Deploy failed for $service"
+              -d '{"clearCache": "clear", "commitSha": "${{ steps.pr-info.outputs.sha }}"}'
           done
 
-      - name: Post deploy comment
+      - name: Post comment
         if: github.event_name == 'issue_comment'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ` Test deploy for PR #${{ steps.pr-info.outputs.pr_number }}\n` +
+                    `Services: backend, api, frontend\n` +
+                    `Commit: ${process.env.SHA}`
+            })
+
+  create_preview:
+    needs: setup_and_test
+    if: |
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, 'deploy preview')) ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'preview')
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.issue.pull_request.head.ref }}
+
+      - name: Get PR info
+        id: pr-info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            return {
+              pr_number: context.issue.number,
+              sha: pr.data.head.sha
+            };
+
+      - name: Trigger preview deployments
         env:
-          GH_TOKEN: ${{ secrets.TOKEN_GITHUB }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          BACKEND_ID: ${{ secrets.RENDER_TEST_BACKEND_ID }}
+          API_ID: ${{ secrets.RENDER_TEST_API_ID }}
+          FRONTEND_ID: ${{ secrets.RENDER_TEST_FRONTEND_ID }}
         run: |
-          curl -X POST \
-            -H "Authorization: token $GH_TOKEN" \
-            -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments" \
-            -d '{"body":" Тестовое окружение: запущен деплой сервисов (${{ steps.determine_services.outputs.services }})"}'
+          services=($BACKEND_ID $API_ID $FRONTEND_ID)
+          for service in "${services[@]}"; do
+            echo "Creating preview for service $service"
+            curl -X POST "https://api.render.com/v1/services/$service/deploys" \
+              -H "Authorization: Bearer $RENDER_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "pullRequestId": "${{ steps.pr-info.outputs.pr_number }}",
+                "clearCache": "clear",
+                "commitSha": "${{ steps.pr-info.outputs.sha }}"
+              }'
+          done
+
+      - name: Post preview URLs
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ` Preview environments created for PR #${{ steps.pr-info.outputs.pr_number }}\n\n` +
+                    `🔹 Backend: https://medbook-backend-pr-${{ steps.pr-info.outputs.pr_number }}.onrender.com\n` +
+                    `🔹 API: https://medbook-api-pr-${{ steps.pr-info.outputs.pr_number }}.onrender.com\n` +
+                    `🔹 Frontend: https://medbook-frontend-pr-${{ steps.pr-info.outputs.pr_number }}.onrender.com\n\n` +
+                    `Commit: \`${{ steps.pr-info.outputs.sha }}\``
+            })
