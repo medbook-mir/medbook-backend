@@ -33,13 +33,13 @@ jobs:
 
       - name: Запустить деплой на Render
         env:
-          RENDER_API_TOKEN: ${{ secrets.RENDER_API_TOKEN }}
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           RENDER_TEST_BACKEND_ID: ${{ secrets.RENDER_TEST_BACKEND_ID }}
           BRANCH: ${{ steps.pr.outputs.head_branch }} 
         run: |
           echo "Деплою ветку: $BRANCH"
           response=$(curl -s -X POST https://api.render.com/v1/services/$RENDER_TEST_BACKEND_ID/deploys \
-            -H "Authorization: Bearer $RENDER_API_TOKEN" \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{"branch":"'"$BRANCH"'"}')
           
