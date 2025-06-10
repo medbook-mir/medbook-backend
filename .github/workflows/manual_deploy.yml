@@ -1,0 +1,15 @@
+name: Manual Deploy to Render
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  manual_deploy:
+    if: contains(github.event.comment.body, 'deploy')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo deploy trigger
+        run: |
+          echo "Triggered manual deploy by comment"
+          echo "Comment: ${{ github.event.comment.body }}"
