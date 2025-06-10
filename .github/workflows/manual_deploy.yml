@@ -11,13 +11,14 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    if: contains(github.event.comment.body, '/deploy')
+    if: contains(github.event.comment.body, '/deploy') && github.event.issue.pull_request
 
     steps:
       - name: Debug
         run: |
           echo "Комментарий: '${{ github.event.comment.body }}'"
           echo "Это PR? ${{ github.event.issue.pull_request }}"
+          echo "Номер PR: ${{ github.event.issue.number }}"
 
       - name: Получить ветку из PR
         id: pr
@@ -35,16 +36,18 @@ jobs:
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
           RENDER_TEST_BACKEND_ID: ${{ secrets.RENDER_TEST_BACKEND_ID }}
-          BRANCH: ${{ steps.pr.outputs.head_branch }} 
+          BRANCH: ${{ steps.pr.outputs.head_branch }}
         run: |
           echo "Деплою ветку: $BRANCH"
-          response=$(curl -s -X POST https://api.render.com/v1/services/$RENDER_TEST_BACKEND_ID/deploys \
+          response=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services/$RENDER_TEST_BACKEND_ID/deploys \
             -H "Authorization: Bearer $RENDER_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{"branch":"'"$BRANCH"'"}')
-          
-          echo "Ответ Render: $response"
-          if [[ "$response" != *"status"* ]]; then
-            echo " Ошибка деплоя!"
+          http_status=$(echo "$response" | tail -n1)
+          response_body=$(echo "$response" | sed '$d')
+          echo "Ответ Render: $response_body"
+          echo "HTTP статус: $http_status"
+          if [[ "$http_status" != "200" && "$http_status" != "201" ]]; then
+            echo "Ошибка деплоя! HTTP статус: $http_status"
             exit 1
           fi
