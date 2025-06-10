@@ -14,9 +14,10 @@ jobs:
       postgres:
         image: postgres:13-alpine
         env:
+          POSTGRES_HOST: localhost
           POSTGRES_DB: test_db
-          POSTGRES_USER: medbook_user
-          POSTGRES_PASSWORD: password
+          POSTGRES_USER: ${{ secrets.PG_TEST_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.PG_TEST_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
@@ -28,12 +29,12 @@ jobs:
     env:
       POSTGRES_HOST: localhost
       POSTGRES_DB: test_db
-      POSTGRES_USER: medbook_user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: ${{ secrets.PG_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.PG_PASSWORD }}
       POSTGRES_PORT: 5432
-      DJANGO_SETTINGS_MODULE: medbook.settings.prod
-      SECRET_KEY: test
-      DEBUG: "false" 
+      DJANGO_SETTINGS_MODULE: medbook.settings.prod  
+      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DEBUG: "false"
 
     steps:
     - uses: actions/checkout@v3
