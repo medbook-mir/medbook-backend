@@ -6,9 +6,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', '')
 
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
+
+
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
 
 DATABASE_URL = os.getenv('DATABASE_URL')
 if DATABASE_URL:
@@ -24,3 +26,21 @@ else:
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = []
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
