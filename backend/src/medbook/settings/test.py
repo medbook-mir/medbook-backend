@@ -19,9 +19,17 @@ if DATABASE_URL:
             'PORT': os.getenv('POSTGRES_PORT', '5432'),
         }
     }
-    print("this is a test db")
+    print("this is a test database")
+
 else:
-    print("test doesnt work")
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+    print("this is a prod database")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
