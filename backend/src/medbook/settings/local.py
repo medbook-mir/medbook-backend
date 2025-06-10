@@ -4,7 +4,7 @@ import os
 DEBUG = True
 SECRET_KEY = 'django-insecure-ic$x3f-&ajn6(p5&7pxjjcv!+v%m*kxiv4=qp50x8bj=k)e105'
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
-
+IS_PULL_REQUEST = os.getenv('IS_PULL_REQUEST', 'false') == 'true'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
