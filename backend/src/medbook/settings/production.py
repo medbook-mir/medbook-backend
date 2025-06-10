@@ -17,19 +17,9 @@ if DATABASE_URL:
             ssl_require=True
         )
     }
-    print("this is a prod database")
+    print("this is a prod file database")
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.getenv('POSTGRES_DB', 'test_db'),
-            'USER': os.getenv('POSTGRES_USER', 'medbook_user'),
-            'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'password'),
-            'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
-            'PORT': os.getenv('POSTGRES_PORT', '5432'),
-        }
-    }
-    print("this is a test database")
+    print("this is a prodfile database")
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')

@@ -15,7 +15,7 @@ if DATABASE_URL:
             default=DATABASE_URL,
         )
     }
-    print("this is a test db")
+    print("this is a test file db")
 else:
     print("test doesnt work")
 
