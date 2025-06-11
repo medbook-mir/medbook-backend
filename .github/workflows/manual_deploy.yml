@@ -6,14 +6,20 @@ on:
 
 jobs:
   manual_deploy:
-    if: contains(github.event.comment.body, 'deploy')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Echo trigger
+      - name: Check comment and Deploy
         run: |
-         echo "Triggered by comment: ${{ github.event.comment.body }}"
+          COMMENT="${{ github.event.comment.body }}"
+          NORMALIZED=$(echo "$COMMENT" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
 
-      - name: Deploy to Render
-        run: |
-          curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
+          echo "Received comment: $COMMENT"
+          echo "Normalized comment: $NORMALIZED"
+
+          if [ "$NORMALIZED" = "deploy" ]; then
+            echo "Triggering deploy to Render..."
+            curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
+          else
+            echo "Comment is not exactly 'deploy'. Skipping deploy."
+          fi
