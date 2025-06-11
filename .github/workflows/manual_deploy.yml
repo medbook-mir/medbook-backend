@@ -11,7 +11,8 @@ jobs:
 
     steps:
       - name: Echo trigger
-        run: echo "Triggered by comment: ${{ github.event.comment.body }}"
+        run: |
+         echo "Triggered by comment: ${{ github.event.comment.body }}"
 
       - name: Deploy to Render
         run: |
