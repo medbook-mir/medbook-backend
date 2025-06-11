@@ -12,7 +12,7 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
-    restart: unless-stopped
+    restart:  "on-failure:2" 
 
   db:
     image: postgres:13-alpine
@@ -30,7 +30,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
-    restart: unless-stopped
+    restart:  "on-failure:2" 
 
   backend:
     build:
@@ -59,7 +59,7 @@ services:
         max-size: "10m"
         max-file: "3"
     command: ["sh", "/app/entrypoint.sh"]
-    restart: unless-stopped
+    restart:  "on-failure:2" 
 
   api:
     build:
@@ -88,7 +88,7 @@ services:
         max-size: "10m"
         max-file: "3"
     command: ["sh", "/app/entrypoint.sh"]
-    restart: unless-stopped
+    restart:  "on-failure:2" 
 
   frontend:
     build:
@@ -107,7 +107,7 @@ services:
       - app_network
     depends_on:
       - backend
-    restart: unless-stopped
+    restart:  "on-failure:2" 
 
   tests:
     build:
