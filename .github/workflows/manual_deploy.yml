@@ -1,19 +1,53 @@
 name: Manual Deploy to Render
 
+permissions:
+  contents: read
+  pull-requests: read
+
 on:
   issue_comment:
     types: [created]
 
 jobs:
-  manual_deploy:
-    if: contains(github.event.comment.body, 'deploy')
+  deploy:
     runs-on: ubuntu-latest
+    if: contains(github.event.comment.body, '/deploy')
 
     steps:
-      - name: Echo trigger
+      - name: Debug
         run: |
-          echo "Triggered by comment: ${{ github.event.comment.body }}"
+          echo "Комментарий: '${{ github.event.comment.body }}'"
+          echo "Это PR? ${{ github.event.issue.pull_request }}"
+          echo "Номер PR: ${{ github.event.issue.number }}"
 
-      - name: Deploy to Render
+      - name: Получить ветку из PR
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            });
+            core.setOutput("head_branch", pr.data.head.ref);
+
+      - name: Запустить деплой на Render
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_TEST_BACKEND_ID: ${{ secrets.RENDER_TEST_BACKEND_ID }}
+          BRANCH: ${{ steps.pr.outputs.head_branch }}
         run: |
-          curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
+          echo "Деплою ветку: $BRANCH"
+          response=$(curl -s -w "\n%{http_code}" -X POST https://api.render.com/v1/services/$RENDER_TEST_BACKEND_ID/deploys \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"branch":"'"$BRANCH"'"}')
+          http_status=$(echo "$response" | tail -n1)
+          response_body=$(echo "$response" | sed '$d')
+          echo "Ответ Render: $response_body"
+          echo "HTTP статус: $http_status"
+          if [[ "$http_status" != "200" && "$http_status" != "201" ]]; then
+            echo "Ошибка деплоя! HTTP статус: $http_status"
+            exit 1
+          fi
