@@ -1,30 +1,52 @@
-name: Manual Deploy to Render
+name: Test Deploy to Render on PR
 
 on:
+  pull_request:
+    branches: [master]
   issue_comment:
     types: [created]
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
-
-# permissions:
-#   issues: read
-#   pull-requests: read
 
 jobs:
-  manual_deploy:
+  test_deploy:
     if: |
-      github.event.issue.pull_request != null && contains(github.event.comment.body, 'deploy')
+      github.event_name == 'pull_request' ||
+      (github.event_name == 'issue_comment' && 
+       github.event.issue.pull_request && 
+       contains(github.event.comment.body, 'deploy'))
+    
     runs-on: ubuntu-latest
+    environment: test
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - name: Dump GitHub context (для отладки)
-        run: echo '${{ toJson(github) }}'
-
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy to Render (backend)
+      - name: Get PR number (for comment trigger)
+        if: github.event_name == 'issue_comment'
+        id: pr
+        run: echo "pr_number=$(jq -r '.issue.number' <<< '${{ toJson(github.event) }}')" >> $GITHUB_OUTPUT
+
+      - name: Deploy to Render (Test Environment)
         run: |
-          curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+          "https://api.render.com/deploy/${{ secrets.RENDER_TEST_ID }}?key=${{ secrets.RENDER_DEPLOY_KEY }}")
+          
+          if [ "$RESPONSE" -ne 200 ]; then
+            echo "Deploy failed with status $RESPONSE"
+            exit 1
+          fi
+
+      - name: Add deployment comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: ' Тестовый деплой запущен на Render! \n\n Чтобы обновить деплой, напишите комментарий "deploy"'
+            })
