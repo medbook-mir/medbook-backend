@@ -8,36 +8,43 @@ on:
 
 jobs:
   test_deploy:
-    if: |
-      github.event_name == 'pull_request' ||
-      (github.event_name == 'issue_comment' && 
-       github.event.issue.pull_request && 
-       contains(github.event.comment.body, 'deploy'))
-    
+    if: github.event.comment.body == 'deploy'
     runs-on: ubuntu-latest
-    environment: test
-    permissions:
-      contents: read
-      pull-requests: write
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Get PR number (for comment trigger)
-        if: github.event_name == 'issue_comment'
-        id: pr
-        run: echo "pr_number=$(jq -r '.issue.number' <<< '${{ toJson(github.event) }}')" >> $GITHUB_OUTPUT
-
-      - name: Deploy to Render (Test Environment)
+      - name: Trigger Render Deploy
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-          "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}")
+            "https://api.render.com/deploy/${{ secrets.RENDER_SRV_DH_FRONT }}?key=${{ secrets.RENDER_KEY_DH_FRONT }}")
           
           if [ "$RESPONSE" -ne 200 ]; then
             echo "Deploy failed with status $RESPONSE"
             exit 1
           fi
+    
+    # runs-on: ubuntu-latest
+    # environment: test
+    # permissions:
+    #   contents: read
+    #   pull-requests: write
+
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v3
+
+    #   - name: Get PR number (for comment trigger)
+    #     if: github.event_name == 'issue_comment'
+    #     id: pr
+    #     run: echo "pr_number=$(jq -r '.issue.number' <<< '${{ toJson(github.event) }}')" >> $GITHUB_OUTPUT
+
+    #   - name: Deploy to Render (Test Environment)
+    #     run: |
+    #       RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
+    #       "https://api.render.com/deploy/${{ secrets.RENDER_SRV_DH_FRONT }}?key=${{ secrets.RENDER_KEY_DH_FRONT }}")
+          
+    #       if [ "$RESPONSE" -ne 200 ]; then
+    #         echo "Deploy failed with status $RESPONSE"
+    #         exit 1
+    #       fi
 
       - name: Add deployment comment
         if: github.event_name == 'pull_request'
