@@ -5,13 +5,13 @@ on:
     types: [created]
 
 permissions:
-  contents: read
-  issues: write
-  pull-requests: write
+  issues: read
+  pull-requests: read
 
 jobs:
   manual_deploy:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, 'deploy')
+    if: |
+      github.event.issue.pull_request && contains(github.event.comment.body, 'deploy')
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +19,7 @@ jobs:
         run: |
           echo "Triggered by comment: ${{ github.event.comment.body }}"
           echo "Issue URL: ${{ github.event.issue.html_url }}"
-          echo "Pull request object: ${{ toJson(github.event.issue.pull_request) }}"
+          echo "User login: ${{ github.event.comment.user.login }}"
 
       - name: Deploy to Render
         run: |
