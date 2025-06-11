@@ -3,24 +3,28 @@ name: Manual Deploy to Render
 on:
   issue_comment:
     types: [created]
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
 
-permissions:
-  issues: read
-  pull-requests: read
+# permissions:
+#   issues: read
+#   pull-requests: read
 
 jobs:
   manual_deploy:
     if: |
-      github.event.issue.pull_request && contains(github.event.comment.body, 'deploy')
+      github.event.issue.pull_request != null && contains(github.event.comment.body, 'deploy')
     runs-on: ubuntu-latest
 
     steps:
-      - name: Debug context
-        run: |
-          echo "Triggered by comment: ${{ github.event.comment.body }}"
-          echo "Issue URL: ${{ github.event.issue.html_url }}"
-          echo "User login: ${{ github.event.comment.user.login }}"
+      - name: Dump GitHub context (для отладки)
+        run: echo '${{ toJson(github) }}'
 
-      - name: Deploy to Render
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to Render (backend)
         run: |
           curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
