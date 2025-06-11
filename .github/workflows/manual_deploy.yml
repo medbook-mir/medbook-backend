@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to Render (Test Environment)
         run: |
           RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
-          "https://api.render.com/deploy/${{ secrets.RENDER_TEST_ID }}?key=${{ secrets.RENDER_DEPLOY_KEY }}")
+          "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}")
           
           if [ "$RESPONSE" -ne 200 ]; then
             echo "Deploy failed with status $RESPONSE"
