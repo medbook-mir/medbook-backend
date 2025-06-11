@@ -9,17 +9,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Show received comment
+        run: |
+          echo "Comment: '${{ github.event.comment.body }}'"
+
       - name: Check comment and Deploy
         run: |
           COMMENT="${{ github.event.comment.body }}"
-          NORMALIZED=$(echo "$COMMENT" | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]')
+          # Удаляем пробелы в начале и конце, делаем строчные буквы
+          NORMALIZED=$(echo "$COMMENT" | xargs | tr '[:upper:]' '[:lower:]')
 
-          echo "Received comment: $COMMENT"
-          echo "Normalized comment: $NORMALIZED"
+          echo "Normalized comment: '$NORMALIZED'"
 
           if [ "$NORMALIZED" = "deploy" ]; then
             echo "Triggering deploy to Render..."
             curl -X POST "https://api.render.com/deploy/${{ secrets.RENDER_PROD_BACKEND_ID }}?key=${{ secrets.RENDER_DH_BACKEND }}"
           else
-            echo "Comment is not exactly 'deploy'. Skipping deploy."
+            echo "Comment is not 'deploy'. Skipping deploy."
           fi
