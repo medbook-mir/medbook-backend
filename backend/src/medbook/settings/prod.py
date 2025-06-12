@@ -3,7 +3,7 @@ import dj_database_url
 import os
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False').lower() == 'true'
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'Django_secret_key')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
 
 ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',') if os.getenv('DJANGO_ALLOWED_HOSTS') else []
 

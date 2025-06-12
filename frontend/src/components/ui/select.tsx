@@ -13,7 +13,7 @@ const ExtendedSelect = styled(Select)`
     padding-right: 24px !important;
   }
   .ant-select-arrow {
-    color: #046d5f;
+    color: #fff;
     right: 8px !important;
   }
   &.lang-select .ant-select-selection-item {
