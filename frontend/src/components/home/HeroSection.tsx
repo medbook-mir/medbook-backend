@@ -1,6 +1,8 @@
 "use client";
 
 import { images } from "@/assets";
+import { LocationIcon } from "@/utils/icons/LocationIcon";
+import { SearchIcon } from "@/utils/icons/SearchIcon";
 import Image from "next/image";
 
 export default function HeroSection() {
@@ -17,24 +19,24 @@ export default function HeroSection() {
           </p>
 
           <div className="bg-white rounded-[16px] h-[56px] overflow-hidden flex items-center shadow-md max-w-full px-[4px]">
-            <div className="flex items-center px-4 text-gray-500">
-              {/* <FaSearch className="mr-2" /> */}
+            <div className="flex items-center gap-[14px] px-4 text-gray-500">
+              <SearchIcon />
               <input
                 type="text"
                 placeholder="Name"
-                className="outline-none py-3 w-full text-black placeholder-gray-400"
+                className="outline-none py-3 w-full text-black placeholder-[#6E6E6E]"
               />
             </div>
-            <div className="border-l border-gray-300 h-6"></div>
-            <div className="flex items-center px-4 text-gray-500">
-              {/* <FaMapMarkerAlt className="mr-2" /> */}
+            <div className="border-l border-[#046D5F] h-[38px]"></div>
+            <div className="flex items-center gap-[14px] px-4 text-gray-500">
+              <LocationIcon />
               <input
                 type="text"
                 placeholder="Location"
-                className="outline-none py-3 w-full text-black placeholder-gray-400"
+                className="outline-none py-3 w-full text-black placeholder-[#6E6E6E]"
               />
             </div>
-            <button className="bg-[#046D5F] hover:bg-teal-600 text-[22px] tracking-[3%] text-white font-semibold px-[28px] h-[48px] rounded-[16px] transition-all">
+            <button className="bg-[#046D5F] hover:bg-teal-600 text-[22px] tracking-[3%] text-white font-semibold px-[28px] h-[48px] rounded-[16px] transition-all cursor-pointer">
               Search
             </button>
           </div>
