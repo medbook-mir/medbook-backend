@@ -5,6 +5,7 @@ import ScheduleInAdvance from "@/components/home/schedule-in-advance";
 import { SolutionsSection } from "@/components/home/SolutionsSection";
 import { Container } from "@/theme/container";
 import Header from "@/components/header";
+import ResultNumbers from "@/components/home/result-numbers";
 
 const Home = () => {
   return (
@@ -16,6 +17,7 @@ const Home = () => {
         </div>
       </Container>
       <SolutionsSection />
+      <ResultNumbers />
       <ScheduleInAdvance />
       <HomeBlog />
       <MobileApps />
