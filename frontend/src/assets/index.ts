@@ -4,7 +4,7 @@ import Ru from "./icons/ru.svg";
 import GooglePlay from "./icons/google_play.svg";
 import AppStore from "./icons/app_store.svg";
 
-import HeroImg from "./images/hero-image.webp";
+import HeroImg from "./images/hero_image.webp";
 import Schedule1 from "./images/schedule_1.webp";
 import Schedule2 from "./images/schedule_2.webp";
 import Schedule3 from "./images/schedule_3.webp";
@@ -21,7 +21,7 @@ export const images = {
   blog1: Blog1,
   mobileScreenshot1: MobileScreenshot1,
   mobileScreenshot2: MobileScreenshot2,
-  footerLogo: FooterLogo,
+  footerLogo: FooterLogo
 };
 
 export const icons = {
@@ -29,5 +29,5 @@ export const icons = {
   uz: Uz,
   ru: Ru,
   googlePlay: GooglePlay,
-  appStore: AppStore,
+  appStore: AppStore
 };

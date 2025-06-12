@@ -12,12 +12,12 @@ import "../globals.css";
 
 export const metadata: Metadata = {
   title: "MedVisit",
-  description: "MedVisit - Your Health Partner",
+  description: "MedVisit - Your Health Partner"
 };
 
 export default async function RootLayout({
   children,
-  params,
+  params
 }: {
   children: React.ReactNode;
   params: Promise<{ locale: Locale }>;
@@ -40,7 +40,6 @@ export default async function RootLayout({
       <body className="flex min-h-screen w-full flex-col justify-between overflow-x-hidden">
         <NextIntlClientProvider locale={locale} messages={messages}>
           <AntdProvider>
-            <Header />
             <main className="flex-1">{children}</main>
             <Footer />
             <ScrollToTop />

@@ -3,18 +3,23 @@ import HomeBlog from "@/components/home/home-blog";
 import MobileApps from "@/components/home/mobile-apps";
 import ScheduleInAdvance from "@/components/home/schedule-in-advance";
 import { SolutionsSection } from "@/components/home/SolutionsSection";
+import { Container } from "@/theme/container";
+import Header from "@/components/header";
 
 const Home = () => {
   return (
-    <>
-      <HeroSection />
+    <div className="pt-8">
+      <Container>
+        <div className="relative rounded-[35px] bg-[#046D5F] py-[52px] px-[80px]">
+          <Header />
+          <HeroSection />
+        </div>
+      </Container>
       <SolutionsSection />
-
-      {/* Second part of the page */}
       <ScheduleInAdvance />
       <HomeBlog />
       <MobileApps />
-    </>
+    </div>
   );
 };
 
