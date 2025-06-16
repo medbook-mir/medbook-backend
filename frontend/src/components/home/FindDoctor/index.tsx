@@ -45,7 +45,6 @@ export const FindDoctor = () => {
             alt="search doctor image"
             height={600}
             width={700}
-            // fill
             className="object-contain right-0 bottom-0"
             priority
           />
