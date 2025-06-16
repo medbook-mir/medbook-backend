@@ -12,6 +12,8 @@ import Blog1 from "./images/blog_1.webp";
 import MobileScreenshot1 from "./images/mobile_screenshot_1.webp";
 import MobileScreenshot2 from "./images/mobile_screenshot_2.webp";
 import FooterLogo from "./images/footer_logo.svg";
+import SearchDoctor from "./images/doctor.png";
+import MockDoctorImage from "./images/mock_doctor_image.png";
 
 export const images = {
   heroImg: HeroImg,
@@ -21,7 +23,9 @@ export const images = {
   blog1: Blog1,
   mobileScreenshot1: MobileScreenshot1,
   mobileScreenshot2: MobileScreenshot2,
-  footerLogo: FooterLogo
+  footerLogo: FooterLogo,
+  searchDoctor: SearchDoctor,
+  mockDoctorImage: MockDoctorImage
 };
 
 export const icons = {

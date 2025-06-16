@@ -6,6 +6,7 @@ import { SolutionsSection } from "@/components/home/SolutionsSection";
 import { Container } from "@/theme/container";
 import Header from "@/components/header";
 import ResultNumbers from "@/components/home/result-numbers";
+import { FindDoctor } from "@/components/home/FindDoctor";
 
 const Home = () => {
   return (
@@ -17,6 +18,7 @@ const Home = () => {
         </div>
       </Container>
       <SolutionsSection />
+      <FindDoctor />
       <ResultNumbers />
       <ScheduleInAdvance />
       <HomeBlog />
