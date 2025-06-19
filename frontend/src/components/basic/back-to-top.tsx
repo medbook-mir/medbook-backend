@@ -23,7 +23,7 @@ const BackToTop = () => {
     visible && (
       <button
         onClick={scrollToTop}
-        className="fixed bottom-10 right-10 z-30 transition bg-primary rounded-full flex items-center justify-center shadow text-white w-12 h-12"
+        className="fixed cursor-pointer bg-[#046D5F] bottom-3 md:bottom-6 text-white right-3 lg:bottom-12 lg:right-12 md:right-6 z-30 transition bg-primary rounded-full flex items-center justify-center shadow  w-12 h-12"
       >
         <UpOutlined />
       </button>

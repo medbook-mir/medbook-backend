@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+/* Global styles */
+button {
+  cursor: pointer;
+}
+
+a {
+  color: #046d5f;
 }
