@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+/* Global styles */
+button {
+  cursor: pointer;
+}
+
+a {
+  color: #046d5f;
+}
