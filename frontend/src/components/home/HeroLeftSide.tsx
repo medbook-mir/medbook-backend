@@ -10,7 +10,7 @@ export const HeroLeftSide = () => {
   return (
     <div className="flex flex-col gap-6">
       <div className="space-y-4">
-        <h1 className="typography-h2bold text-primary">{t("title")}</h1>
+        <h1 className="typography-h2bold text-primary ">{t("title")}</h1>
         <p className="typography-body-xl text-gray">{t("description")}</p>
       </div>
 

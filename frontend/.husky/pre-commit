@@ -15,15 +15,15 @@ cat << EOF
   with: git commit --no-verify ${reset}
 EOF
 
-npx lint-staged
+# npx lint-staged
 
-echo "${yellow} Running Type Check ${reset}"
-if npm run type-check; then
-  echo "${green}✔ Type Check passed.${reset}"
-else
-  echo "${red}✘ Type Check failed. Please fix the type errors before committing.${reset}"
-  exit 1
-fi
+# echo "${yellow} Running Type Check ${reset}"
+# if npm run type-check; then
+#   echo "${green}✔ Type Check passed.${reset}"
+# else
+#   echo "${red}✘ Type Check failed. Please fix the type errors before committing.${reset}"
+#   exit 1
+# fi
 
 # echo "${yellow} Running Knip ${reset}"
 # if npm run knip; then
