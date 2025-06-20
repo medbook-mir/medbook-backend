@@ -1,54 +1,34 @@
 import os
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework import permissions
-from drf_yasg.views import get_schema_view
-from django.views.generic import TemplateView
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, CustomTokenObtainPairView
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from .views import health_check
+from django.views.generic import TemplateView
 
-schema_view = get_schema_view(
-    openapi.Info(
-        title="MedBook API",
-        default_version='v1',
-        description="API for MedBook application",
-    ),
-    public=True,
-    permission_classes=(permissions.AllowAny,),
-)
+from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from .views import SomeProtectedView, TestListView, SignupView, VerifyCodeView, health_check
+
 
 class DecoratedTokenObtainPairView(TokenObtainPairView):
-    @swagger_auto_schema(
-        operation_description="Получение JWT токена по username и password",
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=['username', 'password'],
-            properties={
-                'username': openapi.Schema(type=openapi.TYPE_STRING),
-                'password': openapi.Schema(type=openapi.TYPE_STRING),
-            },
-        ),
+    @extend_schema(
+        request=TokenObtainPairSerializer,
         responses={
-            200: openapi.Response(
-                description="Токены получены",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'refresh': openapi.Schema(type=openapi.TYPE_STRING),
-                        'access': openapi.Schema(type=openapi.TYPE_STRING),
-                    },
-                ),
+            200: OpenApiResponse(
+                response=dict,
+                description="Токены получены"
             ),
-            400: "Неверные учетные данные",
-        }
+            400: OpenApiResponse(description="Неверные учетные данные"),
+        },
+        description="Получение JWT токена по username и password"
     )
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
+    
 
 SERVICE_TYPE = os.getenv('SERVICE_TYPE', 'backend')
 common_patterns = [
@@ -64,15 +44,16 @@ common_patterns = [
 
 if SERVICE_TYPE == 'api':
     urlpatterns = [
-        path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui-alt'),
-        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+        path('schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+        path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     ] + common_patterns
 else:
     urlpatterns = [
         path('', TemplateView.as_view(template_name='index.html')), 
-        path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
-        path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+        path('schema/', SpectacularAPIView.as_view(), name='schema'),
+        path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+        path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
     ] + common_patterns
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
