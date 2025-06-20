@@ -1,0 +1,91 @@
+services:
+  redis:
+    image: redis:6-alpine
+    command: redis-server --save 60 1 --loglevel warning --ignore-warnings ARM64-COW-BUG
+    volumes:
+      - redis_data:/data
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+    restart: "on-failure:2" 
+
+  db:
+    image: postgres:13-alpine
+    env_file: .env
+    environment:
+      - LC_ALL=en_US.UTF-8
+      - LANG=en_US.UTF-8
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+    restart: "on-failure:2" 
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_Local
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - DEBUG=${DEBUG:-false}
+      - SERVICE_TYPE=backend  
+    volumes:
+      - ./backend:/app
+      - static_volume:/app/src/staticfiles
+    ports:
+      - "8000:8000"
+    networks:
+      - app_network
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    restart: "on-failure:2" 
+
+  tests:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile_Local
+    env_file: .env
+    environment:
+      - PYTHONPATH=/app
+      - TESTING=true
+    volumes:
+      - ./backend:/app
+    networks:
+      - app_network
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: []
+    command: ["sh", "-c", "pytest src/medbook/tests/ --cov=src --cov-report=xml"]
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+volumes:
+  postgres_data:
+  redis_data:
+  static_volume:
+
+networks:
+  app_network:
+    driver: bridge
