@@ -1,21 +1,24 @@
+from django.http import JsonResponse
+from django.contrib.auth import get_user_model
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import SignupSerializer, VerifyCodeSerializer, TestSerializer
-from django.http import Http404
-from django.contrib.auth import get_user_model
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
-from .models import MedicalTest
 from rest_framework import generics
-from drf_yasg.utils import swagger_auto_schema
-from drf_yasg import openapi
-from django.http import JsonResponse
+from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
+
+from .serializers import SignupSerializer, VerifyCodeSerializer, TestSerializer
+from .models import MedicalTest
+
 
 User = get_user_model()
 
+
 def health_check(request):
     return JsonResponse({"status": "ok"})
+
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     def post(self, request, *args, **kwargs):
@@ -24,17 +27,20 @@ class CustomTokenObtainPairView(TokenObtainPairView):
             return response
         return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
+
 class ProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response({"message": "Доступ разрешен!"})
 
+
 class SomeProtectedView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         return Response({"message": "Это защищенный эндпоинт"})
+
 
 class TestListView(generics.ListAPIView):
     queryset = MedicalTest.objects.all()
@@ -49,34 +55,35 @@ class TestListView(generics.ListAPIView):
             "data": serializer.data
         })
 
+
 class SignupView(APIView):
-    @swagger_auto_schema(
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=['username', 'first_name', 'last_name', 'email', 'phone_number', 'is_gender', 'password'],
-            properties={
-                'username': openapi.Schema(type=openapi.TYPE_STRING, description='Username for the user'),
-                'first_name': openapi.Schema(type=openapi.TYPE_STRING, description='First name of the user'),
-                'last_name': openapi.Schema(type=openapi.TYPE_STRING, description='Last name of the user'),
-                'email': openapi.Schema(type=openapi.TYPE_STRING, format='email', description='Email address of the user'),
-                'phone_number': openapi.Schema(type=openapi.TYPE_STRING, description='Phone number of the user (e.g., +998901234567)'),
-                'is_gender': openapi.Schema(type=openapi.TYPE_BOOLEAN, description='Gender of the user (true for male, false for female)'),
-                'password': openapi.Schema(type=openapi.TYPE_STRING, description='Password for the user account'),
-            },
-        ),
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        request=SignupSerializer,
         responses={
-            201: openapi.Response(
-                description="Verification code sent",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'message': openapi.Schema(type=openapi.TYPE_STRING),
-                    },
-                ),
+            201: OpenApiResponse(
+                response=dict,
+                description="Verification code sent"
             ),
-            400: "Invalid input",
+            400: OpenApiResponse(description="Invalid input"),
         },
-        operation_description="Register a new user with required fields. A verification code will be sent to the email."
+        description="Register a new user with required fields. A verification code will be sent to the email.",
+        examples=[
+            OpenApiExample(
+                name="Signup Example",
+                value={
+                    "username": "john_doe",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "email": "john@example.com",
+                    "phone_number": "+998901234567",
+                    "is_gender": True,
+                    "password": "strong_password123"
+                },
+                request_only=True
+            )
+        ]
     )
     def post(self, request):
         serializer = SignupSerializer(data=request.data)
@@ -85,28 +92,27 @@ class SignupView(APIView):
             return Response({"message": "Verification code sent to email. Check your console for the code."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 class VerifyCodeView(APIView):
-    @swagger_auto_schema(
-        request_body=openapi.Schema(
-            type=openapi.TYPE_OBJECT,
-            required=['email_code'],
-            properties={
-                'email_code': openapi.Schema(type=openapi.TYPE_STRING, description='6-digit verification code sent to email'),
-            },
-        ),
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        request=VerifyCodeSerializer,
         responses={
-            200: openapi.Response(
-                description="Verification successful",
-                schema=openapi.Schema(
-                    type=openapi.TYPE_OBJECT,
-                    properties={
-                        'message': openapi.Schema(type=openapi.TYPE_STRING),
-                    },
-                ),
+            200: OpenApiResponse(
+                response=dict,
+                description="Verification successful"
             ),
-            400: "Invalid code or input",
+            400: OpenApiResponse(description="Invalid code or input"),
         },
-        operation_description="Verify user by submitting the email verification code."
+        description="Verify user by submitting the email verification code.",
+        examples=[
+            OpenApiExample(
+                name="Verification Example",
+                value={"email_code": "123456"},
+                request_only=True
+            )
+        ]
     )
     def post(self, request):
         serializer = VerifyCodeSerializer(data=request.data)
