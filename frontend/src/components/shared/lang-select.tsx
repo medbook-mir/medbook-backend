@@ -1,35 +1,69 @@
 "use client";
 
 import { useParams } from "next/navigation";
+import styled from "styled-components";
 import { CustomSelect } from "@/components/ui/select";
-import { icons } from "@/assets";
-import Image from "next/image";
 import { useRouter } from "@/i18n/navigation";
 import { routing, Locale } from "@/i18n/routing";
+import { WorldIcon } from "@/utils/icons";
 
 const langOptions = [
-  { icon: icons.en, label: "En", value: "en" },
-  { icon: icons.uz, label: "Uz", value: "uz" },
-  { icon: icons.ru, label: "Ру", value: "ru" },
+  { label: "Eng", value: "en" },
+  { label: "Uzb", value: "uz" },
+  { label: "Рус", value: "ru" },
 ];
 
 const renderLangOptions = langOptions.map((option) => ({
-  label: (
-    <div className="flex items-center gap-2">
-      <div className="relative h-5 w-7">
-        <Image
-          src={option.icon}
-          alt={`${option.value} flag`}
-          className="h-full w-full rounded object-cover"
-          width={20}
-          height={20}
-        />
-      </div>
-      <span className="font-semibold">{option.label}</span>
-    </div>
-  ),
+  label: <div className="flex justify-center w-full">{option.label}</div>,
   value: option.value,
 }));
+
+const StyledLangSelect = styled(CustomSelect)`
+  width: 100px;
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+
+  .ant-select-item-option-selected {
+    background-color: #fafafa !important;
+  }
+
+  .ant-select-item {
+    font-weight: 400 !important;
+    font-size: 14px !important;
+    line-height: 14px !important;
+    text-align: center !important;
+    color: #046d5f;
+  }
+
+  .ant-select-item:hover {
+    background-color: #f5f5f5 !important;
+  }
+  .ant-select-selector {
+    border: 1px solid #fff !important;
+    border-radius: 62px !important;
+    background-color: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  /* Selected item text color (button) */
+  .ant-select-selection-item {
+    color: #fff !important;
+    flex-grow: 1;
+    text-align: center;
+    overflow: visible !important;
+    padding-right: 0 !important;
+    padding-left: 4px !important;
+  }
+
+  /* Arrow icon */
+  .ant-select-arrow {
+    display: inline-block !important;
+    color: #fff !important;
+    right: 16px !important;
+  }
+`;
 
 export const LangSelect = () => {
   const { locale } = useParams<{ locale: Locale }>();
@@ -40,7 +74,6 @@ export const LangSelect = () => {
       console.error(`Invalid locale: ${value}`);
       return;
     }
-
     try {
       router.replace("/", { locale: value });
       localStorage.setItem("language", value);
@@ -50,12 +83,15 @@ export const LangSelect = () => {
   };
 
   return (
-    <CustomSelect
-      style={{ width: 100 }}
-      value={locale}
-      options={renderLangOptions}
-      onSelect={handleLangChange}
-      className="lang-select"
-    />
+    <div className="relative flex items-center">
+      <span className="absolute left-4 z-[1] pointer-events-none">
+        <WorldIcon />
+      </span>
+      <StyledLangSelect
+        value={locale}
+        options={renderLangOptions}
+        onSelect={handleLangChange}
+      />
+    </div>
   );
 };

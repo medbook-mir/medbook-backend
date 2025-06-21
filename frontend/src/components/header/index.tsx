@@ -1,14 +1,16 @@
 "use client";
 
 import { MainLogoWhite } from "@/assets/icons/MainLogoWhite";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { LangSelect } from "../shared/lang-select";
 
 export default function Navbar() {
   return (
     <header className=" text-white mb-[67px]">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <MainLogoWhite />
+        <Link href="/" className="shrink-0">
+          <MainLogoWhite />
+        </Link>
 
         <nav className="hidden md:flex gap-[60px] text-white text-[18px] font-medium">
           <Link href="#">How it works</Link>
@@ -22,9 +24,11 @@ export default function Navbar() {
           <button className="border border-white rounded-full px-[16px] py-[11px] text-[14px] hover:bg-white hover:text-teal-800 transition">
             For doctors
           </button>
-          <button className="bg-white text-teal-800 font-semibold rounded-full px-[16px] py-[11px] text-sm hover:bg-gray-200 transition">
-            Login
-          </button>
+          <Link href="/login">
+            <button className="bg-white text-teal-800 font-semibold rounded-full px-[16px] py-[11px] text-sm hover:bg-gray-200 transition">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </header>

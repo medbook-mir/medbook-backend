@@ -1,6 +1,3 @@
-import En from "./icons/en.svg";
-import Uz from "./icons/uz.svg";
-import Ru from "./icons/ru.svg";
 import GooglePlay from "./icons/google_play.svg";
 import AppStore from "./icons/app_store.svg";
 
@@ -25,13 +22,10 @@ export const images = {
   mobileScreenshot2: MobileScreenshot2,
   footerLogo: FooterLogo,
   searchDoctor: SearchDoctor,
-  mockDoctorImage: MockDoctorImage
+  mockDoctorImage: MockDoctorImage,
 };
 
 export const icons = {
-  en: En,
-  uz: Uz,
-  ru: Ru,
   googlePlay: GooglePlay,
-  appStore: AppStore
+  appStore: AppStore,
 };
