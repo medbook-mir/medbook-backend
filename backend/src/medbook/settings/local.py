@@ -2,7 +2,7 @@ from .base import *
 import os
 
 DEBUG = True
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'Django_secret_key')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 

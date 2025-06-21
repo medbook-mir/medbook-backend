@@ -13,7 +13,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'drf_yasg',
+    'corsheaders',
+    'drf_spectacular',
     'rest_framework_simplejwt',
     'rest_framework'
 ]
@@ -90,25 +91,26 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
-SWAGGER_SETTINGS = {
-    'SECURITY_DEFINITIONS': {
-        'Bearer': {
-            'type': 'apiKey',
-            'name': 'Authorization',
-            'in': 'header',
-            'description': 'Введите только токен без "Bearer"',
-            'bearerFormat': 'JWT' 
-        },
-        'Basic': {
-            'type': 'basic'
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API for MedBook application',
+    'DESCRIPTION': 'API for MedBook application',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SECURITY': [{'BearerAuth': []}],  
+    'COMPONENT_SECURITY_SCHEMES': {
+        'BearerAuth': {
+            'type': 'http',
+            'scheme': 'bearer',
+            'bearerFormat': 'JWT',
+            'description': 'Введите только токен — Bearer добавится автоматически',
         }
     },
-    'USE_SESSION_AUTH': False,
     'LOGIN_URL': '/api/token/',  
     'LOGOUT_URL': '/api/logout/',
 }
@@ -124,6 +126,28 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:8000", 
     "http://127.0.0.1:8000",
 ]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+CORS_ALLOW_METHODS = (
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+)
+
 DEBUG = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 SITE_ID = 1
