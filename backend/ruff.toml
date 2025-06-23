@@ -1,0 +1,9 @@
+line-length = 88
+
+
+[lint]
+fixable = ["ALL"]
+unfixable = []
+
+[format]
+line-ending = "auto"
