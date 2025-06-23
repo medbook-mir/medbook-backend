@@ -64,6 +64,9 @@ class SendOTPSerializer(serializers.ModelSerializer):
             "first_name": {"required": True},
             "last_name": {"required": True},
             "birthday": {"required": True},
+            "email": {"required": False},
+            "phone_number": {"required": False},
+            "is_gender": {"required": False},
             "date_joined": {"read_only": True},
         }
 
@@ -76,8 +79,8 @@ class SendOTPSerializer(serializers.ModelSerializer):
             user = User(username=username, **validated_data)
             user.set_password(password)
             user.is_active = False
-            verification_code = "".join(random.choices(string.digits, k=4))
-            user.verification_code = verification_code
+            email_code = "".join(random.choices(string.digits, k=4))
+            user.email_code = email_code
 
             email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             if re.match(email_pattern, username):
@@ -90,13 +93,13 @@ class SendOTPSerializer(serializers.ModelSerializer):
             if user.email:
                 send_mail(
                     "Your Medbook Verification Code",
-                    f"Your email verification code is: {verification_code}",
-                    "contact@medvisit.uz",
+                    f"Your email verification code is: {email_code}",
+                    "example@gmail.com",
                     [user.email],
                     fail_silently=False,
                 )
             elif user.phone_number:
-                self.send_verification_sms(user.phone_number, verification_code)
+                self.send_verification_sms(user.phone_number, email_code)
             return user
 
     def send_verification_sms(self, phone_number, code):
@@ -115,7 +118,7 @@ class SendOTPSerializer(serializers.ModelSerializer):
 
 
 class VerifyOTPSerializer(serializers.Serializer):
-    verification_code = serializers.CharField(max_length=4)
+    email_code = serializers.CharField(max_length=4)
 
 
 class TestSerializer(serializers.ModelSerializer):

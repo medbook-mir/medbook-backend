@@ -90,6 +90,7 @@ class SendOTPView(APIView):
                 },
                 status=status.HTTP_201_CREATED,
             )
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -106,7 +107,7 @@ class VerifyOTPView(APIView):
         examples=[
             OpenApiExample(
                 name="Verification Example",
-                value={"verification_code": "1234"},
+                value={"email_code": "1234"},
                 request_only=True,
             )
         ],
@@ -114,12 +115,12 @@ class VerifyOTPView(APIView):
     def post(self, request):
         serializer = VerifyOTPSerializer(data=request.data)
         if serializer.is_valid():
-            verification_code = serializer.validated_data["verification_code"]
+            email_code = serializer.validated_data["email_code"]
             try:
-                user = User.objects.get(verification_code=verification_code)
+                user = User.objects.get(email_code=email_code)
                 if not user.is_active:
                     user.is_active = True
-                    user.verification_code = None
+                    user.email_code = None
                     user.save()
                     return Response(
                         {"message": "Verification successful. You can now log in."},

@@ -8,7 +8,7 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(max_length=254, null=True, blank=True)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
-    verification_code = models.CharField(max_length=4, null=True, blank=True)
+    email_code = models.CharField(max_length=4, null=True, blank=True)
     birthday = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_gender = models.BooleanField(default=False)

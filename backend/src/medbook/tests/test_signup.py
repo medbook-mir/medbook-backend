@@ -20,6 +20,7 @@ class SignupAndVerifyTests(TestCase):
             username="authuser",
             email="authuser@example.com",
             phone_number="1234567890",
+            birthday="2000-02-20",
             password=make_password("authpassword123"),
             is_active=True,
         )
@@ -35,15 +36,14 @@ class SignupAndVerifyTests(TestCase):
 
     def test_signup_success(self):
         payload = {
-            "username": "testuser",
+            "username": "testuser@example.com",
             "first_name": "Test",
             "last_name": "User",
-            "email": "testuser@example.com",
-            "phone_number": "1234567890",
-            "is_gender": True,
             "password": "testpassword123",
+            "repeat_password": "testpassword123",
+            "birthday": "20-02-2000",
         }
-        response = self.client.post("/api/signup/", payload, format="json")
+        response = self.client.post("/api/auth/send/", payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(
@@ -53,17 +53,17 @@ class SignupAndVerifyTests(TestCase):
             },
         )
 
-        user = User.objects.get(username="testuser")
+        user = User.objects.get(username="testuser@example.com")
         self.assertFalse(user.is_active)
-        self.assertIsNotNone(user.verification_code)
+        self.assertIsNotNone(user.email_code)
 
         email_output = self.output.getvalue()
         self.assertIn("Your email verification code is:", email_output)
         code_match = re.search(
-            r"Your email verification code is: (\d{6})", email_output
+            r"Your email verification code is:\s*(\d{4})", email_output, re.IGNORECASE
         )
         self.assertIsNotNone(code_match)
-        stored_code = user.verification_code
+        stored_code = user.email_code
         self.assertEqual(code_match.group(1), stored_code)
 
     def test_verify_code_success(self):
@@ -73,15 +73,16 @@ class SignupAndVerifyTests(TestCase):
             last_name="User",
             email="verifyuser@example.com",
             phone_number="1234567890",
+            birthday="2000-02-20",
             password=make_password("verifyPassword123"),
             date_joined="2025-05-10T12:00:00Z",
             is_active=False,
-            verification_code="123456",
+            email_code="1234",
             is_gender=True,
         )
 
-        payload = {"verification_code": "123456"}
-        response = self.client.post("/api/verify-code/", payload, format="json")
+        payload = {"email_code": "1234"}
+        response = self.client.post("/api/auth/verify/", payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(
@@ -90,7 +91,7 @@ class SignupAndVerifyTests(TestCase):
 
         user.refresh_from_db()
         self.assertTrue(user.is_active)
-        self.assertIsNone(user.verification_code)
+        self.assertIsNone(user.email_code)
 
     def test_verify_code_failure(self):
         user = User.objects.create(
@@ -98,19 +99,20 @@ class SignupAndVerifyTests(TestCase):
             first_name="VerifyFail",
             last_name="User",
             email="verifyfail@example.com",
+            birthday="2000-02-20",
             phone_number="1234567890",
             password=make_password("verifyFail123"),
             date_joined="2025-05-10T12:00:00Z",
             is_active=False,
-            verification_code="123456",
+            email_code="1234",
         )
 
-        payload = {"verification_code": "654321"}
-        response = self.client.post("/api/verify-code/", payload, format="json")
+        payload = {"email_code": "6543"}
+        response = self.client.post("/api/auth/verify/", payload, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertEqual(response.data, {"error": "Invalid verification code."})
 
         user.refresh_from_db()
         self.assertFalse(user.is_active)
-        self.assertEqual(user.verification_code, "123456")
+        self.assertEqual(user.email_code, "1234")
