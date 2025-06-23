@@ -1,8 +1,8 @@
 'use client'
 
 import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
-import Link from 'next/link'
 import { LangSelect } from '../shared/lang-select'
+import { Link } from '@/i18n/navigation'
 
 export default function Navbar() {
   return (
@@ -30,9 +30,11 @@ export default function Navbar() {
           <button className="rounded-full border border-white px-[16px] py-[11px] text-[14px] transition hover:bg-white hover:text-teal-800">
             For doctors
           </button>
-          <button className="rounded-full bg-white px-[16px] py-[11px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200">
-            Login
-          </button>
+          <Link href="/login">
+            <button className="rounded-full bg-white px-[16px] py-[11px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </header>

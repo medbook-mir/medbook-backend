@@ -5,15 +5,17 @@ import styled from "styled-components";
 interface FilledButtonProps extends ButtonProps {
   children?: React.ReactNode;
   className?: HTMLProps<HTMLElement>["className"];
+  bgColor?: string;
 }
 
 export const FilledButton = forwardRef<HTMLButtonElement, FilledButtonProps>(
-  ({ children, className, ...props }, ref) => {
+  ({ children, className, bgColor, ...props }, ref) => {
     return (
       <CustomFilledButton
         ref={ref}
         type="primary"
-        className={`px-12 py-6 ${className}`}
+        className={className}
+        $bgColor={bgColor}
         {...props}
       >
         {children}
@@ -24,15 +26,18 @@ export const FilledButton = forwardRef<HTMLButtonElement, FilledButtonProps>(
 
 FilledButton.displayName = "FilledButton";
 
-export const CustomFilledButton = styled(Button)`
-  background: #046d5f;
+export const CustomFilledButton = styled(Button)<{ $bgColor?: string }>`
+  background: ${(props) => props.$bgColor || "#046d5f"} !important;
   color: white !important;
-  border: none;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 120%;
+  border: none !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 24px !important;
+  padding: 24px !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
 
   &:hover {
-    background: #046d5fdd !important;
+    background: ${(props) => `${props.$bgColor}dd` || "#046d5fdd"} !important;
   }
 `;
