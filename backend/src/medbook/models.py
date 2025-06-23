@@ -19,9 +19,7 @@ class User(AbstractUser):
     def clean(self):
         super().clean()
         if not self.email and not self.phone_number and not self.username:
-            raise ValidationError(
-                "Either email or phone number must be provided"
-            )
+            raise ValidationError("Either email or phone number must be provided")
 
     def save(self, *args, **kwargs):
         if self.username:
