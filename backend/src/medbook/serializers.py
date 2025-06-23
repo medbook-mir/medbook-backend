@@ -6,6 +6,7 @@ from datetime import date
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.db import transaction
 from rest_framework import serializers
 from twilio.rest import Client
 
@@ -67,44 +68,50 @@ class SendOTPSerializer(serializers.ModelSerializer):
         }
 
     def create(self, validated_data):
-        username = validated_data.pop("username")
-        password = validated_data.pop("password")
-        validated_data.pop("repeat_password")
+        with transaction.atomic():
+            username = validated_data.pop("username")
+            password = validated_data.pop("password")
+            validated_data.pop("repeat_password")
 
-        user = User(username=username, **validated_data)
-        user.set_password(password)
-        user.is_active = False
-        verification_code = "".join(random.choices(string.digits, k=4))
-        user.verification_code = verification_code
+            user = User(username=username, **validated_data)
+            user.set_password(password)
+            user.is_active = False
+            verification_code = "".join(random.choices(string.digits, k=4))
+            user.verification_code = verification_code
 
-        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        if re.match(email_pattern, username):
-            user.email = username
-        else:
-            user.phone_number = username
+            email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            if re.match(email_pattern, username):
+                user.email = username
+            else:
+                user.phone_number = username
 
-        user.save()
+            user.save()
 
-        if user.email:
-            send_mail(
-                "Your Medbook Verification Code",
-                f"Your email verification code is: {verification_code}",
-                "contact@medvisit.uz",
-                [user.email],
-                fail_silently=False,
-            )
-        elif user.phone_number:
-            self.send_verification_sms(user.phone_number, verification_code)
-        return user
+            if user.email:
+                send_mail(
+                    "Your Medbook Verification Code",
+                    f"Your email verification code is: {verification_code}",
+                    "contact@medvisit.uz",
+                    [user.email],
+                    fail_silently=False,
+                )
+            elif user.phone_number:
+                self.send_verification_sms(user.phone_number, verification_code)
+            return user
 
     def send_verification_sms(self, phone_number, code):
-        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-        message = client.messages.create(
-            body=f"Your verification code is: {code}",
-            from_=settings.TWILIO_PHONE_NUMBER,
-            to=phone_number,
-        )
-        return message.sid
+        try:
+            client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+            message = client.messages.create(
+                body=f"Your verification code is: {code}",
+                from_=settings.TWILIO_PHONE_NUMBER,
+                to=phone_number,
+            )
+            return message.sid
+        except Exception:
+            raise serializers.ValidationError(
+                "Twilio account has not been activated yet. Use email instead."
+            )
 
 
 class VerifyOTPSerializer(serializers.Serializer):
