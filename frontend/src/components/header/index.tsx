@@ -1,32 +1,40 @@
-"use client";
+'use client'
 
-import { MainLogoWhite } from "@/assets/icons/MainLogoWhite";
-import Link from "next/link";
-import { LangSelect } from "../shared/lang-select";
+import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import Link from 'next/link'
+import { LangSelect } from '../shared/lang-select'
 
 export default function Navbar() {
   return (
-    <header className=" text-white mb-[67px]">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <header className="mb-[67px] text-white">
+      <div className="mx-auto flex max-w-7xl items-center justify-between">
         <MainLogoWhite />
 
-        <nav className="hidden md:flex gap-[60px] text-white text-[18px] font-medium">
-          <Link href="#">How it works</Link>
-          <Link href="#">Medicals</Link>
-          <Link href="#">Blogs</Link>
-          <Link href="#">Healthy training</Link>
+        <nav className="hidden gap-[60px] text-[18px] font-medium text-white md:flex">
+          <Link href="#">
+            <p className="text-white">How it works</p>
+          </Link>
+          <Link href="#">
+            <p className="text-white">Medicals</p>
+          </Link>
+          <Link href="#">
+            <p className="text-white">Blogs</p>
+          </Link>
+          <Link href="#">
+            <p className="text-white">Healthy training</p>
+          </Link>
         </nav>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex items-center gap-4">
           <LangSelect />
-          <button className="border border-white rounded-full px-[16px] py-[11px] text-[14px] hover:bg-white hover:text-teal-800 transition">
+          <button className="rounded-full border border-white px-[16px] py-[11px] text-[14px] transition hover:bg-white hover:text-teal-800">
             For doctors
           </button>
-          <button className="bg-white text-teal-800 font-semibold rounded-full px-[16px] py-[11px] text-sm hover:bg-gray-200 transition">
+          <button className="rounded-full bg-white px-[16px] py-[11px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200">
             Login
           </button>
         </div>
       </div>
     </header>
-  );
+  )
 }
