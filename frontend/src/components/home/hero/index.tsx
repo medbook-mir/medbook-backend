@@ -5,7 +5,7 @@ import { LocationIcon } from '@/utils/icons/LocationIcon'
 import { SearchIcon } from '@/utils/icons/SearchIcon'
 import Image from 'next/image'
 import { useState } from 'react'
-import DoctorSearchResult from './SearchResult'
+import DoctorSearchResult from './search-result'
 
 export default function HeroSection() {
   const [searchResult, setSearchResult] = useState('')
