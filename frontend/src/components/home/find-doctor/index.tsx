@@ -2,7 +2,7 @@ import { images } from "@/assets";
 import { Container } from "@/theme/container";
 import { CheckIcon } from "@/utils/icons/CheckIcon";
 import Image from "next/image";
-import { DoctorCardList } from "./AvailableDoctors";
+import { DoctorCardList } from "./available-doctors";
 
 export const FindDoctor = () => {
   return (

@@ -1,13 +1,9 @@
 'use client";';
 
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
 import { notFound } from "next/navigation";
-import AntdProvider from "@/providers/antd-provider";
-import FooterWrapper from "@/components/layout/footer-wrapper";
-import ScrollToTop from "@/components/basic/scroll-to-top";
-import BackToTop from "@/components/basic/back-to-top";
 import { routing, Locale } from "@/i18n/routing";
+import { ClientProviders } from "../../layout/client-providers";
 import "../globals.css";
 
 export const metadata: Metadata = {
@@ -41,14 +37,9 @@ export default async function RootLayout({
   return (
     <html lang={locale}>
       <body className="mx-auto flex min-h-screen w-full max-w-container flex-col justify-between overflow-x-hidden">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          <AntdProvider>
-            <main className="flex-1">{children}</main>
-            <FooterWrapper />
-            <ScrollToTop />
-            <BackToTop />
-          </AntdProvider>
-        </NextIntlClientProvider>
+        <ClientProviders locale={locale} messages={messages}>
+          {children}
+        </ClientProviders>
       </body>
     </html>
   );

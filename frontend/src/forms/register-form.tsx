@@ -5,15 +5,15 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { GoogleIcon } from "@/utils/icons/social-medias";
 import { FilledButton } from "@/components/ui/filled-button";
-import { LoginBodyType } from "@/types";
+import { RegisterFormType } from "@/types";
 import DefaultInput from "@/components/ui/default-input";
 import PasswordInput from "@/components/ui/password-input";
 
 const RegisterForm = () => {
   const t = useTranslations();
-  const [form] = Form.useForm<LoginBodyType>();
+  const [form] = Form.useForm<RegisterFormType>();
 
-  const onSubmit = (values: LoginBodyType) => {
+  const onSubmit = (values: RegisterFormType) => {
     console.log("Login form submitted:", values);
   };
 
@@ -34,7 +34,7 @@ const RegisterForm = () => {
         <div className="flex flex-col">
           <Form.Item
             label={t("register.email")}
-            name="login"
+            name="email"
             rules={[
               { required: true, message: "Please input your login!" },
               { type: "email", message: "Please enter a valid email!" },
@@ -86,16 +86,16 @@ const RegisterForm = () => {
             />
           </Form.Item>
           <Form.Item
-            label={t("register.password2")}
-            name="password2"
+            label={t("register.confirmPassword")}
+            name="confirmPassword"
             rules={[
-              { required: true, message: "Please input your password!" },
+              { required: true, message: "Please confirm your password!" },
               { min: 6, message: "Password must be at least 6 characters!" },
             ]}
           >
             <PasswordInput
-              autoComplete="password"
-              placeholder={t("register.password2Placeholder")}
+              autoComplete="confirmPassword"
+              placeholder={t("register.confirmPasswordPlaceholder")}
             />
           </Form.Item>
 

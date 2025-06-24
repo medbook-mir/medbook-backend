@@ -1,4 +1,10 @@
 {
+  "basic": {
+    "errorsMsg": {
+      "wrongSomething": "Something went wrong",
+      "tryAgain": "Please try again"
+    }
+  },
   "home": {
     "hero": {
       "title": "Onlayn qabulga yozilish — salomatlik sari birinchi qadam",
@@ -33,8 +39,8 @@
     "birthdayPlaceholder": "Enter your birthday",
     "password": "Create password",
     "passwordPlaceholder": "Create password",
-    "password2": "Repeat password",
-    "password2Placeholder": "Repeat password",
+    "confirmPassword": "Repeat password",
+    "confirmPasswordPlaceholder": "Repeat password",
     "signUp": "Register",
     "withGoogle": "Or sign in with Google",
     "alreadyHaveAnAccount": "Dont have an account already?",
