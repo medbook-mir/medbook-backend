@@ -1,28 +1,29 @@
-"use client";
+'use client'
 
-import { useParams } from "next/navigation";
-import styled from "styled-components";
-import { CustomSelect } from "@/components/ui/select";
-import { useRouter } from "@/i18n/navigation";
-import { routing, Locale } from "@/i18n/routing";
-import { WorldIcon } from "@/utils/icons";
+import { useParams } from 'next/navigation'
+import styled from 'styled-components'
+import { CustomSelect } from '@/components/ui/select'
+import { useRouter } from '@/i18n/navigation'
+import { routing, Locale } from '@/i18n/routing'
+import { WorldIcon } from '@/utils/icons'
 
 const langOptions = [
-  { label: "Eng", value: "en" },
-  { label: "Uzb", value: "uz" },
-  { label: "Рус", value: "ru" },
-];
+  { label: 'Eng', value: 'en' },
+  { label: 'Uzb', value: 'uz' },
+  { label: 'Рус', value: 'ru' }
+]
 
 const renderLangOptions = langOptions.map((option) => ({
-  label: <div className="flex justify-center w-full">{option.label}</div>,
-  value: option.value,
-}));
+  label: <div className="flex w-full justify-center">{option.label}</div>,
+  value: option.value
+}))
 
 const StyledLangSelect = styled(CustomSelect)`
   width: 100px;
   font-weight: 400 !important;
   font-size: 14px !important;
   line-height: 14px !important;
+  height: 40px !important;
 
   .ant-select-item-option-selected {
     background-color: #fafafa !important;
@@ -63,35 +64,31 @@ const StyledLangSelect = styled(CustomSelect)`
     color: #fff !important;
     right: 16px !important;
   }
-`;
+`
 
 export const LangSelect = () => {
-  const { locale } = useParams<{ locale: Locale }>();
-  const router = useRouter();
+  const { locale } = useParams<{ locale: Locale }>()
+  const router = useRouter()
 
   const handleLangChange = (value: Locale) => {
     if (!routing.locales.includes(value)) {
-      console.error(`Invalid locale: ${value}`);
-      return;
+      console.error(`Invalid locale: ${value}`)
+      return
     }
     try {
-      router.replace("/", { locale: value });
-      localStorage.setItem("language", value);
+      router.replace('/', { locale: value })
+      localStorage.setItem('language', value)
     } catch (error) {
-      console.error("Failed to change language:", error);
+      console.error('Failed to change language:', error)
     }
-  };
+  }
 
   return (
     <div className="relative flex items-center">
-      <span className="absolute left-4 z-[1] pointer-events-none">
+      <span className="pointer-events-none absolute left-4 z-[1]">
         <WorldIcon />
       </span>
-      <StyledLangSelect
-        value={locale}
-        options={renderLangOptions}
-        onSelect={handleLangChange}
-      />
+      <StyledLangSelect value={locale} options={renderLangOptions} onSelect={handleLangChange} />
     </div>
-  );
-};
+  )
+}

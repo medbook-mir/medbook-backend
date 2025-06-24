@@ -27,12 +27,12 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <LangSelect />
-          <button className="rounded-full border border-white px-[16px] py-[11px] text-[14px] transition hover:bg-white hover:text-teal-800">
+          <button className="h-[40px] rounded-full border border-white px-[16px] text-[14px] transition hover:bg-white hover:text-teal-800">
             For doctors
           </button>
           <Link
             href="/login"
-            className="rounded-full bg-white px-[16px] py-[11px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200"
+            className="flex h-[40px] items-center rounded-full bg-white px-[16px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200"
           >
             Login
           </Link>
