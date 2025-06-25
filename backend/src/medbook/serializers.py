@@ -1,59 +1,127 @@
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
-from django.utils import timezone
-from django.core.mail import send_mail
 import random
+import re
 import string
+from datetime import date
+
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.db import transaction
+from rest_framework import serializers
+from twilio.rest import Client
+
 from .models import MedicalTest
 
 User = get_user_model()
 
-class SignupSerializer(serializers.ModelSerializer):
-    phone_number = serializers.CharField(max_length=15, required=True)
-    def validate_phone_number(self, value):
-        if not value.isdigit():
-            raise serializers.ValidationError("Phone number must contain only digits.")
+
+class SendOTPSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(write_only=True, required=True)
+    repeat_password = serializers.CharField(write_only=True, required=True)
+    birthday = serializers.DateField(required=True, input_formats=["%d-%m-%Y"])
+
+    def validate_username(self, value):
+        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        phone_pattern = r"^\+?[\d\s-]{9,15}$"
+
+        if not (re.match(email_pattern, value) or re.match(phone_pattern, value)):
+            raise serializers.ValidationError(
+                "Please enter a valid email or phone number."
+            )
+
+        if User.objects.filter(username=value).exists():
+            raise serializers.ValidationError("This contact is already registered.")
         return value
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("A user with this email already exists.")
+
+    def validate_password(self, value):
+        repeat_password = self.initial_data.get("repeat_password")
+        if value != repeat_password:
+            raise serializers.ValidationError("Passwords do not match.")
+        return value
+
+    def validate_birthday(self, value):
+        today = date.today()
+
+        if value > today:
+            raise serializers.ValidationError("Birthday cannot be in the future.")
         return value
 
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'email', 'phone_number', 'is_gender', 'date_joined', 'password']
+        fields = [
+            "username",
+            "first_name",
+            "last_name",
+            "birthday",
+            "date_joined",
+            "password",
+            "repeat_password",
+        ]
         extra_kwargs = {
-            'password': {'write_only': True},
-            'is_gender': {'required': True},
-            'date_joined': {'read_only': True},
-            'email': {'required': True},
-            'username': {'required': True},
-            'first_name': {'required': True},
-            'last_name': {'required': True},
-            
+            "username": {"required": True},
+            "password": {"write_only": True},
+            "repeat_password": {"write_only": True},
+            "first_name": {"required": True},
+            "last_name": {"required": True},
+            "birthday": {"required": True},
+            "email": {"required": False},
+            "phone_number": {"required": False},
+            "is_gender": {"required": False},
+            "date_joined": {"read_only": True},
         }
 
     def create(self, validated_data):
-        validated_data['password'] = make_password(validated_data['password'])
-        validated_data['date_joined'] = timezone.now()
-        validated_data['is_active'] = False
-        email_code = ''.join(random.choices(string.digits, k=6))
-        validated_data['email_code'] = email_code
-        user = User.objects.create(**validated_data)
-        send_mail(
-            'Your Medbook Verification Code',
-            f'Your email verification code is: {email_code}',
-            'example@gmail.com',
-            [user.email],
-            fail_silently=False,
-        )
-        return user
+        with transaction.atomic():
+            username = validated_data.pop("username")
+            password = validated_data.pop("password")
+            validated_data.pop("repeat_password")
 
-class VerifyCodeSerializer(serializers.Serializer):
-    email_code = serializers.CharField(max_length=6)
+            user = User(username=username, **validated_data)
+            user.set_password(password)
+            user.is_active = False
+            email_code = "".join(random.choices(string.digits, k=4))
+            user.email_code = email_code
+
+            email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+            if re.match(email_pattern, username):
+                user.email = username
+            else:
+                user.phone_number = username
+
+            user.save()
+
+            if user.email:
+                send_mail(
+                    "Your Medbook Verification Code",
+                    f"Your email verification code is: {email_code}",
+                    "example@gmail.com",
+                    [user.email],
+                    fail_silently=False,
+                )
+            elif user.phone_number:
+                self.send_verification_sms(user.phone_number, email_code)
+            return user
+
+    def send_verification_sms(self, phone_number, code):
+        try:
+            client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+            message = client.messages.create(
+                body=f"Your verification code is: {code}",
+                from_=settings.TWILIO_PHONE_NUMBER,
+                to=phone_number,
+            )
+            return message.sid
+        except Exception:
+            raise serializers.ValidationError(
+                "Twilio account has not been activated yet. Use email instead."
+            )
+
+
+class VerifyOTPSerializer(serializers.Serializer):
+    email_code = serializers.CharField(max_length=4)
+
 
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalTest
-        fields = ['id', 'name', 'age', 'created_at']
+        fields = ["id", "name", "age", "created_at"]

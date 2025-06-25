@@ -10,6 +10,12 @@ v:
 down:
 	docker compose down
 
+makemigrations:
+	docker compose exec backend python src/manage.py makemigrations
+
+migrate:
+	docker compose exec backend python src/manage.py migrate
+
 test:
 	docker compose exec backend pytest src/medbook/tests/ -v --color=yes
 

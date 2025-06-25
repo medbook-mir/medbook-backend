@@ -1,0 +1,9 @@
+line-length = 88
+
+[lint]
+fixable = ["ALL"]
+unfixable = []
+per-file-ignores = { "tests" = ["F401", "E501"], "migrations" = ["E501"] }
+
+[format]
+line-ending = "auto"
