@@ -1,30 +1,23 @@
-import HeroSection from "@/components/home/HeroSection";
-import HomeBlog from "@/components/home/home-blog";
-import MobileApps from "@/components/home/mobile-apps";
-import ScheduleInAdvance from "@/components/home/schedule-in-advance";
-import { SolutionsSection } from "@/components/home/SolutionsSection";
-import { Container } from "@/theme/container";
-import Header from "@/components/header";
-import ResultNumbers from "@/components/home/result-numbers";
-import { FindDoctor } from "@/components/home/FindDoctor";
+import HeroSection from '@/components/home/hero'
+import HomeBlog from '@/components/home/home-blog'
+import MobileApps from '@/components/home/mobile-apps'
+import ScheduleInAdvance from '@/components/home/schedule-in-advance'
+import { SolutionsSection } from '@/components/home/solutions'
+import ResultNumbers from '@/components/home/result-numbers'
+import { FindDoctor } from '@/components/home/find-doctor'
 
 const Home = () => {
   return (
-    <div className="pt-8">
-      <Container>
-        <div className="relative rounded-[35px] bg-[#046D5F] py-[52px] px-[80px]">
-          <Header />
-          <HeroSection />
-        </div>
-      </Container>
+    <>
+      <HeroSection />
       <SolutionsSection />
       <FindDoctor />
       <ResultNumbers />
       <ScheduleInAdvance />
       <HomeBlog />
       <MobileApps />
-    </div>
-  );
-};
+    </>
+  )
+}
 
-export default Home;
+export default Home

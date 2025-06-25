@@ -1,4 +1,10 @@
 {
+  "basic": {
+    "errorsMsg": {
+      "wrongSomething": "Something went wrong",
+      "tryAgain": "Please try again"
+    }
+  },
   "home": {
     "hero": {
       "title": "Online booking — the first step towards your health",
@@ -6,5 +12,38 @@
       "search_placeholder": "Search for a doctor, clinic, or service",
       "location": "Location"
     }
+  },
+  "login": {
+    "title": "Online healthcare – Always by your side",
+    "description": "Welcome to your personal digital clinic. With just a few clicks, you can connect to certified doctors, get professional medical advice, and receive prescriptions – all from the comfort of your home. Fast, secure, and available 24/7.\"",
+    "label": "Login",
+    "password": "Password",
+    "loginPlaceholder": "Enter your email",
+    "rememberMe": "Remember me",
+    "passwordPlaceholder": "Enter your password",
+    "forgotPassword": "Forgot password?",
+    "signIn": "Sign in",
+    "withGoogle": "Or sign in with Google",
+    "dontHaveAccount": "Dont have an account?",
+    "signUpNow": "Sign up now"
+  },
+  "register": {
+    "title": "Sign Up and Connect with Trusted Medical Experts",
+    "description": "Creating your account gives you access to a world of expert medical care, 24/7 consultations, and the freedom to take control of your health from anywhere – safely, securely, and conveniently.\"",
+    "formTitle": "Registration",
+    "email": "Email or phone number",
+    "emailPlaceholder": "Enter email or phone number",
+    "name": "Full name",
+    "namePlaceholder": "Enter your full name",
+    "birthday": "Birthday",
+    "birthdayPlaceholder": "Enter your birthday",
+    "password": "Create password",
+    "passwordPlaceholder": "Create password",
+    "confirmPassword": "Repeat password",
+    "confirmPasswordPlaceholder": "Repeat password",
+    "signUp": "Register",
+    "withGoogle": "Or sign in with Google",
+    "alreadyHaveAnAccount": "Dont have an account already?",
+    "signInNow": "Sign in now"
   }
 }

@@ -6,19 +6,6 @@ export const CustomSelect: React.FC<SelectProps> = ({ ...props }) => {
 };
 
 const ExtendedSelect = styled(Select)`
-  .ant-select-selector {
-    border: none !important;
-    box-shadow: none !important;
-    background-color: transparent !important;
-    padding-right: 24px !important;
-  }
-  .ant-select-arrow {
-    color: #fff;
-    right: 8px !important;
-  }
-  &.lang-select .ant-select-selection-item {
-    display: flex;
-    justify-content: center;
-    padding-right: 8px;
-  }
+  /* Basic styles for CustomSelect can be added here if needed */
+  /* For now, it will inherit Ant Design's default styles */
 `;

@@ -1,32 +1,46 @@
-"use client";
+'use client'
 
-import { MainLogoWhite } from "@/assets/icons/MainLogoWhite";
-import Link from "next/link";
-import { LangSelect } from "../shared/lang-select";
+import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import { LangSelect } from '../shared/lang-select'
+import { Link } from '@/i18n/navigation'
+import { Container } from '@/theme/container'
 
 export default function Navbar() {
   return (
-    <header className=" text-white mb-[67px]">
-      <div className="max-w-7xl mx-auto flex justify-between items-center">
-        <MainLogoWhite />
+    <header className="bg-[#046D5F] pt-[52px] pb-[67px] text-white">
+      <Container>
+        <div className="flex items-center justify-between">
+          <MainLogoWhite />
 
-        <nav className="hidden md:flex gap-[60px] text-white text-[18px] font-medium">
-          <Link href="#">How it works</Link>
-          <Link href="#">Medicals</Link>
-          <Link href="#">Blogs</Link>
-          <Link href="#">Healthy training</Link>
-        </nav>
+          <nav className="hidden gap-[60px] text-[18px] font-medium text-white md:flex">
+            <Link href="#">
+              <p className="text-white">How it works</p>
+            </Link>
+            <Link href="#">
+              <p className="text-white">Medicals</p>
+            </Link>
+            <Link href="#">
+              <p className="text-white">Blogs</p>
+            </Link>
+            <Link href="#">
+              <p className="text-white">Healthy training</p>
+            </Link>
+          </nav>
 
-        <div className="flex gap-4 items-center">
-          <LangSelect />
-          <button className="border border-white rounded-full px-[16px] py-[11px] text-[14px] hover:bg-white hover:text-teal-800 transition">
-            For doctors
-          </button>
-          <button className="bg-white text-teal-800 font-semibold rounded-full px-[16px] py-[11px] text-sm hover:bg-gray-200 transition">
-            Login
-          </button>
+          <div className="flex items-center gap-4">
+            <LangSelect />
+            <button className="h-[40px] rounded-full border border-white px-[16px] text-[14px] transition hover:bg-white hover:text-teal-800">
+              For doctors
+            </button>
+            <Link
+              href="/login"
+              className="flex h-[40px] items-center rounded-full bg-white px-[16px] text-sm font-semibold text-teal-800 transition hover:bg-gray-200"
+            >
+              Login
+            </Link>
+          </div>
         </div>
-      </div>
+      </Container>
     </header>
-  );
+  )
 }
