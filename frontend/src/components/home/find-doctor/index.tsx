@@ -1,38 +1,33 @@
-import { images } from "@/assets";
-import { Container } from "@/theme/container";
-import { CheckIcon } from "@/utils/icons/CheckIcon";
-import Image from "next/image";
-import { DoctorCardList } from "./available-doctors";
+import { images } from '@/assets'
+import { Container } from '@/theme/container'
+import { CheckIcon } from '@/utils/icons/CheckIcon'
+import Image from 'next/image'
+import { DoctorCardList } from './available-doctors'
 
 export const FindDoctor = () => {
   return (
     <Container>
-      <div className="py-[80px] px-[50px] w-full relative">
-        <div className="flex flex-col items-start justify-between gap-[26px] w-[645px]">
-          <h1 className="text-[48px] font-bold leading-[60px] text-[#0D0D0D]">
+      <div className="relative w-full px-[50px] py-[80px]">
+        <div data-aos="fade-right" className="flex w-[645px] flex-col items-start justify-between gap-[26px]">
+          <h1 className="text-[48px] leading-[60px] font-bold text-[#0D0D0D]">
             Find the right doctor according to your complaint
           </h1>
-          <p className="text-[#696969] text-[14px] leading-[20px] w-[530px]">
-            HealthCare.ly is a free, health app that goes beyond matching you
-            with doctors. It actively helps you find the right doctor based on
-            your medical and personal needs and connects you with your
-            HealthCarely community for ongoing support throughout your journey
-            to healthier living.
+          <p className="w-[530px] text-[14px] leading-[20px] text-[#696969]">
+            HealthCare.ly is a free, health app that goes beyond matching you with doctors. It actively helps you find
+            the right doctor based on your medical and personal needs and connects you with your HealthCarely community
+            for ongoing support throughout your journey to healthier living.
           </p>
           <div>
-            <div className="flex items-center gap-[12px] mb-[16px] text-[#121212]">
+            <div className="mb-[16px] flex items-center gap-[12px] text-[#121212]">
               <CheckIcon />
-              <p>
-                100% free app designed to help you find the right doctor for
-                you.
-              </p>
+              <p>100% free app designed to help you find the right doctor for you.</p>
             </div>
             <div className="flex items-center gap-[12px] text-[#121212]">
               <CheckIcon />
               <p>Available 900 doctors specialist</p>
             </div>
           </div>
-          <button className="bg-[#046D5F] font-[500] rounded-[10px] px-[36px] py-[16px] text-[16px] text-white hover:bg-gray-200 transition">
+          <button className="rounded-[10px] bg-[#046D5F] px-[36px] py-[16px] text-[16px] font-[500] text-white transition hover:bg-gray-200">
             Search the doctor
           </button>
         </div>
@@ -45,11 +40,11 @@ export const FindDoctor = () => {
             alt="search doctor image"
             height={600}
             width={700}
-            className="object-contain right-0 bottom-0"
+            className="right-0 bottom-0 object-contain"
             priority
           />
         </div>
       </div>
     </Container>
-  );
-};
+  )
+}

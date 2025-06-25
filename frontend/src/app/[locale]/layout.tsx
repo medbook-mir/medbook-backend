@@ -1,46 +1,46 @@
-'use client";';
+'use client";'
 
-import type { Metadata } from "next";
-import { notFound } from "next/navigation";
-import { routing, Locale } from "@/i18n/routing";
-import { ClientProviders } from "../../layout/client-providers";
-import "../globals.css";
+import type { Metadata } from 'next'
+import { notFound } from 'next/navigation'
+import { routing, Locale } from '@/i18n/routing'
+import { ClientProviders } from '../../layout/client-providers'
+import '../globals.css'
 
 export const metadata: Metadata = {
-  title: "MedVisit",
-  description: "MedVisit - Your Health Partner",
-};
+  title: 'MedVisit',
+  description: 'MedVisit - Your Health Partner'
+}
 
 async function getMessages(locale: string) {
   try {
-    return (await import(`../../../messages/${locale}.json`)).default;
+    return (await import(`../../../messages/${locale}.json`)).default
   } catch (error) {
-    notFound();
+    notFound()
   }
 }
 
 export default async function RootLayout({
   children,
-  params,
+  params
 }: {
-  children: React.ReactNode;
-  params: Promise<{ locale: Locale }>;
+  children: React.ReactNode
+  params: Promise<{ locale: Locale }>
 }) {
-  const { locale } = await params;
+  const { locale } = await params
 
   if (!routing.locales.includes(locale)) {
-    notFound();
+    notFound()
   }
 
-  const messages = await getMessages(locale);
+  const messages = await getMessages(locale)
 
   return (
     <html lang={locale}>
-      <body className="mx-auto flex min-h-screen w-full max-w-container flex-col justify-between overflow-x-hidden">
+      <body className="min-h-screen overflow-x-hidden">
         <ClientProviders locale={locale} messages={messages}>
           {children}
         </ClientProviders>
       </body>
     </html>
-  );
+  )
 }

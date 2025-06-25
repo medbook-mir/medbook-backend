@@ -1,28 +1,27 @@
-import { Container } from "@/theme/container";
-import { solutionsSteps, solutionsTitle } from "./data";
+import { Container } from '@/theme/container'
+import { solutionsSteps, solutionsTitle } from './data'
 
 export const SolutionsSection = () => {
   return (
-    <section className="py-[132px] px-[104px]">
+    <section className="px-[104px] py-[132px]">
       <Container>
-        <h2 className="text-[48px] leading-[60px] font-bold tracking-[-2%] text-[#0D0D0D] text-center mb-[60px]">
+        <h2 className="mb-[60px] text-center text-[48px] leading-[60px] font-bold tracking-[-2%] text-[#0D0D0D]">
           {solutionsTitle}
         </h2>
         <div className="mx-auto grid gap-[17px] sm:grid-cols-2 lg:grid-cols-4">
           {solutionsSteps.map((step, index) => (
             <div
+              data-aos="fade-left"
               key={index}
-              className="bg-white px-[24px] w-full h-[226px] rounded-b-[10px] hover:shadow-lg transition-shadow shadow-[0px_10px_40px_0px_#1212121A] border-t-[3px] border-[#046D5F] flex flex-col justify-center"
+              className="flex h-[226px] w-full flex-col justify-center rounded-b-[10px] border-t-[3px] border-[#046D5F] bg-white px-[24px] shadow-[0px_10px_40px_0px_#1212121A] transition-shadow hover:shadow-lg"
             >
               <div className="mb-4">{step.icon}</div>
-              <h3 className="text-[14px] leading-[28px] tracking-[3%] font-bold mb-2">
-                {step.title}
-              </h3>
+              <h3 className="mb-2 text-[14px] leading-[28px] font-bold tracking-[3%]">{step.title}</h3>
               <p className="text-[12px] text-[#696969]">{step.description}</p>
             </div>
           ))}
         </div>
       </Container>
     </section>
-  );
-};
+  )
+}

@@ -6,11 +6,14 @@ import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { store } from '@/redux/store'
 import AntdProvider from '@/providers/antd-provider'
-import FooterWrapper from '@/layout/footer-wrapper'
 import { NotificationProvider } from '@/hooks/useNotification'
 import ScrollToTop from '@/components/basic/scroll-to-top'
 import BackToTop from '@/components/basic/back-to-top'
 import { Locale } from '@/i18n/routing'
+import AOSProvider from '@/providers/aos-provider'
+import ProtectedComponent from '@/providers/protected-component'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
 
 interface ClientProvidersProps {
   children: React.ReactNode
@@ -26,12 +29,19 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
       <AntdProvider>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <NotificationProvider>
-              <main className="flex-1">{children}</main>
-              <FooterWrapper />
-              <ScrollToTop />
-              <BackToTop />
-            </NotificationProvider>
+            <AOSProvider>
+              <NotificationProvider>
+                <ProtectedComponent>
+                  <Header />
+                </ProtectedComponent>
+                <main>{children}</main>
+                <ProtectedComponent>
+                  <Footer />
+                </ProtectedComponent>
+                <ScrollToTop />
+                <BackToTop />
+              </NotificationProvider>
+            </AOSProvider>
           </Provider>
         </QueryClientProvider>
       </AntdProvider>

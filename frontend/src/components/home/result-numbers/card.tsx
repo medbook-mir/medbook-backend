@@ -1,15 +1,12 @@
-const ResultNumberCard = ({
-  title,
-  value,
-}: {
-  title: string;
-  value: number;
-}) => {
+const ResultNumberCard = ({ title, value }: { title: string; value: number }) => {
   return (
-    <div className="bg-[#046D5F] py-8 px-10 rounded-[35px] w-[286px] h-[164px] text-white flex flex-col justify-between">
+    <div
+      data-aos="fade-left"
+      className="flex h-[164px] w-[286px] flex-col justify-between rounded-[35px] bg-[#046D5F] px-10 py-8 text-white"
+    >
       <h3 className="text-[48px] leading-[60px] font-semibold">{value}+</h3>
       <p className="text-[20px] leading-[30px] font-normal">{title}</p>
     </div>
-  );
-};
-export default ResultNumberCard;
+  )
+}
+export default ResultNumberCard
