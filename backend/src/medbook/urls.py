@@ -3,8 +3,8 @@ import os
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
-from django.views.generic import TemplateView
+from django.urls import include, path
+from django.views.generic import RedirectView, TemplateView
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from drf_spectacular.views import (
     SpectacularAPIView,
@@ -49,6 +49,12 @@ common_patterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("api/protected-endpoint/", SomeProtectedView.as_view()),
     path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
+    path("accounts/", include("allauth.urls")),
+    path(
+        "api/auth/google/",
+        RedirectView.as_view(url="/accounts/google/login/"),
+        name="google_login",
+    ),
     path("ping/", health_check),
 ]
 
