@@ -1,6 +1,6 @@
-"use client";
+'use client'
 
-import "./globals.css";
+import './globals.css'
 
 const GlobalError = () => {
   return (
@@ -17,6 +17,6 @@ const GlobalError = () => {
         </div>
       </body>
     </html>
-  );
-};
-export default GlobalError;
+  )
+}
+export default GlobalError

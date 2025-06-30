@@ -35,8 +35,8 @@ export default async function RootLayout({
   const messages = await getMessages(locale)
 
   return (
-    <html lang={locale}>
-      <body className="min-h-screen overflow-x-hidden">
+    <html lang={locale} suppressHydrationWarning>
+      <body className="min-h-screen overflow-x-hidden" suppressHydrationWarning>
         <ClientProviders locale={locale} messages={messages}>
           {children}
         </ClientProviders>

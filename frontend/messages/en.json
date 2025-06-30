@@ -5,7 +5,8 @@
       "tryAgain": "Please try again"
     }
   },
-  "home": {
+  "homePage": {
+    "home": "Home",
     "hero": {
       "title": "Online booking — the first step towards your health",
       "description": "Hold incredible events, share knowledge, build and grow your product, create opportunity",
@@ -13,7 +14,7 @@
       "location": "Location"
     }
   },
-  "login": {
+  "loginPage": {
     "title": "Online healthcare – Always by your side",
     "description": "Welcome to your personal digital clinic. With just a few clicks, you can connect to certified doctors, get professional medical advice, and receive prescriptions – all from the comfort of your home. Fast, secure, and available 24/7.\"",
     "label": "Login",
@@ -27,7 +28,7 @@
     "dontHaveAccount": "Dont have an account?",
     "signUpNow": "Sign up now"
   },
-  "register": {
+  "registerPage": {
     "title": "Sign Up and Connect with Trusted Medical Experts",
     "description": "Creating your account gives you access to a world of expert medical care, 24/7 consultations, and the freedom to take control of your health from anywhere – safely, securely, and conveniently.\"",
     "formTitle": "Registration",
