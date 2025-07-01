@@ -1,50 +1,50 @@
 {
   "basic": {
     "errorsMsg": {
-      "wrongSomething": "Something went wrong",
-      "tryAgain": "Please try again"
+      "wrongSomething": "Nimadir noto‘g‘ri ketdi",
+      "tryAgain": "Iltimos, yana bir bor urinib ko‘ring"
     }
   },
   "homePage": {
     "home": "Bosh sahifa",
     "hero": {
       "title": "Onlayn qabulga yozilish — salomatlik sari birinchi qadam",
-      "description": "Ajoyib tadbirlar o'tkazing, bilim ulashing, mahsulotingizni rivojlantiring va imkoniyatlar yarating",
+      "description": "Ajoyib tadbirlar o‘tkazing, bilim ulashing, mahsulotingizni rivojlantiring va imkoniyatlar yarating",
       "search_placeholder": "Shifokor, klinika yoki xizmat turini qidiring",
       "location": "Manzil"
     }
   },
   "loginPage": {
-    "title": "Online healthcare – Always by your side",
-    "description": "Welcome to your personal digital clinic. With just a few clicks, you can connect to certified doctors, get professional medical advice, and receive prescriptions – all from the comfort of your home. Fast, secure, and available 24/7.\"",
-    "label": "Login",
-    "password": "Password",
-    "loginPlaceholder": "Enter your email",
-    "rememberMe": "Remember me",
-    "passwordPlaceholder": "Enter your password",
-    "forgotPassword": "Forgot password?",
-    "signIn": "Sign in",
-    "withGoogle": "Or sign in with Google",
-    "dontHaveAccount": "Dont have an account?",
-    "signUpNow": "Sign up now"
+    "title": "Onlayn tibbiyot – har doim yoningizda",
+    "description": "Shaxsiy raqamli klinikaga xush kelibsiz. Bor-yo‘g‘i bir nechta bosqichda tasdiqlangan shifokorlarga ulanish, professional tibbiy maslahat olish va retseptlarni qabul qilishingiz mumkin – uyingizda o‘tirgan holda. Tezkor, xavfsiz va 24/7 xizmatingizda.",
+    "label": "Kirish",
+    "password": "Parol",
+    "loginPlaceholder": "Elektron pocha kiriting",
+    "rememberMe": "Eslab qolish",
+    "passwordPlaceholder": "Parolni kiriting",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "signIn": "Kirish",
+    "withGoogle": "Yoki Google orqali kirish",
+    "dontHaveAccount": "Akkauntingiz yo‘qmi?",
+    "signUpNow": "Hozir ro‘yxatdan o‘ting"
   },
   "registerPage": {
-    "title": "Sign Up and Connect with Trusted Medical Experts",
-    "description": "Creating your account gives you access to a world of expert medical care, 24/7 consultations, and the freedom to take control of your health from anywhere – safely, securely, and conveniently.\"",
-    "formTitle": "Registration",
-    "email": "Email or phone number",
-    "emailPlaceholder": "Enter email or phone number",
-    "name": "Full name",
-    "namePlaceholder": "Enter your full name",
-    "birthday": "Birthday",
-    "birthdayPlaceholder": "Enter your birthday",
-    "password": "Create password",
-    "passwordPlaceholder": "Create password",
-    "confirmPassword": "Repeat password",
-    "confirmPasswordPlaceholder": "Repeat password",
-    "signUp": "Register",
-    "withGoogle": "Or sign in with Google",
-    "alreadyHaveAnAccount": "Dont have an account already?",
-    "signInNow": "Sign in now"
+    "title": "Ro‘yxatdan o‘ting va ishonchli tibbiy mutaxassislar bilan aloqa o‘rnating",
+    "description": "Akkaunt yaratish orqali siz mutaxassis tibbiy xizmatlar, 24/7 maslahatlar va salomatligingizni har yerdan nazorat qilish imkoniyatiga ega bo‘lasiz – xavfsiz, qulay va ishonchli.",
+    "formTitle": "Ro‘yxatdan o‘tish",
+    "email": "Elektron pocha yoki telefon raqami",
+    "emailPlaceholder": "Elektron pocha yoki telefon raqamini kiriting",
+    "name": "To‘liq ism",
+    "namePlaceholder": "To‘liq ismingizni kiriting",
+    "birthday": "Tug‘ilgan sana",
+    "birthdayPlaceholder": "Tug‘ilgan sanangizni kiriting",
+    "password": "Parol yarating",
+    "passwordPlaceholder": "Parol yarating",
+    "confirmPassword": "Parolni takrorlang",
+    "confirmPasswordPlaceholder": "Parolni takror kiriting",
+    "signUp": "Ro‘yxatdan o‘tish",
+    "withGoogle": "Yoki Google orqali kirish",
+    "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
+    "signInNow": "Hozir kirish"
   }
 }

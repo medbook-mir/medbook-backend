@@ -15,7 +15,7 @@ const HeadSection = () => {
   return (
     <section className="flex items-center gap-6 border-b border-[#EBEBEB] pt-10 pb-8">
       <div className="flex h-[132px] w-[120px] items-center justify-center rounded-[16px] bg-[#F3F3F3]">
-        {mockDoctor?.photo ? <Image src={mockDoctor.photo} alt="doctor" width={120} height={132} /> : <AvatarIcon />}
+        {mockDoctor?.photo ? <Image src={mockDoctor?.photo} alt="doctor" width={120} height={132} /> : <AvatarIcon />}
       </div>
       <div className="flex h-full flex-col gap-2.5">
         <h3 className="flex items-center gap-2">

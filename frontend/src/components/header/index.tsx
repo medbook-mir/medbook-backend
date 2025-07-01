@@ -2,29 +2,29 @@
 
 import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
 import { LangSelect } from '../shared/lang-select'
-import { Link } from '@/i18n/navigation'
+import { Link, usePathname } from '@/i18n/navigation'
 import { Container } from '@/theme/container'
+import { homePageNavItems, otherPagesNavItems } from './data'
 
 export default function Navbar() {
+  const pathname = usePathname()
+  const isHomePage = pathname === '/'
+  const navItems = isHomePage ? homePageNavItems : otherPagesNavItems
+
   return (
     <header className="bg-[#046D5F] pt-[52px] pb-[67px] text-white">
       <Container>
         <div className="flex items-center justify-between">
-          <MainLogoWhite />
+          <Link href="/">
+            <MainLogoWhite />
+          </Link>
 
           <nav className="hidden gap-[60px] text-[18px] font-medium text-white md:flex">
-            <Link href="#">
-              <p className="text-white">How it works</p>
-            </Link>
-            <Link href="#">
-              <p className="text-white">Medicals</p>
-            </Link>
-            <Link href="#">
-              <p className="text-white">Blogs</p>
-            </Link>
-            <Link href="#">
-              <p className="text-white">Healthy training</p>
-            </Link>
+            {navItems.map((item, index) => (
+              <Link href={item.href} key={index}>
+                <p className="text-white">{item.title}</p>
+              </Link>
+            ))}
           </nav>
 
           <div className="flex items-center gap-4">

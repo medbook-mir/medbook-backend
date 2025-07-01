@@ -10,6 +10,7 @@ import { WorldIcon } from '@/utils/icons'
 const langOptions = [
   { label: 'Eng', value: 'en' },
   { label: 'Uzb', value: 'uz' },
+  { label: 'Ўзб', value: 'oz' },
   { label: 'Рус', value: 'ru' }
 ]
 
