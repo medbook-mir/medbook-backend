@@ -57,7 +57,9 @@ const LoginForm = () => {
               <Form.Item name="remember" valuePropName="checked" noStyle>
                 <Checkbox>{t('rememberMe')}</Checkbox>
               </Form.Item>
-              <Link href="/forgot-password">{t('forgotPassword')}</Link>
+              <Link href="/forgot-password" className="text-[#046D5F]">
+                {t('forgotPassword')}
+              </Link>
             </div>
 
             <FilledButton className="w-full py-[10px]" iconPosition="end" htmlType="submit">
@@ -82,7 +84,9 @@ const LoginForm = () => {
       <div className="flex flex-col gap-10">
         <div className="flex items-center justify-center gap-3 text-[12px] leading-[20px]">
           <p className="text-[#0D0D0D]">{t('dontHaveAccount')}</p>
-          <Link href="/register">{t('signUpNow')}</Link>
+          <Link href="/register" className="text-[#046D5F]">
+            {t('signUpNow')}
+          </Link>
         </div>
         <p className="text-center text-[12px] leading-[16px] font-normal text-[#696969]">© Medvisit 2025</p>
       </div>

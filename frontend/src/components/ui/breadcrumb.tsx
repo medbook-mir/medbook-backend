@@ -4,7 +4,7 @@ import { cn } from '@/utils/helper'
 import { Breadcrumb } from 'antd'
 import { HomeOutlined } from '@ant-design/icons'
 import { useTranslations } from 'next-intl'
-import { usePathname } from '@/i18n/navigation'
+import { usePathname, Link } from '@/i18n/navigation'
 
 type CustomBreadcrumbProps = {
   className?: string
@@ -26,16 +26,18 @@ export const CustomBreadcrumb = ({ className, pages, ...props }: CustomBreadcrum
       items={[
         {
           title: (
-            <span className="inline-flex items-center gap-2">
+            <Link href="/" className="!inline-flex items-center gap-2">
               <HomeOutlined />
               <span>{t('homePage.home')}</span>
-            </span>
-          ),
-          href: '/'
+            </Link>
+          )
         },
         ...pages.map((page) => ({
-          title: <span className={pathname === page.href ? 'font-medium' : ''}>{page.title}</span>,
-          href: page.href
+          title: (
+            <Link href={page.href}>
+              <span className={pathname === page.href ? 'font-medium' : ''}>{page.title}</span>
+            </Link>
+          )
         }))
       ]}
     />

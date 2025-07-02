@@ -3,10 +3,10 @@ import { CustomBreadcrumb } from '@/components/ui/breadcrumb'
 import HeadSection from '@/components/doctor/head-section'
 import Services from '@/components/doctor/services'
 import ImportantThings from '@/components/doctor/important-things'
-import Location from '@/components/doctor/location'
 import Profile from '@/components/doctor/profile'
 import JobExperience from '@/components/doctor/job-experience'
 import Certificates from '@/components/doctor/certificates'
+import Location from '@/components/doctor/location'
 
 const DoctorsProfile = async ({ params }: { params: { id: string } }) => {
   const { id } = await params

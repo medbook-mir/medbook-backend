@@ -35,7 +35,7 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
                   <Header />
                 </ProtectedComponent>
                 <main>{children}</main>
-                <ProtectedComponent>
+                <ProtectedComponent paths={['/settings']}>
                   <Footer />
                 </ProtectedComponent>
                 <ScrollToTop />

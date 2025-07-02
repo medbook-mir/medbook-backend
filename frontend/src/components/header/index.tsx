@@ -12,7 +12,7 @@ export default function Navbar() {
   const navItems = isHomePage ? homePageNavItems : otherPagesNavItems
 
   return (
-    <header className="bg-[#046D5F] pt-[52px] pb-[67px] text-white">
+    <header className="bg-[#046D5F] py-8 text-white">
       <Container>
         <div className="flex items-center justify-between">
           <Link href="/">

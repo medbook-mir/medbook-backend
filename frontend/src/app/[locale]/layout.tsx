@@ -7,7 +7,10 @@ import { ClientProviders } from '../../layout/client-providers'
 import '../globals.css'
 
 export const metadata: Metadata = {
-  title: 'MedVisit',
+  title: {
+    default: 'MedVisit',
+    template: '%s | MedVisit'
+  },
   description: 'MedVisit - Your Health Partner'
 }
 
