@@ -1,0 +1,53 @@
+{
+  "basic": {
+    "errorsMsg": {
+      "wrongSomething": "Nimadir noto‘g‘ri ketdi",
+      "tryAgain": "Iltimos, yana bir bor urinib ko‘ring"
+    }
+  },
+  "homePage": {
+    "home": "Bosh sahifa",
+    "hero": {
+      "title": "Onlayn qabulga yozilish — salomatlik sari birinchi qadam",
+      "description": "Ajoyib tadbirlar o‘tkazing, bilim ulashing, mahsulotingizni rivojlantiring va imkoniyatlar yarating",
+      "search_placeholder": "Shifokor, klinika yoki xizmat turini qidiring",
+      "location": "Manzil"
+    }
+  },
+  "loginPage": {
+    "title": "Onlayn tibbiyot – har doim yoningizda",
+    "description": "Shaxsiy raqamli klinikaga xush kelibsiz. Bor-yo‘g‘i bir nechta bosqichda tasdiqlangan shifokorlarga ulanish, professional tibbiy maslahat olish va retseptlarni qabul qilishingiz mumkin – uyingizda o‘tirgan holda. Tezkor, xavfsiz va 24/7 xizmatingizda.",
+    "formTitle": "Kirish",
+    "username": "Elektron pocha",
+    "password": "Parol",
+    "usernamePlaceholder": "Elektron pocha kiriting",
+    "rememberMe": "Eslab qolish",
+    "passwordPlaceholder": "Parolni kiriting",
+    "forgotPassword": "Parolni unutdingizmi?",
+    "signIn": "Kirish",
+    "withGoogle": "Yoki Google orqali kirish",
+    "dontHaveAccount": "Akkauntingiz yo‘qmi?",
+    "signUpNow": "Hozir ro‘yxatdan o‘ting"
+  },
+  "registerPage": {
+    "title": "Ro‘yxatdan o‘ting va ishonchli tibbiy mutaxassislar bilan aloqa o‘rnating",
+    "description": "Akkaunt yaratish orqali siz mutaxassis tibbiy xizmatlar, 24/7 maslahatlar va salomatligingizni har yerdan nazorat qilish imkoniyatiga ega bo‘lasiz – xavfsiz, qulay va ishonchli.",
+    "formTitle": "Ro‘yxatdan o‘tish",
+    "username": "Elektron pocha yoki telefon raqami",
+    "usernamePlaceholder": "Elektron pocha yoki telefon raqamini kiriting",
+    "firstName": "To‘liq ism",
+    "firstNamePlaceholder": "To‘liq ismingizni kiriting",
+    "lastName": "Familiya",
+    "lastNamePlaceholder": "Familiyangizni kiriting",
+    "birthday": "Tug‘ilgan sana",
+    "birthdayPlaceholder": "Tug‘ilgan sanangizni kiriting",
+    "password": "Parol yarating",
+    "passwordPlaceholder": "Parol yarating",
+    "confirmPassword": "Parolni takrorlang",
+    "confirmPasswordPlaceholder": "Parolni takror kiriting",
+    "signUp": "Ro‘yxatdan o‘tish",
+    "withGoogle": "Yoki Google orqali kirish",
+    "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
+    "signInNow": "Hozir kirish"
+  }
+}

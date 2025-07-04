@@ -7,7 +7,10 @@ import { ClientProviders } from '../../layout/client-providers'
 import '../globals.css'
 
 export const metadata: Metadata = {
-  title: 'MedVisit',
+  title: {
+    default: 'MedVisit',
+    template: '%s | MedVisit'
+  },
   description: 'MedVisit - Your Health Partner'
 }
 
@@ -35,8 +38,8 @@ export default async function RootLayout({
   const messages = await getMessages(locale)
 
   return (
-    <html lang={locale}>
-      <body className="min-h-screen overflow-x-hidden">
+    <html lang={locale} suppressHydrationWarning>
+      <body className="min-h-screen overflow-x-hidden" suppressHydrationWarning>
         <ClientProviders locale={locale} messages={messages}>
           {children}
         </ClientProviders>

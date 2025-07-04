@@ -1,10 +1,11 @@
-import * as yup from "yup";
+import * as yup from 'yup'
 
 const loginSchema = yup.object().shape({
-  login: yup.string().required(),
+  username: yup.string().required(),
   password: yup.string().required(),
-});
+  remember: yup.boolean().optional().default(false)
+})
 
-export type LoginType = yup.InferType<typeof loginSchema>;
+export type LoginType = yup.InferType<typeof loginSchema>
 
-export default loginSchema;
+export default loginSchema

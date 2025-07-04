@@ -1,14 +1,10 @@
-import { createSelector } from "@reduxjs/toolkit";
-import { RootState } from "../store";
+import { createSelector } from '@reduxjs/toolkit'
+import { RootState } from '../store'
 
-export const getModals = (state: RootState) => state.modals;
+export const getModals = (state: RootState) => state.modals
 
-export const getLoginModal = createSelector(
-  getModals,
-  (modals) => modals.modals.loginModal
-);
+export const getLoginModal = createSelector(getModals, (modals) => modals.modals.loginModal)
 
-export const getSessionExpiredModal = createSelector(
-  getModals,
-  (modals) => modals.modals.sessionExpiredModal
-);
+export const getRegisterModal = createSelector(getModals, (modals) => modals.modals.registerModal)
+
+export const getSessionExpiredModal = createSelector(getModals, (modals) => modals.modals.sessionExpiredModal)

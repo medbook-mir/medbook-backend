@@ -5,20 +5,22 @@
       "tryAgain": "Please try again"
     }
   },
-  "home": {
+  "homePage": {
+    "home": "Home",
     "hero": {
-      "title": "Onlayn qabulga yozilish — salomatlik sari birinchi qadam",
-      "description": "Ajoyib tadbirlar o'tkazing, bilim ulashing, mahsulotingizni rivojlantiring va imkoniyatlar yarating",
-      "search_placeholder": "Shifokor, klinika yoki xizmat turini qidiring",
-      "location": "Manzil"
+      "title": "Online booking — the first step towards your health",
+      "description": "Hold incredible events, share knowledge, build and grow your product, create opportunity",
+      "search_placeholder": "Search for a doctor, clinic, or service",
+      "location": "Location"
     }
   },
-  "login": {
+  "loginPage": {
     "title": "Online healthcare – Always by your side",
     "description": "Welcome to your personal digital clinic. With just a few clicks, you can connect to certified doctors, get professional medical advice, and receive prescriptions – all from the comfort of your home. Fast, secure, and available 24/7.\"",
-    "label": "Login",
+    "formTitle": "Login",
+    "username": "Username",
     "password": "Password",
-    "loginPlaceholder": "Enter your email",
+    "usernamePlaceholder": "Enter your email",
     "rememberMe": "Remember me",
     "passwordPlaceholder": "Enter your password",
     "forgotPassword": "Forgot password?",
@@ -27,14 +29,16 @@
     "dontHaveAccount": "Dont have an account?",
     "signUpNow": "Sign up now"
   },
-  "register": {
+  "registerPage": {
     "title": "Sign Up and Connect with Trusted Medical Experts",
     "description": "Creating your account gives you access to a world of expert medical care, 24/7 consultations, and the freedom to take control of your health from anywhere – safely, securely, and conveniently.\"",
     "formTitle": "Registration",
-    "email": "Email or phone number",
-    "emailPlaceholder": "Enter email or phone number",
-    "name": "Full name",
-    "namePlaceholder": "Enter your full name",
+    "username": "Username",
+    "usernamePlaceholder": "Enter your username",
+    "firstName": "First name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last name",
+    "lastNamePlaceholder": "Enter your last name",
     "birthday": "Birthday",
     "birthdayPlaceholder": "Enter your birthday",
     "password": "Create password",

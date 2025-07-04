@@ -1,40 +1,48 @@
-import { BaseClient } from "@/api/baseClient";
+import { BaseClient } from '@/api/baseClient'
 import {
   ApiResponseWithContent,
   LoginResponseType,
   LoginBodyType,
   RegisterBodyType,
-} from "@/types";
-import { AxiosResponse } from "axios";
+  VerifyBodyType,
+  RefreshBodyType
+} from '@/types'
+import { AxiosResponse } from 'axios'
 
 const urls = {
-  register: "auth-api/v1/auth/register",
-  login: "auth-api/v1/auth",
-  logout: "auth-api/v1/auth/logout",
-};
+  register: 'api/auth/send/',
+  login: 'api/auth/login/',
+  verify: 'api/auth/verify/',
+  refresh: 'api/auth/refresh/'
+}
 
 export class AuthAPI {
   constructor(private api: BaseClient) {}
 
   register = async (body: RegisterBodyType) => {
-    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> =
-      await this.api.post(urls.register, body);
+    console.log(body)
+    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.register, body)
 
-    return result;
-  };
+    return result
+  }
 
   login = async (body: LoginBodyType) => {
-    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> =
-      await this.api.post(urls.login, body);
+    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.login, body)
 
-    return result;
-  };
+    return result
+  }
 
-  logout = async () => {
-    const result = await this.api.post(urls.logout);
+  verify = async (body: VerifyBodyType) => {
+    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.verify, body)
 
-    return result;
-  };
+    return result
+  }
+
+  refresh = async (body: RefreshBodyType) => {
+    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.refresh, body)
+
+    return result
+  }
 }
 
-export default new AuthAPI(BaseClient.getInstance());
+export default new AuthAPI(BaseClient.getInstance())
