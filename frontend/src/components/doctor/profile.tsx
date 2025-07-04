@@ -44,7 +44,7 @@ const Profile = () => {
     <section className="border-b border-[#EBEBEB] pb-8">
       <h2 className="mb-4 text-[20px] leading-[100%] font-semibold">Profile</h2>
       <p className="text-[16px] leading-[160%] text-[#515B6F]">{mockProfile.description}</p>
-      <div className="grid grid-cols-2 gap-6 pt-6">
+      <div className="grid grid-cols-1 gap-6 pt-6 sm:grid-cols-2">
         {mockProfile.info.map((data, index) => (
           <InfoBlock key={index} icon={data.icon} title={data.title} value={data.value} />
         ))}

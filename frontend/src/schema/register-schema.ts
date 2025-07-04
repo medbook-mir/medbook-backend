@@ -1,13 +1,14 @@
-import * as yup from "yup";
+import * as yup from 'yup'
 
 const registerSchema = yup.object().shape({
-  email: yup.string().email().required(),
-  name: yup.string().required(),
-  birthday: yup.date().required(),
+  username: yup.string().required(),
+  first_name: yup.string().required(),
+  last_name: yup.string().required(),
+  birthday: yup.string().required(),
   password: yup.string().required(),
-  confirmPassword: yup.string().required(),
-});
+  repeat_password: yup.string().required()
+})
 
-export type RegisterType = yup.InferType<typeof registerSchema>;
+export type RegisterType = yup.InferType<typeof registerSchema>
 
-export default registerSchema;
+export default registerSchema

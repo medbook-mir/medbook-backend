@@ -14,6 +14,8 @@ import AOSProvider from '@/providers/aos-provider'
 import ProtectedComponent from '@/providers/protected-component'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import LoginModal from '@/modals/login-modal'
+import RegisterModal from '@/modals/register-modal'
 
 interface ClientProvidersProps {
   children: React.ReactNode
@@ -40,6 +42,8 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
                 </ProtectedComponent>
                 <ScrollToTop />
                 <BackToTop />
+                <LoginModal />
+                <RegisterModal />
               </NotificationProvider>
             </AOSProvider>
           </Provider>

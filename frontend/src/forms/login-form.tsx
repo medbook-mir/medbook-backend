@@ -2,77 +2,114 @@
 
 import { Form, Checkbox } from 'antd'
 import { useTranslations } from 'next-intl'
-import { Link } from '@/i18n/navigation'
+import { Link, useRouter } from '@/i18n/navigation'
 import { GoogleIcon } from '@/utils/icons/social-medias'
 import { FilledButton } from '@/components/ui/filled-button'
-import { LoginBodyType } from '@/types'
+import { LoginType } from '@/schema/login-schema'
 import DefaultInput from '@/components/ui/default-input'
 import PasswordInput from '@/components/ui/password-input'
+import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { getLoginModal } from '@/redux/selectors/modals'
+import { closeModal, openModal } from '@/redux/reducers/modals'
+import { useLogin } from '@/hooks/useLogin'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import loginSchema from '@/schema/login-schema'
 
 const LoginForm = () => {
   const t = useTranslations('loginPage')
-  const [form] = Form.useForm<LoginBodyType>()
+  const isLoginModalOpen = useAppSelector(getLoginModal)
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+  const { login } = useLogin()
 
-  const onSubmit = (values: LoginBodyType) => {
-    console.log('Login form submitted:', values)
+  const { isPending: isPendingLogin } = login
+
+  const { control, handleSubmit } = useForm<LoginType>({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      username: '',
+      password: '',
+      remember: false
+    }
+  })
+
+  const onSubmit: SubmitHandler<LoginType> = (data) => {
+    login.mutate(data)
+    dispatch(closeModal('loginModal'))
+  }
+
+  const handleRegister = () => {
+    if (isLoginModalOpen) {
+      dispatch(closeModal('loginModal'))
+      dispatch(openModal('registerModal'))
+    } else {
+      router.push('/register')
+    }
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-6 pr-[78px] pl-12">
-      <h3 className="text-[32px] leading-[100%] font-semibold">{t('label')}</h3>
-      <Form
-        layout="vertical"
-        onFinish={onSubmit}
-        form={form}
-        initialValues={{
-          login: '',
-          password: ''
-        }}
-      >
+    <div className="flex flex-col gap-6">
+      <h3 className="text-[32px] leading-[100%] font-semibold">{t('formTitle')}</h3>
+      <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="flex flex-col pb-5">
-          <Form.Item
-            label={t('label')}
-            name="login"
-            rules={[
-              { required: true, message: 'Please input your login!' },
-              { type: 'email', message: 'Please enter a valid email!' }
-            ]}
-          >
-            <DefaultInput autoComplete="login" placeholder={t('loginPlaceholder')} />
+          <Form.Item label={t('username')} required>
+            <Controller
+              name="username"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <DefaultInput
+                  {...field}
+                  autoComplete="username"
+                  status={error ? 'error' : ''}
+                  placeholder={t('usernamePlaceholder')}
+                />
+              )}
+            />
           </Form.Item>
 
-          <Form.Item
-            label={t('password')}
-            name="password"
-            rules={[
-              { required: true, message: 'Please input your password!' },
-              { min: 6, message: 'Password must be at least 6 characters!' }
-            ]}
-          >
-            <PasswordInput autoComplete="password" placeholder={t('passwordPlaceholder')} />
+          <Form.Item label={t('password')} required>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState: { error } }) => (
+                <PasswordInput
+                  {...field}
+                  autoComplete="current-password"
+                  status={error ? 'error' : ''}
+                  placeholder={t('passwordPlaceholder')}
+                />
+              )}
+            />
           </Form.Item>
 
           <div className="flex flex-col gap-8">
             <div className="flex items-center justify-between">
-              <Form.Item name="remember" valuePropName="checked" noStyle>
-                <Checkbox>{t('rememberMe')}</Checkbox>
-              </Form.Item>
-              <Link href="/forgot-password" className="text-[#046D5F]">
+              <Controller
+                name="remember"
+                control={control}
+                render={({ field }) => (
+                  <Checkbox checked={field.value} onChange={(e) => field.onChange(e.target.checked)}>
+                    {t('rememberMe')}
+                  </Checkbox>
+                )}
+              />
+              <Link href="/forgot-password" className="!text-[#046D5F]">
                 {t('forgotPassword')}
               </Link>
             </div>
 
-            <FilledButton className="w-full py-[10px]" iconPosition="end" htmlType="submit">
+            <FilledButton className="w-full !py-5" iconPosition="end" htmlType="submit" loading={isPendingLogin}>
               {t('signIn')}
             </FilledButton>
 
             <div className="h-[0.5px] w-full bg-[#E5E5E5]" />
 
             <FilledButton
-              className="w-full py-[10px]"
+              className="w-full !py-5"
               iconPosition="start"
               icon={<GoogleIcon />}
-              htmlType="submit"
+              htmlType="button"
               bgColor="#0D0D0D"
             >
               {t('withGoogle')}
@@ -84,9 +121,9 @@ const LoginForm = () => {
       <div className="flex flex-col gap-10">
         <div className="flex items-center justify-center gap-3 text-[12px] leading-[20px]">
           <p className="text-[#0D0D0D]">{t('dontHaveAccount')}</p>
-          <Link href="/register" className="text-[#046D5F]">
+          <button onClick={handleRegister} className="!text-[#046D5F]">
             {t('signUpNow')}
-          </Link>
+          </button>
         </div>
         <p className="text-center text-[12px] leading-[16px] font-normal text-[#696969]">© Medvisit 2025</p>
       </div>

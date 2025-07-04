@@ -8,7 +8,7 @@ import JobExperience from '@/components/doctor/job-experience'
 import Certificates from '@/components/doctor/certificates'
 import Location from '@/components/doctor/location'
 
-const DoctorsProfile = async ({ params }: { params: { id: string } }) => {
+const DoctorsProfile = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params
 
   return (

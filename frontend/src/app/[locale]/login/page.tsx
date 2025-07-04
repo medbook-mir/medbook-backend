@@ -9,7 +9,7 @@ const Login = () => {
   return (
     <Container>
       <div className="flex h-screen items-center gap-20 py-6">
-        <div className="flex h-full flex-1 flex-col gap-[136px] rounded-4xl bg-[#046D5F] px-10 pt-[70px]">
+        <div className="hidden h-full flex-1 flex-col gap-[136px] rounded-4xl bg-[#046D5F] px-10 pt-[70px] lg:flex">
           <Link href="/">
             <MainLogoWhite />
           </Link>
@@ -18,7 +18,9 @@ const Login = () => {
             <p className="text-[16px] font-medium text-white">{t('description')}</p>
           </div>
         </div>
-        <LoginForm />
+        <div className="flex-1 px-6 sm:pr-20 sm:pl-12">
+          <LoginForm />
+        </div>
       </div>
     </Container>
   )

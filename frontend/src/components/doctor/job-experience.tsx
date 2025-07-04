@@ -18,7 +18,7 @@ const JobExperience = () => {
       <h2 className="text-[20px] leading-[100%] font-semibold">Job expreience</h2>
       <div className="pt-4 pb-3">
         <div className="flex flex-col gap-1.5 text-[16px] leading-[160%] font-normal text-[#515B6F]">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="font-medium text-[#25324B]">{mockData.clinic}</span>
             <Dot />
             <span className="">{mockData.mode}</span>

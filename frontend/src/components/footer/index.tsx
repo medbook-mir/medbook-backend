@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="flex flex-wrap items-center justify-center gap-12 py-[70px] sm:justify-between">
           <div className="flex max-w-[267px] flex-col gap-4">
             <Link href="#">
-              <Image src={images.footerLogo} width={168} height={44} alt="Footer logo" />
+              <Image src={images.footerLogo} width={168} alt="Footer logo" />
             </Link>
             <p className="text-[16px] leading-6 font-normal text-[#808080]">
               Explore the wonders of travel with AdventureSeekers Expeditions. Unleash your wanderlust with

@@ -13,14 +13,18 @@ const mockDoctor = {
 
 const HeadSection = () => {
   return (
-    <section className="flex items-center gap-6 border-b border-[#EBEBEB] pt-10 pb-8">
-      <div className="flex h-[132px] w-[120px] items-center justify-center rounded-[16px] bg-[#F3F3F3]">
+    <section className="flex flex-wrap items-center gap-6 border-b border-[#EBEBEB] pt-10 pb-8">
+      <div className="flex h-[132px] w-[120px] shrink-0 items-center justify-center rounded-[16px] bg-[#F3F3F3]">
         {mockDoctor?.photo ? <Image src={mockDoctor?.photo} alt="doctor" width={120} height={132} /> : <AvatarIcon />}
       </div>
       <div className="flex h-full flex-col gap-2.5">
         <h3 className="flex items-center gap-2">
           <span className="text-[24px] leading-[100%] font-semibold">{mockDoctor.name}</span>
-          {mockDoctor.verified && <VerifiedIcon />}
+          {mockDoctor.verified && (
+            <div className="shrink-0">
+              <VerifiedIcon />
+            </div>
+          )}
         </h3>
         <p className="text-[16px] leading-[100%] font-medium text-[#046D5F]">Gynecologist</p>
         <p className="flex items-center gap-2 text-[16px] leading-[100%] font-semibold">

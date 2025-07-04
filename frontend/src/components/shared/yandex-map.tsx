@@ -4,7 +4,6 @@ import { useEffect, useRef } from 'react'
 import locationIcon from '@/assets/icons/location.svg'
 
 interface Location {
-  id: number
   name: string
   latitude: number
   longitude: number
@@ -21,9 +20,34 @@ const YandexMap = ({ locations, width, height }: { locations: Location[]; width:
       window.ymaps.ready(() => {
         const map = new window.ymaps.Map(mapRef.current, {
           center: [41.311041, 69.254568],
-          zoom: 16
+          zoom: 16,
+          controls: []
         })
 
+        // Zoom Control
+        const zoomControl = new window.ymaps.control.ZoomControl({
+          options: {
+            size: 'small',
+            position: {
+              right: 5,
+              top: 380
+            }
+          }
+        })
+        map.controls.add(zoomControl)
+
+        // Geolocation Control
+        const geolocationControl = new window.ymaps.control.GeolocationControl({
+          options: {
+            position: {
+              right: 5,
+              top: 450
+            }
+          }
+        })
+        map.controls.add(geolocationControl)
+
+        // Placemarklar
         locations.forEach((loc) => {
           const placemark = new window.ymaps.Placemark(
             [loc.latitude, loc.longitude],
@@ -44,7 +68,17 @@ const YandexMap = ({ locations, width, height }: { locations: Location[]; width:
     document.body.appendChild(script)
   }, [locations])
 
-  return <div ref={mapRef} style={{ width, height, borderRadius: '12px', border: '1px solid #CECECE' }} />
+  return (
+    <div
+      ref={mapRef}
+      style={{
+        width,
+        height,
+        borderRadius: '12px',
+        border: '1px solid #CECECE'
+      }}
+    />
+  )
 }
 
 export default YandexMap

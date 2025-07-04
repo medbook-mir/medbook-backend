@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import React from "react";
-import { ConfigProvider, theme } from "antd";
-import { ComponentToken, GlobalToken } from "@/theme";
+import React from 'react'
+import { ConfigProvider, theme } from 'antd'
+import { ComponentToken, GlobalToken } from '@/theme'
 
 const AntdProvider = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -10,12 +10,12 @@ const AntdProvider = ({ children }: { children: React.ReactNode }) => {
       theme={{
         algorithm: theme.defaultAlgorithm,
         components: ComponentToken,
-        token: GlobalToken,
+        token: GlobalToken
       }}
     >
       {children}
     </ConfigProvider>
-  );
-};
+  )
+}
 
-export default AntdProvider;
+export default AntdProvider
