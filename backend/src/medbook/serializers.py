@@ -1,15 +1,10 @@
-import random
 import re
-import string
 from datetime import date
 
-from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
 from django.db import transaction
 from rest_framework import serializers
-from twilio.rest import Client
 
 from .models import Clinic, Doctor, MedicalTest, Patient
 
@@ -80,8 +75,6 @@ class SendOTPSerializer(serializers.ModelSerializer):
             user = User(username=username, **validated_data)
             user.set_password(password)
             user.is_active = False
-            email_code = "".join(random.choices(string.digits, k=4))
-            user.email_code = email_code
 
             email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             if re.match(email_pattern, username):
@@ -94,30 +87,11 @@ class SendOTPSerializer(serializers.ModelSerializer):
             Patient.objects.create(user=user, birthday=birthday)
 
             if user.email:
-                send_mail(
-                    "Your Medbook Verification Code",
-                    f"Your email verification code is: {email_code}",
-                    "example@gmail.com",
-                    [user.email],
-                    fail_silently=False,
-                )
+                user.send_verification_email()
             elif user.phone_number:
-                self.send_verification_sms(user.phone_number, email_code)
-            return user
+                user.send_verification_sms()
 
-    def send_verification_sms(self, phone_number, code):
-        try:
-            client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
-            message = client.messages.create(
-                body=f"Your verification code is: {code}",
-                from_=settings.TWILIO_PHONE_NUMBER,
-                to=phone_number,
-            )
-            return message.sid
-        except Exception:
-            raise serializers.ValidationError(
-                "Twilio account has not been activated yet. Use email instead."
-            )
+            return user
 
 
 class VerifyOTPSerializer(serializers.Serializer):
@@ -182,16 +156,15 @@ class DoctorOrClinicSignupSerializer(serializers.ModelSerializer):
                     email=validated_data["email"],
                     password=make_password(validated_data["password"]),
                 )
-                doctor = Doctor.objects.create(user=user)
-                return {
-                    "user_id": user.id,
-                    "doctor_id": doctor.id,
-                    "email": user.email,
-                    "first_name": user.first_name,
-                    "last_name": user.last_name,
-                    "role": role,
-                    "created_at": doctor.created_at,
-                }
+                user.is_active = False
+                user.save()
+
+                Doctor.objects.create(user=user)
+
+                if user.email:
+                    user.send_verification_email()
+
+                return user
 
             elif role == "clinic":
                 clinic_name = validated_data.pop("clinic_name")
@@ -202,14 +175,15 @@ class DoctorOrClinicSignupSerializer(serializers.ModelSerializer):
                     email=validated_data["email"],
                     password=make_password(validated_data["password"]),
                 )
-                clinic = Clinic.objects.create(user=user, name=clinic_name)
-                return {
-                    "clinic_id": clinic.id,
-                    "email": user.email,
-                    "clinic_name": clinic.name,
-                    "role": role,
-                    "created_at": clinic.created_at,
-                }
+                user.is_active = False
+                user.save()
+
+                Clinic.objects.create(user=user, name=clinic_name)
+
+                if user.email:
+                    user.send_verification_email()
+
+                return user
 
 
 class TestSerializer(serializers.ModelSerializer):
