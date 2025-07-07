@@ -10,7 +10,7 @@ v:
 down:
 	docker compose down
 
-makemigrations:
+migrations:
 	docker compose exec backend python src/manage.py makemigrations
 
 migrate:
