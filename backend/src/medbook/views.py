@@ -5,6 +5,7 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import MedicalTest
@@ -22,14 +23,17 @@ def health_check(request):
     return JsonResponse({"status": "ok"})
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
+class DecoratedTokenObtainPairView(TokenObtainPairView):
+    @extend_schema(
+        request=TokenObtainPairSerializer,
+        responses={
+            200: OpenApiResponse(response=dict, description="Токены получены"),
+            400: OpenApiResponse(description="Неверные учетные данные"),
+        },
+        description="Получение JWT токена по username и password",
+    )
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
-            return response
-        return Response(
-            {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
-        )
+        return super().post(request, *args, **kwargs)
 
 
 class TestListView(generics.ListAPIView):
@@ -77,11 +81,10 @@ class SendOTPView(APIView):
             serializer.save()
             return Response(
                 {
-                    "message": "Verification code sent to email. Check your console for the code."
+                    "message": "Verification code sent to email. Check your email for the code."
                 },
                 status=status.HTTP_201_CREATED,
             )
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -169,5 +172,11 @@ class DoctorOrClinicSignupView(APIView):
         serializer = DoctorOrClinicSignupSerializer(data=request.data)
         if serializer.is_valid():
             data = serializer.save()
+            return Response(
+                {
+                    "message": "Verification code sent to email. Check your email for the code."
+                },
+                status=status.HTTP_201_CREATED,
+            )
             return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

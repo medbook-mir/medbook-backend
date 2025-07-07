@@ -5,36 +5,21 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
-from drf_spectacular.utils import OpenApiResponse, extend_schema
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
+    DecoratedTokenObtainPairView,
     DoctorOrClinicSignupView,
     SendOTPView,
     TestListView,
     VerifyOTPView,
     health_check,
 )
-
-
-class DecoratedTokenObtainPairView(TokenObtainPairView):
-    @extend_schema(
-        request=TokenObtainPairSerializer,
-        responses={
-            200: OpenApiResponse(response=dict, description="Токены получены"),
-            400: OpenApiResponse(description="Неверные учетные данные"),
-        },
-        description="Получение JWT токена по username и password",
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
 
 SERVICE_TYPE = os.getenv("SERVICE_TYPE", "backend")
 common_patterns = [
