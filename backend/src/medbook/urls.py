@@ -15,8 +15,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 from .views import (
+    DoctorOrClinicSignupView,
     SendOTPView,
-    SomeProtectedView,
     TestListView,
     VerifyOTPView,
     health_check,
@@ -39,15 +39,15 @@ class DecoratedTokenObtainPairView(TokenObtainPairView):
 SERVICE_TYPE = os.getenv("SERVICE_TYPE", "backend")
 common_patterns = [
     path("admin/", admin.site.urls),
-    path("api/auth/send/", SendOTPView.as_view(), name="signup"),
+    path("api/auth/send/", SendOTPView.as_view(), name="patient_signup"),
     path("api/auth/verify/", VerifyOTPView.as_view(), name="verify_code"),
+    path("api/doctor/signup/", DoctorOrClinicSignupView.as_view()),
     path(
         "api/auth/login/",
         DecoratedTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/protected-endpoint/", SomeProtectedView.as_view()),
     path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
     path("accounts/", include("allauth.urls")),
     path(
