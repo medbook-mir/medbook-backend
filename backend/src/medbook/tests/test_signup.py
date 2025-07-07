@@ -20,9 +20,9 @@ class SignupAndVerifyTests(TestCase):
             username="authuser",
             email="authuser@example.com",
             phone_number="1234567890",
-            birthday="2000-02-20",
             password=make_password("authpassword123"),
             is_active=True,
+            role="SUPERADMIN",
         )
         refresh = RefreshToken.for_user(self.test_user)
         self.token = str(refresh.access_token)
@@ -41,7 +41,7 @@ class SignupAndVerifyTests(TestCase):
             "last_name": "User",
             "password": "testpassword123",
             "repeat_password": "testpassword123",
-            "birthday": "20-02-2000",
+            "birthday": "26-02-1990",
         }
         response = self.client.post("/api/auth/send/", payload, format="json")
 
@@ -49,7 +49,7 @@ class SignupAndVerifyTests(TestCase):
         self.assertEqual(
             response.data,
             {
-                "message": "Verification code sent to email. Check your console for the code."
+                "message": "Verification code sent to email. Check your email for the code."
             },
         )
 
@@ -73,12 +73,10 @@ class SignupAndVerifyTests(TestCase):
             last_name="User",
             email="verifyuser@example.com",
             phone_number="1234567890",
-            birthday="2000-02-20",
             password=make_password("verifyPassword123"),
             date_joined="2025-05-10T12:00:00Z",
             is_active=False,
             email_code="1234",
-            is_gender=True,
         )
 
         payload = {"email_code": "1234"}
@@ -99,7 +97,6 @@ class SignupAndVerifyTests(TestCase):
             first_name="VerifyFail",
             last_name="User",
             email="verifyfail@example.com",
-            birthday="2000-02-20",
             phone_number="1234567890",
             password=make_password("verifyFail123"),
             date_joined="2025-05-10T12:00:00Z",
