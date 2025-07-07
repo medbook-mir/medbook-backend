@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { Link, useRouter } from '@/i18n/navigation'
 import { GoogleIcon } from '@/utils/icons/social-medias'
 import { FilledButton } from '@/components/ui/filled-button'
-import { LoginType } from '@/schema/login-schema'
+import loginSchema, { LoginType } from '@/schema/login-schema'
 import DefaultInput from '@/components/ui/default-input'
 import PasswordInput from '@/components/ui/password-input'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
@@ -14,7 +14,6 @@ import { closeModal, openModal } from '@/redux/reducers/modals'
 import { useLogin } from '@/hooks/useLogin'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import loginSchema from '@/schema/login-schema'
 
 const LoginForm = () => {
   const t = useTranslations('loginPage')

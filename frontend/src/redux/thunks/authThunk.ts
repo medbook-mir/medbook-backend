@@ -40,11 +40,8 @@ export const refreshThunk = createAsyncThunk('auth/refresh', async (body: Refres
 
 export const logoutThunk = createAsyncThunk('auth/logout', async (_, { rejectWithValue }) => {
   try {
-    // If there's a logout endpoint, call it here
-    // const result = await AuthAPI.logout()
-
-    // For now, just return success
-    return { success: true }
+    const result = await AuthAPI.logout()
+    return result.data
   } catch (error: any) {
     return rejectWithValue(error.response?.data || error.message || 'Logout xatosi')
   }

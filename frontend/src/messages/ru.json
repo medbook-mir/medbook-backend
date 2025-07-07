@@ -49,5 +49,16 @@
     "withGoogle": "Или войдите через Google",
     "alreadyHaveAnAccount": "Уже есть аккаунт?",
     "signInNow": "Войти сейчас"
+  },
+  "verifyPage": {
+    "title": "Подтвердите ваш email",
+    "description": "Введите код, отправленный на вашу электронную почту, чтобы подтвердить ваш аккаунт",
+    "formTitle": "Подтверждение",
+    "emailCode": "Код",
+    "emailCodePlaceholder": "Введите код",
+    "verify": "Подтвердить",
+    "resendCode": "Отправить код повторно",
+    "alreadyHaveAnAccount": "Уже есть аккаунт?",
+    "signInNow": "Войти сейчас"
   }
 }

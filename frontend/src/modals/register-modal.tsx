@@ -1,12 +1,10 @@
-import { useTranslations } from 'next-intl'
 import { Modal } from 'antd'
 import { closeModal } from '@/redux/reducers/modals'
-import { getRegisterModal } from '@/redux/selectors/modals'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { getRegisterModal } from '@/redux/selectors/modals'
 import RegisterForm from '@/forms/register-form'
 
 const RegisterModal = () => {
-  const t = useTranslations()
   const isOpen = useAppSelector(getRegisterModal)
 
   const dispatch = useAppDispatch()

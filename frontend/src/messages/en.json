@@ -49,5 +49,16 @@
     "withGoogle": "Or sign in with Google",
     "alreadyHaveAnAccount": "Dont have an account already?",
     "signInNow": "Sign in now"
+  },
+  "verifyPage": {
+    "title": "Verify your email",
+    "description": "Enter the code sent to your email to verify your account",
+    "formTitle": "Verify",
+    "emailCode": "Email code",
+    "emailCodePlaceholder": "Enter the code",
+    "verify": "Verify",
+    "resendCode": "Resend code",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "signInNow": "Sign in now"
   }
 }

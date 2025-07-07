@@ -10,11 +10,10 @@ import PasswordInput from '@/components/ui/password-input'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getRegisterModal } from '@/redux/selectors/modals'
 import { closeModal, openModal } from '@/redux/reducers/modals'
-import { RegisterType } from '@/schema/register-schema'
+import registerSchema, { RegisterType } from '@/schema/register-schema'
 import { useRegister } from '@/hooks/useRegister'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import registerSchema from '@/schema/register-schema'
 
 const RegisterForm = () => {
   const t = useTranslations('registerPage')
@@ -52,7 +51,7 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <h3 className="text-[32px] leading-[100%] font-semibold">{t('formTitle')}</h3>
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
@@ -147,7 +146,7 @@ const RegisterForm = () => {
             />
           </Form.Item>
 
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
             <FilledButton className="!py-5" htmlType="submit" loading={isPendingRegister}>
               {t('signUp')}
             </FilledButton>

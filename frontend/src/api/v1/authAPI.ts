@@ -13,7 +13,8 @@ const urls = {
   register: 'api/auth/send/',
   login: 'api/auth/login/',
   verify: 'api/auth/verify/',
-  refresh: 'api/auth/refresh/'
+  refresh: 'api/auth/refresh/',
+  logout: 'api/auth/logout/'
 }
 
 export class AuthAPI {
@@ -28,6 +29,12 @@ export class AuthAPI {
 
   login = async (body: LoginBodyType) => {
     const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.login, body)
+
+    return result
+  }
+
+  logout = async () => {
+    const result: AxiosResponse<ApiResponseWithContent<LoginResponseType>> = await this.api.post(urls.logout)
 
     return result
   }

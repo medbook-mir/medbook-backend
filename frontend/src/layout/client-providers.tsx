@@ -16,6 +16,7 @@ import Header from '@/components/header'
 import Footer from '@/components/footer'
 import LoginModal from '@/modals/login-modal'
 import RegisterModal from '@/modals/register-modal'
+import VerifyModal from '@/modals/verify-modal'
 
 interface ClientProvidersProps {
   children: React.ReactNode
@@ -44,6 +45,7 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
                 <BackToTop />
                 <LoginModal />
                 <RegisterModal />
+                <VerifyModal />
               </NotificationProvider>
             </AOSProvider>
           </Provider>

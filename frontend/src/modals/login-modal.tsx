@@ -1,12 +1,10 @@
-import { useTranslations } from 'next-intl'
 import { Modal } from 'antd'
 import { closeModal } from '@/redux/reducers/modals'
-import { getLoginModal } from '@/redux/selectors/modals'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
+import { getLoginModal } from '@/redux/selectors/modals'
 import LoginForm from '@/forms/login-form'
 
 const LoginModal = () => {
-  const t = useTranslations()
   const isOpen = useAppSelector(getLoginModal)
 
   const dispatch = useAppDispatch()

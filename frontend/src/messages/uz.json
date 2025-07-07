@@ -49,5 +49,16 @@
     "withGoogle": "Yoki Google orqali kirish",
     "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
     "signInNow": "Hozir kirish"
+  },
+  "verifyPage": {
+    "title": "Elektron pochangizni tasdiqlang",
+    "description": "Akkauntingizni tasdiqlash uchun elektron pochangizga kod yuborildi. Kodingizni kiriting.",
+    "formTitle": "Tasdiqlash",
+    "emailCode": "Elektron pocha kodi",
+    "emailCodePlaceholder": "Kodni kiriting",
+    "verify": "Tasdiqlash",
+    "resendCode": "Kodni qayta yuborish",
+    "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
+    "signInNow": "Hozir kirish"
   }
 }

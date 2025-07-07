@@ -1,6 +1,6 @@
 'use client'
 
-import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import { MainLogoWhite } from '@/utils/icons/MainLogoWhite'
 import { LangSelect } from '../shared/lang-select'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { Container } from '@/theme/container'

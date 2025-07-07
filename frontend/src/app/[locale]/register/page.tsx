@@ -1,4 +1,4 @@
-import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import { MainLogoWhite } from '@/utils/icons/MainLogoWhite'
 import { Link } from '@/i18n/navigation'
 import { Container } from '@/theme/container'
 import RegisterForm from '@/forms/register-form'
