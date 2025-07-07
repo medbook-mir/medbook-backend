@@ -1,20 +1,66 @@
 from django.contrib import admin
 
-from .models import User
+from .models import Clinic, Doctor, Patient, User
 
 
 @admin.register(User)
-class TariffFunctionalityAdmin(admin.ModelAdmin):
+class UserAdmin(admin.ModelAdmin):
     list_display_links = ("id", "username")
     list_display = (
         "id",
         "username",
-        "email",
-        "phone_number",
-        "birthday",
+        "role",
         "is_active",
-        "date_joined",
+        "created_at",
     )
     list_filter = ("is_active",)
     search_fields = ("username",)
+    list_per_page = 20
+
+
+@admin.register(Doctor)
+class DoctorAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "specialty",
+        "is_primary",
+        "is_active",
+        "created_at",
+    )
+    list_filter = ("is_active", "is_primary", "specialty")
+    search_fields = ("user__first_name", "user__last_name", "user__username")
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at",)
+    list_per_page = 20
+
+
+@admin.register(Patient)
+class PatientAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "user",
+        "birthday",
+        "created_at",
+    )
+    list_filter = ("user__is_active",)
+    search_fields = ("user__first_name", "user__last_name", "user__username")
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at",)
+    list_per_page = 20
+
+
+@admin.register(Clinic)
+class ClinicAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "name",
+        "is_active",
+        "verified_by",
+        "created_at",
+    )
+    list_filter = ("is_active",)
+    search_fields = ("user__email", "name", "user__username")
+    ordering = ("-created_at",)
+    readonly_fields = ("created_at",)
     list_per_page = 20
