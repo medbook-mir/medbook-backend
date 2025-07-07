@@ -8,7 +8,12 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import MedicalTest
-from .serializers import SendOTPSerializer, TestSerializer, VerifyOTPSerializer
+from .serializers import (
+    DoctorOrClinicSignupSerializer,
+    SendOTPSerializer,
+    TestSerializer,
+    VerifyOTPSerializer,
+)
 
 User = get_user_model()
 
@@ -25,20 +30,6 @@ class CustomTokenObtainPairView(TokenObtainPairView):
         return Response(
             {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
         )
-
-
-class ProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({"message": "Доступ разрешен!"})
-
-
-class SomeProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({"message": "Это защищенный эндпоинт"})
 
 
 class TestListView(generics.ListAPIView):
@@ -135,4 +126,48 @@ class VerifyOTPView(APIView):
                     {"error": "Invalid verification code."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DoctorOrClinicSignupView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        request=DoctorOrClinicSignupSerializer,
+        responses={
+            201: OpenApiResponse(
+                response=dict, description="Registration is successful"
+            ),
+            400: OpenApiResponse(description="Invalid input"),
+        },
+        description="Register a new doctor or clinic with required fields",
+        examples=[
+            OpenApiExample(
+                name="Doctor Signup Example",
+                value={
+                    "role": "doctor",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "email": "john@example.com",
+                    "password": "strong_password123",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                name="Clinic Signup Example",
+                value={
+                    "role": "clinic",
+                    "clinic_name": "Clinic Name",
+                    "email": "clinic@gmail.com",
+                    "password": "password",
+                },
+                request_only=True,
+            ),
+        ],
+    )
+    def post(self, request):
+        serializer = DoctorOrClinicSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.save()
+            return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
