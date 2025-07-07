@@ -5,12 +5,13 @@ from datetime import date
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.core.mail import send_mail
 from django.db import transaction
 from rest_framework import serializers
 from twilio.rest import Client
 
-from .models import MedicalTest
+from .models import Clinic, Doctor, MedicalTest, Patient
 
 User = get_user_model()
 
@@ -52,8 +53,8 @@ class SendOTPSerializer(serializers.ModelSerializer):
             "username",
             "first_name",
             "last_name",
-            "birthday",
             "date_joined",
+            "birthday",
             "password",
             "repeat_password",
         ]
@@ -63,10 +64,9 @@ class SendOTPSerializer(serializers.ModelSerializer):
             "repeat_password": {"write_only": True},
             "first_name": {"required": True},
             "last_name": {"required": True},
-            "birthday": {"required": True},
             "email": {"required": False},
+            "birthday": {"required": False},
             "phone_number": {"required": False},
-            "is_gender": {"required": False},
             "date_joined": {"read_only": True},
         }
 
@@ -75,6 +75,7 @@ class SendOTPSerializer(serializers.ModelSerializer):
             username = validated_data.pop("username")
             password = validated_data.pop("password")
             validated_data.pop("repeat_password")
+            birthday = validated_data.pop("birthday", None)
 
             user = User(username=username, **validated_data)
             user.set_password(password)
@@ -89,6 +90,8 @@ class SendOTPSerializer(serializers.ModelSerializer):
                 user.phone_number = username
 
             user.save()
+
+            Patient.objects.create(user=user, birthday=birthday)
 
             if user.email:
                 send_mail(
@@ -119,6 +122,94 @@ class SendOTPSerializer(serializers.ModelSerializer):
 
 class VerifyOTPSerializer(serializers.Serializer):
     email_code = serializers.CharField(max_length=4)
+
+
+class DoctorOrClinicSignupSerializer(serializers.ModelSerializer):
+    clinic_name = serializers.CharField(required=False)
+    role = serializers.CharField(required=True)
+
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError("A user with this email already exists.")
+        return value
+
+    def validate(self, data):
+        role = data.get("role")
+
+        if role == "doctor":
+            if not data.get("first_name") or not data.get("last_name"):
+                raise serializers.ValidationError(
+                    "Doctor must have first name and last name."
+                )
+        elif role == "clinic":
+            if not data.get("clinic_name"):
+                raise serializers.ValidationError(
+                    "Clinic must have a clinic_name field."
+                )
+        else:
+            raise serializers.ValidationError("Invalid or missing role.")
+
+        return data
+
+    class Meta:
+        model = User
+        fields = [
+            "role",
+            "first_name",
+            "last_name",
+            "clinic_name",
+            "email",
+            "password",
+            "created_at",
+        ]
+        extra_kwargs = {
+            "email": {"required": True},
+            "password": {"write_only": True},
+            "first_name": {"required": False},
+            "last_name": {"required": False},
+            "created_at": {"read_only": True},
+        }
+
+    def create(self, validated_data):
+        role = validated_data.pop("role")
+
+        with transaction.atomic():
+            if role == "doctor":
+                user = User.objects.create(
+                    first_name=validated_data["first_name"],
+                    last_name=validated_data["last_name"],
+                    username=validated_data["email"],
+                    email=validated_data["email"],
+                    password=make_password(validated_data["password"]),
+                )
+                doctor = Doctor.objects.create(user=user)
+                return {
+                    "user_id": user.id,
+                    "doctor_id": doctor.id,
+                    "email": user.email,
+                    "first_name": user.first_name,
+                    "last_name": user.last_name,
+                    "role": role,
+                    "created_at": doctor.created_at,
+                }
+
+            elif role == "clinic":
+                clinic_name = validated_data.pop("clinic_name")
+                user = User.objects.create(
+                    first_name="",
+                    last_name="",
+                    username=validated_data["email"],
+                    email=validated_data["email"],
+                    password=make_password(validated_data["password"]),
+                )
+                clinic = Clinic.objects.create(user=user, name=clinic_name)
+                return {
+                    "clinic_id": clinic.id,
+                    "email": user.email,
+                    "clinic_name": clinic.name,
+                    "role": role,
+                    "created_at": clinic.created_at,
+                }
 
 
 class TestSerializer(serializers.ModelSerializer):
