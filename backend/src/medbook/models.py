@@ -1,8 +1,13 @@
+import random
 import re
+import string
 
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.db import models
+from twilio.rest import Client
 
 
 class BaseTimeStampModel(models.Model):
@@ -65,6 +70,38 @@ class User(AbstractUser, BaseTimeStampModel):
                 self.phone_number = self.username
                 self.email = None
         super().save(*args, **kwargs)
+
+    @staticmethod
+    def generate_verification_code(length=4) -> str:
+        return "".join(random.choices(string.digits, k=length))
+
+    def send_verification_email(self):
+        code = self.generate_verification_code()
+        self.email_code = code
+        self.save(update_fields=["email_code"])
+
+        send_mail(
+            "Your Medbook Verification Code",
+            f"Your email verification code is: {code}",
+            "example@gmail.com",
+            [self.email],
+            fail_silently=False,
+        )
+
+    def send_verification_sms(self):
+        code = self.generate_verification_code()
+        self.email_code = code
+        self.save(update_fields=["email_code"])
+
+        try:
+            client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+            client.messages.create(
+                body=f"Your verification code is: {code}",
+                from_=settings.TWILIO_PHONE_NUMBER,
+                to=self.phone_number,
+            )
+        except Exception:
+            raise Exception("Twilio not activated. Use email instead.")
 
     def __str__(self):
         return f"{self.id} - {self.username}"
