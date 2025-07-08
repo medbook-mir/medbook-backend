@@ -1,10 +1,10 @@
 const statuses = {
-  CANCELED: {
+  canceled: {
     color: 'text-[#FF0000]',
     backgroundColor: 'bg-[#FF424233]',
     text: 'Canceled'
   },
-  SUCCESS: {
+  success: {
     color: 'text-[#008000]',
     backgroundColor: 'bg-[#22B57333]',
     text: 'Success'
@@ -12,7 +12,7 @@ const statuses = {
 }
 
 type StatusProps = {
-  status: 'CANCELED' | 'SUCCESS'
+  status: 'canceled' | 'success'
 }
 
 export const Status = ({ status }: StatusProps) => (

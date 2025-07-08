@@ -14,7 +14,7 @@ const DoctorsProfile = async ({ params }: { params: Promise<{ id: string }> }) =
   return (
     <div className="pt-[33px]">
       <Container>
-        <CustomBreadcrumb pages={[{ title: 'Doctor’s profile', href: `/doctors/${id}/` }]} />
+        <CustomBreadcrumb pages={[{ title: "Doctor's profile", href: `/doctors/${id}/` }]} />
         <HeadSection />
         <div className="flex flex-col gap-14 pt-[22px] pb-2.5 md:flex-row md:justify-between">
           <div className="flex flex-1 flex-col gap-8 py-2.5">

@@ -12,6 +12,55 @@
       "description": "Проводите замечательные мероприятия, делитесь знаниями, развивайте свой продукт и создавайте новые возможности",
       "search_placeholder": "Поиск врача, клиники или услуги",
       "location": "Адрес"
+    },
+    "solutions": {
+      "title": "Шаг за шагом к вашим решениям",
+      "complaints": {
+        "title": "Проверьте жалобы на здоровье",
+        "description": "Проверьте заболевание, чтобы вы могли легко выбрать подходящего специалиста"
+      },
+      "doctor": {
+        "title": "Выберите врача-специалиста",
+        "description": "Выберите специалиста в соответствии с вашими жалобами на болезнь"
+      },
+      "schedule": {
+        "title": "Назначьте расписание",
+        "description": "Составьте расписание с нужным врачом, чтобы начать обследование"
+      },
+      "solutions": {
+        "title": "Получите ваши решения",
+        "description": "После обследования у специалиста мы поможем найти подходящий метод лечения"
+      }
+    },
+    "resultNumbers": {
+      "title": "Мы предоставляем льготы сотрудникам в более чем 7500 больницах",
+      "description": "Эффективное отслеживание прогресса и установка этапов являются ключевыми компонентами любого успешного проекта или личной цели. Систематически отслеживая наши достижения, мы добиваемся успеха."
+    },
+    "scheduleInAdvance": {
+      "title": "Запишитесь на приём вперед с доступным врачом",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "blog": {
+      "title": "Блог",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "mobileApps": {
+      "title": "Скачайте приложение сейчас",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc ante velit vitae. Est tellus vitae, nullam lobortis enim. Faucibus amet etiam tincidunt rhoncus, ullamcorper velit. Ullamcorper risus tempor, ac nunc libero urna, feugiat."
+    },
+    "footer": {
+      "description": "Исследуйте чудеса путешествий с AdventureSeekers Expeditions. Освободите свою страсть к странствиям с AdventureSeekers Expeditions.",
+      "links": {
+        "wishlist": "Список желаний",
+        "specialOffers": "Специальные предложения",
+        "lookbook": "Лукбук",
+        "bestsellers": "Бестселлеры",
+        "mega": "Мега"
+      },
+      "copyright": "Авторские права © 2024 DockBook, Все права защищены.",
+      "customerService": "Служба поддержки",
+      "termsConditions": "Условия и положения",
+      "privacyPolicy": "Политика конфиденциальности"
     }
   },
   "loginPage": {
@@ -60,5 +109,53 @@
     "resendCode": "Отправить код повторно",
     "alreadyHaveAnAccount": "Уже есть аккаунт?",
     "signInNow": "Войти сейчас"
+  },
+  "settingsLayout": {
+    "settings": "Настройки",
+    "myData": "Мои данные",
+    "payment": "Оплата",
+    "myBookings": "Мои бронирования",
+    "myRecords": "Мои записи",
+    "logout": "Выйти",
+    "myDataPage": {
+      "customer": "Клиент",
+      "editProfile": "Редактировать профиль",
+      "name": "Полное имя",
+      "birthday": "Дата рождения",
+      "phone": "Номер телефона (мобильный)",
+      "gender": "Пол",
+      "email": "Электронная почта"
+    },
+    "paymentPage": {
+      "title": "Оплата"
+    },
+    "myBookingsPage": {
+      "active": "Активные",
+      "history": "История",
+      "orderNumber": "Номер заказа",
+      "date": "Дата",
+      "appointmentType": "Тип записи",
+      "status": "Статус",
+      "doctor": "Врач"
+    },
+    "myRecordsPage": {
+      "title": "Мои записи"
+    },
+    "myDataEditingPage": {
+      "title": "Мои данные",
+      "customer": "Клиент",
+      "cancel": "Отменить",
+      "name": "Имя",
+      "namePlaceholder": "Введите ваше имя",
+      "birthday": "Дата рождения",
+      "birthdayPlaceholder": "Введите дату рождения",
+      "phone": "Телефон",
+      "phonePlaceholder": "Введите ваш номер телефона",
+      "login": "Логин",
+      "usernamePlaceholder": "Введите имя пользователя",
+      "email": "Электронная почта",
+      "emailPlaceholder": "Введите вашу электронную почту",
+      "save": "Сохранить"
+    }
   }
 }
