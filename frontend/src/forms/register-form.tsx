@@ -7,6 +7,7 @@ import { GoogleIcon } from '@/utils/icons/social-medias'
 import { FilledButton } from '@/components/ui/filled-button'
 import DefaultInput from '@/components/ui/default-input'
 import PasswordInput from '@/components/ui/password-input'
+import DatepickerInput from '@/components/ui/date-picker'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getRegisterModal } from '@/redux/selectors/modals'
 import { closeModal, openModal } from '@/redux/reducers/modals'
@@ -14,6 +15,7 @@ import registerSchema, { RegisterType } from '@/schema/register-schema'
 import { useRegister } from '@/hooks/useRegister'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import dayjs from 'dayjs'
 
 const RegisterForm = () => {
   const t = useTranslations('registerPage')
@@ -91,7 +93,15 @@ const RegisterForm = () => {
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={t('birthday')} required validateStatus={error ? 'error' : ''} help={error?.message}>
-                <DefaultInput {...field} type="date" autoComplete="bday" placeholder={t('birthdayPlaceholder')} />
+                <DatepickerInput
+                  placeholder={t('birthdayPlaceholder')}
+                  className="w-full"
+                  format="DD/MM/YYYY"
+                  value={field.value ? dayjs(field.value, 'DD/MM/YYYY') : null}
+                  onChange={(date) => field.onChange(date?.format('DD/MM/YYYY'))}
+                  status={error ? 'error' : ''}
+                  required
+                />
               </Form.Item>
             )}
           />
