@@ -24,7 +24,8 @@ const VerifyForm = () => {
     resolver: yupResolver(verifySchema),
     defaultValues: {
       email_code: ''
-    }
+    },
+    mode: 'onBlur'
   })
 
   const onSubmit: SubmitHandler<VerifyType> = (data) => {
@@ -46,20 +47,15 @@ const VerifyForm = () => {
       <h3 className="text-[32px] leading-[100%] font-semibold">{t('formTitle')}</h3>
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
-          <Form.Item label={t('emailCode')} required>
-            <Controller
-              name="email_code"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  autoComplete="email_code"
-                  status={error ? 'error' : ''}
-                  placeholder={t('emailCodePlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="email_code"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('emailCode')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DefaultInput {...field} autoComplete="email_code" placeholder={t('emailCodePlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
           <div className="flex flex-col gap-8">
             <FilledButton className="!py-5" htmlType="submit" loading={verify.isPending}>

@@ -3,6 +3,7 @@ import { Container } from '@/theme/container'
 import { CheckIcon } from '@/utils/icons/CheckIcon'
 import Image from 'next/image'
 import { DoctorCardList } from './available-doctors'
+import AnimatedInView from '@/components/shared/animated-in-view'
 
 export const FindDoctor = () => {
   return (
@@ -26,6 +27,9 @@ export const FindDoctor = () => {
               <CheckIcon />
               <p>Available 900 doctors specialist</p>
             </div>
+            <button className="rounded-[10px] bg-[#046D5F] px-[36px] py-[16px] text-[16px] font-[500] text-white transition hover:bg-gray-200">
+              Search the doctor
+            </button>
           </div>
           <button className="mx-auto rounded-[10px] bg-[#046D5F] px-[36px] py-[16px] text-[16px] font-[500] text-white transition hover:bg-gray-200 md:mx-0">
             Search the doctor

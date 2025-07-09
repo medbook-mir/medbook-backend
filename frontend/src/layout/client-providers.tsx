@@ -10,7 +10,6 @@ import { NotificationProvider } from '@/hooks/useNotification'
 import ScrollToTop from '@/components/basic/scroll-to-top'
 import BackToTop from '@/components/basic/back-to-top'
 import { Locale } from '@/i18n/routing'
-import AOSProvider from '@/providers/aos-provider'
 import ProtectedComponent from '@/providers/protected-component'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
@@ -28,26 +27,24 @@ export function ClientProviders({ children, locale, messages }: ClientProvidersP
   const queryClient = useMemo(() => new QueryClient(), [])
 
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
+    <NextIntlClientProvider locale={locale} messages={messages} timeZone="Asia/Tashkent">
       <AntdProvider>
         <QueryClientProvider client={queryClient}>
           <Provider store={store}>
-            <AOSProvider>
-              <NotificationProvider>
-                <ProtectedComponent>
-                  <Header />
-                </ProtectedComponent>
-                <main>{children}</main>
-                <ProtectedComponent paths={['/settings']}>
-                  <Footer />
-                </ProtectedComponent>
-                <ScrollToTop />
-                <BackToTop />
-                <LoginModal />
-                <RegisterModal />
-                <VerifyModal />
-              </NotificationProvider>
-            </AOSProvider>
+            <NotificationProvider>
+              <ProtectedComponent>
+                <Header />
+              </ProtectedComponent>
+              <main>{children}</main>
+              <ProtectedComponent paths={['/settings']}>
+                <Footer />
+              </ProtectedComponent>
+              <ScrollToTop />
+              <BackToTop />
+              <LoginModal />
+              <RegisterModal />
+              <VerifyModal />
+            </NotificationProvider>
           </Provider>
         </QueryClientProvider>
       </AntdProvider>

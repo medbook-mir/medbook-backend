@@ -30,7 +30,8 @@ const LoginForm = () => {
       username: '',
       password: '',
       remember: false
-    }
+    },
+    mode: 'onBlur'
   })
 
   const onSubmit: SubmitHandler<LoginType> = (data) => {
@@ -52,35 +53,25 @@ const LoginForm = () => {
       <h3 className="text-[32px] leading-[100%] font-semibold">{t('formTitle')}</h3>
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="flex flex-col pb-5">
-          <Form.Item label={t('username')} required>
-            <Controller
-              name="username"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  autoComplete="username"
-                  status={error ? 'error' : ''}
-                  placeholder={t('usernamePlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="username"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('username')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DefaultInput {...field} autoComplete="username" placeholder={t('usernamePlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
-          <Form.Item label={t('password')} required>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <PasswordInput
-                  {...field}
-                  autoComplete="current-password"
-                  status={error ? 'error' : ''}
-                  placeholder={t('passwordPlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('password')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <PasswordInput {...field} autoComplete="current-password" placeholder={t('passwordPlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
           <div className="flex flex-col gap-8">
             <div className="flex items-center justify-between">

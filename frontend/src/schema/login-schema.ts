@@ -1,3 +1,4 @@
+import '@/utils/yup-locale'
 import * as yup from 'yup'
 
 const loginSchema = yup.object().shape({
