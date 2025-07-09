@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams } from 'next/navigation'
+import { useParams, usePathname } from 'next/navigation'
 import styled from 'styled-components'
 import { CustomSelect } from '@/components/ui/select'
 import { useRouter } from '@/i18n/navigation'
@@ -69,6 +69,7 @@ const StyledLangSelect = styled(CustomSelect)`
 
 export const LangSelect = () => {
   const { locale } = useParams<{ locale: Locale }>()
+  const pathname = usePathname()
   const router = useRouter()
 
   const handleLangChange = (value: Locale) => {
@@ -77,7 +78,9 @@ export const LangSelect = () => {
       return
     }
     try {
-      router.replace('/', { locale: value })
+      // Get the current path without the locale prefix
+      const pathWithoutLocale = pathname.replace(`/${locale}`, '') || '/'
+      router.replace(pathWithoutLocale, { locale: value })
       localStorage.setItem('language', value)
     } catch (error) {
       console.error('Failed to change language:', error)

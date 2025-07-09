@@ -6,17 +6,13 @@ import AnimatedInView from '@/components/shared/animated-in-view'
 
 const ScheduleInAdvance = () => {
   const t = useTranslations('homePage.scheduleInAdvance')
+
   return (
     <section className="py-[132px]">
       <Container>
         <div className="mx-auto mb-[60px] flex max-w-[750px] flex-col gap-4 text-center">
-          <h1 className="text-[46px] leading-[100%] font-bold text-[#0D0D0D]">
-            Make a schedule in advance with the available doctor
-          </h1>
-          <p className="text-[20px] leading-7 font-normal text-[#565656]">
-            Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis.
-            Nisl eu blandit nunc parturient adipiscing commodo.
-          </p>
+          <h1 className="text-[46px] leading-[100%] font-bold text-[#0D0D0D]">{t('title')}</h1>
+          <p className="text-[20px] leading-7 font-normal text-[#565656]">{t('description')}</p>
         </div>
         <div className="flex flex-wrap items-center justify-center gap-8">
           {cardData.map((item, index) => (
