@@ -1,7 +1,9 @@
+import React from 'react'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { routing, Locale } from '@/i18n/routing'
 import { ClientProviders } from '../../layout/client-providers'
+import { getMessages } from 'next-intl/server'
 import '../globals.css'
 
 export const metadata: Metadata = {
@@ -10,14 +12,6 @@ export const metadata: Metadata = {
     template: '%s | MedVisit'
   },
   description: 'MedVisit - Your Health Partner'
-}
-
-async function getMessages(locale: string) {
-  try {
-    return (await import(`../../messages/${locale}.json`)).default
-  } catch (error) {
-    notFound()
-  }
 }
 
 export default async function RootLayout({
@@ -33,7 +27,7 @@ export default async function RootLayout({
     notFound()
   }
 
-  const messages = await getMessages(locale)
+  const messages = await getMessages({ locale })
 
   return (
     <html lang={locale} suppressHydrationWarning>
