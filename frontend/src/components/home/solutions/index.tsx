@@ -3,9 +3,9 @@ import { solutionsSteps, solutionsTitle } from './data'
 
 export const SolutionsSection = () => {
   return (
-    <section className="px-[104px] py-[132px]">
+    <section className="px-0 py-[80px] md:px-[104px] md:py-[132px]">
       <Container>
-        <h2 className="mb-[60px] text-center text-[48px] leading-[60px] font-bold tracking-[-2%] text-[#0D0D0D]">
+        <h2 className="mb-[30px] text-center text-[32px] leading-[40px] font-bold tracking-[-2%] text-[#0D0D0D] md:mb-[60px] md:text-[48px] md:leading-[60px]">
           {solutionsTitle}
         </h2>
         <div className="mx-auto grid gap-[17px] sm:grid-cols-2 lg:grid-cols-4">

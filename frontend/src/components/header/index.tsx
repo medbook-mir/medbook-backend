@@ -40,7 +40,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <LangSelect />
             <button className="h-[40px] rounded-full border border-white px-[16px] text-[14px] transition hover:bg-white hover:text-teal-800">
               For doctors
