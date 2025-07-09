@@ -1,24 +1,20 @@
-import { Input, InputProps } from "antd";
-import { forwardRef } from "react";
-import styled from "styled-components";
+import { Input, InputProps } from 'antd'
+import { forwardRef } from 'react'
+import styled from 'styled-components'
 
 interface DefaultInputProps extends InputProps {
-  clssName?: string;
+  clssName?: string
 }
 
-const PasswordInput = forwardRef<any, DefaultInputProps>(
-  ({ className, ...props }, ref) => {
-    return (
-      <CustomInput {...props} ref={ref} className={`w-full ${className}`} />
-    );
-  }
-);
+const PasswordInput = forwardRef<any, DefaultInputProps>(({ className, ...props }, ref) => {
+  return <CustomInput {...props} ref={ref} className={`w-full ${className}`} />
+})
 
-export default PasswordInput;
+export default PasswordInput
 
 const CustomInput = styled(Input.Password)`
   background-color: #f7f7f7 !important;
-  padding: 12px 16px !important;
+  padding: 8px 16px !important;
   color: #0d0d0d !important;
   ::placeholder {
     color: #696969 !important;
@@ -28,4 +24,4 @@ const CustomInput = styled(Input.Password)`
       color: #000 !important;
     }
   }
-`;
+`

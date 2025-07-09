@@ -15,10 +15,10 @@ export default function HeroSection() {
       <Container>
         <div className="relative flex-col-reverse items-center justify-between gap-10 text-white lg:flex-row">
           <div className="relative">
-            <h1 className="mb-6 w-[450px] text-[56px] leading-[120%] font-bold md:text-5xl">
+            <h1 className="mb-6 w-full text-center text-[32px] leading-[120%] font-bold md:w-[450px] md:text-left md:text-[56px]">
               Online booking — the first step towards your health
             </h1>
-            <p className="mb-[100px] w-[400px] text-[16px] leading-[34px] text-white">
+            <p className="mb-[28px] w-full text-center text-[16px] leading-[34px] text-white md:mb-[100px] md:w-[400px] md:text-left">
               Hold incredible events, share knowledge, build and grow your product, create opportunity
             </p>
 
@@ -55,7 +55,7 @@ export default function HeroSection() {
             )}
           </div>
 
-          <div className="flex-shrink-0">
+          <div className="hidden flex-shrink-0 md:block">
             <Image
               src={images.heroImg}
               alt="Hero Image"

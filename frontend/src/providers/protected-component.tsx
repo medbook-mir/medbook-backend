@@ -5,7 +5,7 @@ import { usePathname } from '@/i18n/navigation'
 const ProtectedComponent = ({ children, paths }: { children: React.ReactNode; paths?: string[] }) => {
   const pathname = usePathname()
 
-  const protectedPaths = [...(paths || []), '/login', '/register', '/forgot-password']
+  const protectedPaths = [...(paths || []), '/login', '/register', '/verify', '/forgot-password']
 
   const isProtectedPage = protectedPaths.some((path) => pathname.includes(path))
 

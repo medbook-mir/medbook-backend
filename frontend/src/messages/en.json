@@ -12,6 +12,55 @@
       "description": "Hold incredible events, share knowledge, build and grow your product, create opportunity",
       "search_placeholder": "Search for a doctor, clinic, or service",
       "location": "Location"
+    },
+    "solutions": {
+      "title": "Step by step to get your solutions",
+      "complaints": {
+        "title": "Check health complaints",
+        "description": "Check the disease so you can easily choose the right specialist"
+      },
+      "doctor": {
+        "title": "Choose doctor Specialist",
+        "description": "Choose a specialist according to your disease complaints"
+      },
+      "schedule": {
+        "title": "Make a Schedule",
+        "description": "Make a schedule with the doctor concerned so you can start the examination"
+      },
+      "solutions": {
+        "title": "Get your Solutions",
+        "description": "After conducting an examination with a specialist we can help find the right healing method"
+      }
+    },
+    "resultNumbers": {
+      "title": "We're employee benefit at  7500+ hospital",
+      "description": "Effective progress tracking and milestone setting are critical components of any successful project or personal goal. By systematically monitoring our achievements."
+    },
+    "scheduleInAdvance": {
+      "title": "Make a schedule in advance with the available doctor",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "mobileApps": {
+      "title": "Download App Now",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc ante velit vitae. Est tellus vitae, nullam lobortis enim. Faucibus amet etiam tincidunt rhoncus, ullamcorper velit. Ullamcorper risus tempor, ac nunc libero urna, feugiat."
+    },
+    "footer": {
+      "description": "Explore the wonders of travel with AdventureSeekers Expeditions. Unleash your wanderlust with AdventureSeekers Expeditions.",
+      "links": {
+        "wishlist": "Wishlist",
+        "specialOffers": "Special Offers",
+        "lookbook": "Lookbook",
+        "bestsellers": "Bestsellers",
+        "mega": "Mega"
+      },
+      "copyright": "Copyright @ 2024 DockBook, All rights reserved.",
+      "customerService": "Customer Service",
+      "termsConditions": "Terms & Conditions",
+      "privacyPolicy": "Privacy Policy"
     }
   },
   "loginPage": {
@@ -49,5 +98,64 @@
     "withGoogle": "Or sign in with Google",
     "alreadyHaveAnAccount": "Dont have an account already?",
     "signInNow": "Sign in now"
+  },
+  "verifyPage": {
+    "title": "Verify your email",
+    "description": "Enter the code sent to your email to verify your account",
+    "formTitle": "Verify",
+    "emailCode": "Email code",
+    "emailCodePlaceholder": "Enter the code",
+    "verify": "Verify",
+    "resendCode": "Resend code",
+    "alreadyHaveAnAccount": "Already have an account?",
+    "signInNow": "Sign in now"
+  },
+  "settingsLayout": {
+    "settings": "Settings",
+    "myData": "My Data",
+    "payment": "Payment",
+    "myBookings": "My Bookings",
+    "myRecords": "My Records",
+    "logout": "Logout",
+    "myDataPage": {
+      "customer": "Customer",
+      "editProfile": "Edit Profile",
+      "name": "Full Name",
+      "birthday": "Date of Birth",
+      "phone": "Phone Number (Mobile)",
+      "gender": "Gender",
+      "email": "Email"
+    },
+    "paymentPage": {
+      "title": "Payment"
+    },
+    "myBookingsPage": {
+      "active": "Active",
+      "history": "History",
+      "orderNumber": "Order Number",
+      "date": "Date",
+      "appointmentType": "Appointment Type",
+      "status": "Status",
+      "doctor": "Doctor"
+    },
+    "myRecordsPage": {
+      "title": "My Records"
+    },
+    "myDataEditingPage": {
+      "title": "My Data",
+      "customer": "Customer",
+      "cancel": "Cancel",
+      "name": "Name",
+      "namePlaceholder": "Enter your name",
+      "birthday": "Birthday",
+      "birthdayPlaceholder": "Enter your birthday",
+      "phone": "Phone",
+      "phonePlaceholder": "Enter your phone number",
+      "login": "Login",
+      "usernamePlaceholder": "Enter your username",
+      "email": "Email",
+      "emailPlaceholder": "Enter your email",
+      "save": "Save"
+    }
   }
 }

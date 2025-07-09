@@ -1,33 +1,35 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 const modalsNames = {
-  loginModal: "loginModal",
-  registerModal: "registerModal",
-  sessionExpiredModal: "sessionExpiredModal",
-};
+  loginModal: 'loginModal',
+  registerModal: 'registerModal',
+  verifyModal: 'verifyModal',
+  sessionExpiredModal: 'sessionExpiredModal'
+}
 
-type ModalsState = { modals: { [K in keyof typeof modalsNames]: boolean } };
+type ModalsState = { modals: { [K in keyof typeof modalsNames]: boolean } }
 
 const defaultState: ModalsState = {
   modals: {
     loginModal: false,
     registerModal: false,
-    sessionExpiredModal: false,
-  },
-};
+    verifyModal: false,
+    sessionExpiredModal: false
+  }
+}
 
 const slice = createSlice({
-  name: "modals",
+  name: 'modals',
   initialState: defaultState,
   reducers: {
     openModal: (state, action: PayloadAction<keyof typeof modalsNames>) => {
-      state.modals[action.payload] = true;
+      state.modals[action.payload] = true
     },
     closeModal: (state, action: PayloadAction<keyof typeof modalsNames>) => {
-      state.modals[action.payload] = false;
-    },
-  },
-});
+      state.modals[action.payload] = false
+    }
+  }
+})
 
-export const { openModal, closeModal } = slice.actions;
-export default slice.reducer;
+export const { openModal, closeModal } = slice.actions
+export default slice.reducer

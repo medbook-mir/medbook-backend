@@ -1,6 +1,6 @@
 'use client'
 
-import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import { MainLogoWhite } from '@/utils/icons/MainLogoWhite'
 import { LangSelect } from '../shared/lang-select'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { Container } from '@/theme/container'
@@ -40,7 +40,7 @@ export default function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <LangSelect />
             <button className="h-[40px] rounded-full border border-white px-[16px] text-[14px] transition hover:bg-white hover:text-teal-800">
               For doctors

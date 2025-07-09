@@ -3,9 +3,15 @@
 import { PersonIcon, LikeIcon, LocationIcon } from '@/utils/icons/doctor-icons'
 import { FilledButton } from '../ui/filled-button'
 import { useState } from 'react'
+import { useParams, useRouter } from 'next/navigation'
+import { log } from 'console'
 
 const ImportantThings = () => {
   const [isLiked, setIsLiked] = useState(false)
+  const router = useRouter()
+  const params = useParams()
+
+  console.log('query', params)
 
   return (
     <section className="flex max-w-[350px] flex-col gap-4 rounded-[12px] bg-[#F2F7F6] p-5">
@@ -33,7 +39,9 @@ const ImportantThings = () => {
         <span className="text-[14px] leading-[100%] font-normal">Online booking also possible for new patients</span>
       </div>
       <div className="flex items-center gap-4">
-        <FilledButton className="!rounded-full !p-5">Book now</FilledButton>
+        <FilledButton className="!rounded-full !p-5" onClick={() => router.push(`/book-doctor/${params.id}`)}>
+          Book now
+        </FilledButton>
         <div className="inline-block shrink-0 cursor-pointer" onClick={() => setIsLiked(!isLiked)}>
           <LikeIcon fill={isLiked ? '#f00' : '#CDCDCD'} />
         </div>

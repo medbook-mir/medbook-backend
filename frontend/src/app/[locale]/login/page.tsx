@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl'
-import { MainLogoWhite } from '@/assets/icons/MainLogoWhite'
+import { MainLogoWhite } from '@/utils/icons/MainLogoWhite'
 import LoginForm from '@/forms/login-form'
 import { Link } from '@/i18n/navigation'
 import { Container } from '@/theme/container'

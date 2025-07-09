@@ -36,7 +36,7 @@ export default DefaultInput
 
 const CustomInput = styled(Input)`
   background-color: #f7f7f7 !important;
-  padding: 12px 16px !important;
+  padding: 8px 16px !important;
   color: #0d0d0d !important;
   ::placeholder {
     color: #696969 !important;

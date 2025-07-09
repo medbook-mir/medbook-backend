@@ -7,14 +7,15 @@ import { GoogleIcon } from '@/utils/icons/social-medias'
 import { FilledButton } from '@/components/ui/filled-button'
 import DefaultInput from '@/components/ui/default-input'
 import PasswordInput from '@/components/ui/password-input'
+import DatepickerInput from '@/components/ui/date-picker'
 import { useAppDispatch, useAppSelector } from '@/redux/store'
 import { getRegisterModal } from '@/redux/selectors/modals'
 import { closeModal, openModal } from '@/redux/reducers/modals'
-import { RegisterType } from '@/schema/register-schema'
+import registerSchema, { RegisterType } from '@/schema/register-schema'
 import { useRegister } from '@/hooks/useRegister'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import registerSchema from '@/schema/register-schema'
+import dayjs from 'dayjs'
 
 const RegisterForm = () => {
   const t = useTranslations('registerPage')
@@ -34,7 +35,8 @@ const RegisterForm = () => {
       birthday: '',
       password: '',
       repeat_password: ''
-    }
+    },
+    mode: 'onBlur'
   })
 
   const onSubmit: SubmitHandler<RegisterType> = (data) => {
@@ -52,102 +54,84 @@ const RegisterForm = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       <h3 className="text-[32px] leading-[100%] font-semibold">{t('formTitle')}</h3>
       <Form layout="vertical" onFinish={handleSubmit(onSubmit)}>
         <div className="flex flex-col">
-          <Form.Item label={t('username')} required>
-            <Controller
-              name="username"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  autoComplete="username"
-                  status={error ? 'error' : ''}
-                  placeholder={t('usernamePlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="username"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('username')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DefaultInput {...field} autoComplete="username" placeholder={t('usernamePlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
-          <Form.Item label={t('firstName')} required>
-            <Controller
-              name="first_name"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  autoComplete="given-name"
-                  status={error ? 'error' : ''}
-                  placeholder={t('firstNamePlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="first_name"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('firstName')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DefaultInput {...field} autoComplete="given-name" placeholder={t('firstNamePlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
-          <Form.Item label={t('lastName')} required>
-            <Controller
-              name="last_name"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  autoComplete="family-name"
-                  status={error ? 'error' : ''}
-                  placeholder={t('lastNamePlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="last_name"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('lastName')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DefaultInput {...field} autoComplete="family-name" placeholder={t('lastNamePlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
-          <Form.Item label={t('birthday')} required>
-            <Controller
-              name="birthday"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <DefaultInput
-                  {...field}
-                  type="date"
-                  autoComplete="bday"
-                  status={error ? 'error' : ''}
+          <Controller
+            name="birthday"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('birthday')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <DatepickerInput
                   placeholder={t('birthdayPlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
-
-          <Form.Item label={t('password')} required>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <PasswordInput
-                  {...field}
-                  autoComplete="new-password"
+                  className="w-full"
+                  format="DD/MM/YYYY"
+                  value={field.value ? dayjs(field.value, 'DD/MM/YYYY') : null}
+                  onChange={(date) => field.onChange(date?.format('DD/MM/YYYY'))}
                   status={error ? 'error' : ''}
-                  placeholder={t('passwordPlaceholder')}
+                  required
                 />
-              )}
-            />
-          </Form.Item>
+              </Form.Item>
+            )}
+          />
 
-          <Form.Item label={t('confirmPassword')} required>
-            <Controller
-              name="repeat_password"
-              control={control}
-              render={({ field, fieldState: { error } }) => (
-                <PasswordInput
-                  {...field}
-                  autoComplete="new-password"
-                  status={error ? 'error' : ''}
-                  placeholder={t('confirmPasswordPlaceholder')}
-                />
-              )}
-            />
-          </Form.Item>
+          <Controller
+            name="password"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={t('password')} required validateStatus={error ? 'error' : ''} help={error?.message}>
+                <PasswordInput {...field} autoComplete="new-password" placeholder={t('passwordPlaceholder')} />
+              </Form.Item>
+            )}
+          />
 
-          <div className="flex flex-col gap-8">
+          <Controller
+            name="repeat_password"
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item
+                label={t('confirmPassword')}
+                required
+                validateStatus={error ? 'error' : ''}
+                help={error?.message}
+              >
+                <PasswordInput {...field} autoComplete="new-password" placeholder={t('confirmPasswordPlaceholder')} />
+              </Form.Item>
+            )}
+          />
+
+          <div className="flex flex-col gap-4">
             <FilledButton className="!py-5" htmlType="submit" loading={isPendingRegister}>
               {t('signUp')}
             </FilledButton>

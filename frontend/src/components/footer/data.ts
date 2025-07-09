@@ -1,46 +1,42 @@
-import {
-  FacebookIcon,
-  InstagramIcon,
-  TwitterIcon,
-} from "@/utils/icons/social-medias";
+import { FacebookIcon, InstagramIcon, TwitterIcon } from '@/utils/icons/social-medias'
 
 export const footerLinks = [
   {
-    title: "Wishlist",
-    href: "#",
+    title: 'links.wishlist',
+    href: '#'
   },
   {
-    title: "Special Offers",
-    href: "#",
+    title: 'links.specialOffers',
+    href: '#'
   },
   {
-    title: "Lookbook",
-    href: "#",
+    title: 'links.lookbook',
+    href: '#'
   },
   {
-    title: "Bestsellers",
-    href: "#",
+    title: 'links.bestsellers',
+    href: '#'
   },
   {
-    title: "Mega",
-    href: "#",
-  },
-];
+    title: 'links.mega',
+    href: '#'
+  }
+]
 
 export const footerSocials = [
   {
-    title: "Facebook",
-    href: "https://facebook.com",
-    icon: FacebookIcon,
+    title: 'Facebook',
+    href: 'https://facebook.com',
+    icon: FacebookIcon
   },
   {
-    title: "Instagram",
-    href: "https://instagram.com",
-    icon: InstagramIcon,
+    title: 'Instagram',
+    href: 'https://instagram.com',
+    icon: InstagramIcon
   },
   {
-    title: "Twitter",
-    href: "https://twitter.com",
-    icon: TwitterIcon,
-  },
-];
+    title: 'Twitter',
+    href: 'https://twitter.com',
+    icon: TwitterIcon
+  }
+]

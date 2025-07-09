@@ -12,6 +12,55 @@
       "description": "Ажойиб тадбирлар ўтказинг, билим улашинг, маҳсулотингизни ривожлантиринг ва имкониятлар яратинг",
       "search_placeholder": "Шифокор, клиника ёки хизмат турини қидиринг",
       "location": "Манзил"
+    },
+    "solutions": {
+      "title": "Қадам-ба-қадам ечимларингизга эришинг",
+      "complaints": {
+        "title": "Саломатлик муаммоларини текширинг",
+        "description": "Касалликни текшириб, мос мутахассисни осон танлашингиз мумкин"
+      },
+      "doctor": {
+        "title": "Мутахассис шифокорни танланг",
+        "description": "Касаллик муаммоларингизга мос мутахассисни танланг"
+      },
+      "schedule": {
+        "title": "Жадвал тузинг",
+        "description": "Керакли шифокор билан учрашув жадвалини тузинг ва текширувни бошланг"
+      },
+      "solutions": {
+        "title": "Ечимларингизни олинг",
+        "description": "Мутахассис билан текширувдан сўнг тўғри даволаш усулини топишга ёрдам берамиз"
+      }
+    },
+    "resultNumbers": {
+      "title": "Биз 7500+ шифохонада ходимларга имтиёзлар тақдим этамиз",
+      "description": "Самарали ривожланишни кузатиш ва босқичларни белгилаш ҳар қандай муваффақиятли лойиҳа ёки шахсий мақсаднинг муҳим қисми ҳисобланади. Ютуқларимизни тизимли равишда назорат қилиб борамиз."
+    },
+    "scheduleInAdvance": {
+      "title": "Шифокор билан олдиндан режалаштириш",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "blog": {
+      "title": "Блог",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "mobileApps": {
+      "title": "Ilovani yuklab oling",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc ante velit vitae. Est tellus vitae, nullam lobortis enim. Faucibus amet etiam tincidunt rhoncus, ullamcorper velit. Ullamcorper risus tempor, ac nunc libero urna, feugiat."
+    },
+    "footer": {
+      "description": "AdventureSeekers Expeditions билан саёҳат мўъжизаларини кашф этинг. AdventureSeekers Expeditions билан саёҳатга бўлган иштиёқингизни уйғотинг.",
+      "links": {
+        "wishlist": "Танланганлар рўйхати",
+        "specialOffers": "Махсус таклифлар",
+        "lookbook": "Лукбук",
+        "bestsellers": "Энг кўп сотилганлар",
+        "mega": "Мега"
+      },
+      "copyright": "Муаллифлик ҳуқуқи © 2024 DockBook, Барча ҳуқуқлар ҳимояланган.",
+      "customerService": "Мижозларга хизмат",
+      "termsConditions": "Фойдаланиш шартлари",
+      "privacyPolicy": "Махфийлик сиёсати"
     }
   },
   "loginPage": {
@@ -49,5 +98,64 @@
     "withGoogle": "Ёки Google орқали кириш",
     "alreadyHaveAnAccount": "Аккаунтингиз аллақачон борми?",
     "signInNow": "Ҳозир киринг"
+  },
+  "verifyPage": {
+    "title": "Электрон почангизни тасдиқланг",
+    "description": "Аккаунтингизни тасдиқлаш учун электрон почангизга код юборилди. Кодингизни киритинг.",
+    "formTitle": "Тасдиқлаш",
+    "emailCode": "Электрон поча коди",
+    "emailCodePlaceholder": "Кодни киритинг",
+    "verify": "Тасдиқлаш",
+    "resendCode": "Кодни қайта юбориш",
+    "alreadyHaveAnAccount": "Аккаунтингиз аллақачон борми?",
+    "signInNow": "Ҳозир кириш"
+  },
+  "settingsLayout": {
+    "settings": "Созламалар",
+    "myData": "Менинг маълумотларим",
+    "payment": "Тўловлар",
+    "myBookings": "Менинг буйуртмаларим",
+    "myRecords": "Менинг ҳисоботларим",
+    "logout": "Чиқиш",
+    "myDataPage": {
+      "customer": "Мижоз",
+      "editProfile": "Профилни таҳрирлаш",
+      "name": "Тўлиқ исм",
+      "birthday": "Туғилган кун",
+      "phone": "Телефон рақами (мобил)",
+      "gender": "Жинс",
+      "email": "Электрон почта"
+    },
+    "paymentPage": {
+      "title": "Тўлов"
+    },
+    "myBookingsPage": {
+      "active": "Активлар",
+      "history": "Тарих",
+      "orderNumber": "Буйрутма рақами",
+      "date": "Сана",
+      "appointmentType": "Буйрутма тури",
+      "status": "Ҳолат",
+      "doctor": "Шифокор"
+    },
+    "myRecordsPage": {
+      "title": "Менинг ҳисоботларим"
+    },
+    "myDataEditingPage": {
+      "title": "Менинг маълумотларим",
+      "customer": "Мижоз",
+      "cancel": "Бекор қилиш",
+      "name": "Исм",
+      "namePlaceholder": "Исминигизни киритинг",
+      "birthday": "Туғилган кун",
+      "birthdayPlaceholder": "Туғилган кунингизни киритинг",
+      "phone": "Телефон",
+      "phonePlaceholder": "Телефон рақамини киритинг",
+      "login": "Логин",
+      "usernamePlaceholder": "Фойдаланувчи номини киритинг",
+      "email": "Электрон почта",
+      "emailPlaceholder": "Электрон почтангизни киритинг",
+      "save": "Сақлаш"
+    }
   }
 }

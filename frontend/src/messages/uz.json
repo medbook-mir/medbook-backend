@@ -12,6 +12,55 @@
       "description": "Ajoyib tadbirlar o‘tkazing, bilim ulashing, mahsulotingizni rivojlantiring va imkoniyatlar yarating",
       "search_placeholder": "Shifokor, klinika yoki xizmat turini qidiring",
       "location": "Manzil"
+    },
+    "solutions": {
+      "title": "Qadam-baqadam yechimlaringizga erishing",
+      "complaints": {
+        "title": "Sog'liq muammolarini tekshiring",
+        "description": "Kasallikni tekshirib, mos mutaxassisni oson tanlashingiz mumkin"
+      },
+      "doctor": {
+        "title": "Mutaxassis shifokorni tanlang",
+        "description": "Kasallik muammolaringizga mos mutaxassisni tanlang"
+      },
+      "schedule": {
+        "title": "Jadval tuzing",
+        "description": "Kerakli shifokor bilan uchrashuv jadvalini tuzing va tekshiruvni boshlang"
+      },
+      "solutions": {
+        "title": "Yechimlaringizni oling",
+        "description": "Mutaxassis bilan tekshiruvdan so'ng to'g'ri davolash usulini topishga yordam beramiz"
+      }
+    },
+    "resultNumbers": {
+      "title": "Biz 7500+ shifoxonada xodimlarga imtiyozlar taqdim etamiz",
+      "description": "Samarali rivojlanishni kuzatish va bosqichlarni belgilash har qanday muvaffaqiyatli loyiha yoki shaxsiy maqsadning muhim qismi hisoblanadi. Yutuqlarimizni tizimli ravishda nazorat qilib boramiz."
+    },
+    "scheduleInAdvance": {
+      "title": "Shifokor bilan oldindan rejalashtirish",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "blog": {
+      "title": "Blog",
+      "description": "Lorem ipsum dolor sit amet consectetur. Orci malesuada mi et mi pellentesque tincidunt at mollis facilisis. Nisl eu blandit nunc parturient adipiscing commodo."
+    },
+    "mobileApps": {
+      "title": "Ilovani yuklab oling",
+      "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Viverra nunc ante velit vitae. Est tellus vitae, nullam lobortis enim. Faucibus amet etiam tincidunt rhoncus, ullamcorper velit. Ullamcorper risus tempor, ac nunc libero urna, feugiat."
+    },
+    "footer": {
+      "description": "AdventureSeekers Expeditions bilan sayohat mo'jizalarini kashf eting. AdventureSeekers Expeditions bilan sayohatga bo‘lgan ishtiyoqingizni uyg‘oting.",
+      "links": {
+        "wishlist": "Tanlanganlar ro'yxati",
+        "specialOffers": "Maxsus takliflar",
+        "lookbook": "Lookbook",
+        "bestsellers": "Eng ko‘p sotilganlar",
+        "mega": "Mega"
+      },
+      "copyright": "Mualliflik huquqi © 2024 DockBook, Barcha huquqlar himoyalangan.",
+      "customerService": "Mijozlarga xizmat",
+      "termsConditions": "Foydalanish shartlari",
+      "privacyPolicy": "Maxfiylik siyosati"
     }
   },
   "loginPage": {
@@ -49,5 +98,64 @@
     "withGoogle": "Yoki Google orqali kirish",
     "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
     "signInNow": "Hozir kirish"
+  },
+  "verifyPage": {
+    "title": "Elektron pochangizni tasdiqlang",
+    "description": "Akkauntingizni tasdiqlash uchun elektron pochangizga kod yuborildi. Kodingizni kiriting.",
+    "formTitle": "Tasdiqlash",
+    "emailCode": "Elektron pocha kodi",
+    "emailCodePlaceholder": "Kodni kiriting",
+    "verify": "Tasdiqlash",
+    "resendCode": "Kodni qayta yuborish",
+    "alreadyHaveAnAccount": "Akkauntingiz allaqachon bormi?",
+    "signInNow": "Hozir kirish"
+  },
+  "settingsLayout": {
+    "settings": "Sozlamalar",
+    "myData": "Mening ma'lumotlarim",
+    "payment": "To'lovlar",
+    "myBookings": "Mening buyurtmalarim",
+    "myRecords": "Mening hisobotlarim",
+    "logout": "Chiqish",
+    "myDataPage": {
+      "customer": "Mijoz",
+      "editProfile": "Profilni tahrirlash",
+      "name": "To'liq ism",
+      "birthday": "Tug‘ilgan kun",
+      "phone": "Telefon raqami (mobil)",
+      "gender": "Jins",
+      "email": "Elektron pochta"
+    },
+    "paymentPage": {
+      "title": "To'lov"
+    },
+    "myBookingsPage": {
+      "active": "Faollari",
+      "history": "Tarix",
+      "orderNumber": "Buyurtma raqami",
+      "date": "Sana",
+      "appointmentType": "Buyurtma turi",
+      "status": "Holati",
+      "doctor": "Shifokor"
+    },
+    "myRecordsPage": {
+      "title": "Mening hisobotlarim"
+    },
+    "myDataEditingPage": {
+      "title": "Mening ma'lumotlarim",
+      "customer": "Mijoz",
+      "cancel": "Bekor qilish",
+      "name": "Ism",
+      "namePlaceholder": "Ismingizni kiriting",
+      "birthday": "Tug‘ilgan kun",
+      "birthdayPlaceholder": "Tug‘ilgan kuningizni kiriting",
+      "phone": "Telefon",
+      "phonePlaceholder": "Telefon raqamingizni kiriting",
+      "login": "Login",
+      "usernamePlaceholder": "Foydalanuvchi nomini kiriting",
+      "email": "Elektron pochta",
+      "emailPlaceholder": "Elektron pochtangizni kiriting",
+      "save": "Saqlash"
+    }
   }
 }

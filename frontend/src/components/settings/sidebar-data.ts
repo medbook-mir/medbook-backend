@@ -1,18 +1,18 @@
 export const sidebarData = [
   {
-    title: 'My Data',
+    title: 'myData',
     href: 'my-data'
   },
   {
-    title: 'Payment',
+    title: 'payment',
     href: 'payment'
   },
   {
-    title: 'My Bookings',
+    title: 'myBookings',
     href: 'my-bookings'
   },
   {
-    title: 'My Records',
+    title: 'myRecords',
     href: 'my-records'
   }
 ]

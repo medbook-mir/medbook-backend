@@ -1,14 +1,17 @@
+'use client'
+
 import { TableProps } from 'antd'
 import { CustomTable } from '../components/ui/table'
 import { Link } from '@/i18n/navigation'
 import { Status } from '@/components/ui/status'
+import { useTranslations } from 'next-intl'
 
 const mockData = [
   {
     orderNumber: '1231235',
     date: '20.02.2025',
     appointmentType: 'Online',
-    status: 'CANCELED',
+    status: 'canceled',
     doctor: {
       name: 'Kathrin Schenk-Losse',
       id: '1',
@@ -19,7 +22,7 @@ const mockData = [
     orderNumber: '6589740',
     date: '20.02.2025',
     appointmentType: 'Offline',
-    status: 'CANCELED',
+    status: 'canceled',
     doctor: {
       name: 'Kathrin Schenk-Losse',
       id: '1',
@@ -30,7 +33,7 @@ const mockData = [
     orderNumber: '4569871',
     date: '20.02.2025',
     appointmentType: 'Online',
-    status: 'SUCCESS',
+    status: 'success',
     doctor: {
       name: 'Kathrin Schenk-Losse',
       id: '1',
@@ -40,40 +43,42 @@ const mockData = [
 ]
 
 export const HisotryBookings = () => {
-  const getColumns: TableProps<any>['columns'] & { key: string }[] = [
+  const t = useTranslations('settingsLayout.myBookingsPage')
+
+  const getColumns: TableProps<any>['columns'] = [
     {
       key: 'orderNumber',
       dataIndex: 'orderNumber',
-      title: 'Order number',
-      width: 160,
+      title: t('orderNumber'),
+      width: 180,
       render: (value: string) => <p>#{value}</p>
     },
     {
       key: 'date',
       dataIndex: 'date',
-      title: 'Date',
-      width: 160,
+      title: t('date'),
+      width: 180,
       render: (value: string) => <p>{value}</p>
     },
     {
       key: 'appointmentType',
       dataIndex: 'appointmentType',
-      title: 'Appointment type',
+      title: t('appointmentType'),
       width: 160,
       render: (value: string) => <p>{value}</p>
     },
     {
       key: 'status',
       dataIndex: 'status',
-      title: 'Status',
-      width: 160,
-      render: (value: 'CANCELED' | 'SUCCESS') => <Status status={value} />
+      title: t('status'),
+      width: 180,
+      render: (value: 'canceled' | 'success') => <Status status={value} />
     },
     {
       key: 'doctor',
       dataIndex: 'doctor',
-      title: 'Doctor',
-      width: 400,
+      title: t('doctor'),
+      width: 360,
       render: ({ name, id, orientation }: { name: string; id: string; orientation: string }) => (
         <div>
           <Link className="text-[#1F88E4] !underline underline-offset-2" href={`/doctors/${id}`}>
