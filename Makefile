@@ -33,3 +33,7 @@ shell-backend:
 
 status:
 	docker ps --filter "name=medbook-*"
+
+clean:
+	docker-compose down -v --rmi all --remove-orphans
+
