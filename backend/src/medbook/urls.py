@@ -10,10 +10,10 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
     DecoratedTokenObtainPairView,
+    DecoratedTokenRefreshView,
     DoctorOrClinicSignupView,
     SendOTPView,
     TestListView,
@@ -32,7 +32,9 @@ common_patterns = [
         DecoratedTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        "api/token/refresh/", DecoratedTokenRefreshView.as_view(), name="token_refresh"
+    ),
     path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
     path("accounts/", include("allauth.urls")),
     path(
