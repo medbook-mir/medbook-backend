@@ -3,7 +3,8 @@ import createNextIntlPlugin from 'next-intl/plugin'
 
 const nextConfig: NextConfig = {
   trailingSlash: true,
-  reactStrictMode: false
+  reactStrictMode: false,
+  devIndicators: false
 }
 
 const withNextIntl = createNextIntlPlugin()

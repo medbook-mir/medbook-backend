@@ -22,7 +22,7 @@ export default function HeroSection() {
               Hold incredible events, share knowledge, build and grow your product, create opportunity
             </p>
 
-            <div className="flex h-[56px] w-full max-w-[790px] items-center justify-between overflow-hidden rounded-[16px] bg-white px-[4px] shadow-md">
+            <div className="flex h-[56px] w-full max-w-[500px] items-center justify-between overflow-hidden rounded-[16px] bg-white px-[4px] shadow-md sm:max-w-[100%] md:max-w-[500px] xl:max-w-[790px]">
               <div className="flex items-center">
                 <div className="flex items-center gap-[14px] px-4 text-gray-500">
                   <SearchIcon />
