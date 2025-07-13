@@ -5,10 +5,16 @@ from rest_framework import generics, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import MedicalTest
-from .serializers import SendOTPSerializer, TestSerializer, VerifyOTPSerializer
+from .serializers import (
+    DoctorOrClinicSignupSerializer,
+    SendOTPSerializer,
+    TestSerializer,
+    VerifyOTPSerializer,
+)
 
 User = get_user_model()
 
@@ -17,28 +23,17 @@ def health_check(request):
     return JsonResponse({"status": "ok"})
 
 
-class CustomTokenObtainPairView(TokenObtainPairView):
+class DecoratedTokenObtainPairView(TokenObtainPairView):
+    @extend_schema(
+        request=TokenObtainPairSerializer,
+        responses={
+            200: OpenApiResponse(response=dict, description="Токены получены"),
+            400: OpenApiResponse(description="Неверные учетные данные"),
+        },
+        description="Получение JWT токена по username и password",
+    )
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        if response.status_code == 200:
-            return response
-        return Response(
-            {"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST
-        )
-
-
-class ProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({"message": "Доступ разрешен!"})
-
-
-class SomeProtectedView(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        return Response({"message": "Это защищенный эндпоинт"})
+        return super().post(request, *args, **kwargs)
 
 
 class TestListView(generics.ListAPIView):
@@ -86,11 +81,10 @@ class SendOTPView(APIView):
             serializer.save()
             return Response(
                 {
-                    "message": "Verification code sent to email. Check your console for the code."
+                    "message": "Verification code sent to email. Check your email for the code."
                 },
                 status=status.HTTP_201_CREATED,
             )
-        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -135,4 +129,54 @@ class VerifyOTPView(APIView):
                     {"error": "Invalid verification code."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DoctorOrClinicSignupView(APIView):
+    permission_classes = [AllowAny]
+
+    @extend_schema(
+        request=DoctorOrClinicSignupSerializer,
+        responses={
+            201: OpenApiResponse(
+                response=dict, description="Registration is successful"
+            ),
+            400: OpenApiResponse(description="Invalid input"),
+        },
+        description="Register a new doctor or clinic with required fields",
+        examples=[
+            OpenApiExample(
+                name="Doctor Signup Example",
+                value={
+                    "role": "doctor",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "email": "john@example.com",
+                    "password": "strong_password123",
+                },
+                request_only=True,
+            ),
+            OpenApiExample(
+                name="Clinic Signup Example",
+                value={
+                    "role": "clinic",
+                    "clinic_name": "Clinic Name",
+                    "email": "clinic@gmail.com",
+                    "password": "password",
+                },
+                request_only=True,
+            ),
+        ],
+    )
+    def post(self, request):
+        serializer = DoctorOrClinicSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.save()
+            return Response(
+                {
+                    "message": "Verification code sent to email. Check your email for the code."
+                },
+                status=status.HTTP_201_CREATED,
+            )
+            return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

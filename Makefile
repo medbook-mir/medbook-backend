@@ -10,7 +10,7 @@ v:
 down:
 	docker compose down
 
-makemigrations:
+migrations:
 	docker compose exec backend python src/manage.py makemigrations
 
 migrate:
@@ -33,3 +33,7 @@ shell-backend:
 
 status:
 	docker ps --filter "name=medbook-*"
+
+clean:
+	docker-compose down -v --rmi all --remove-orphans
+

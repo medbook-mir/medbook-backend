@@ -5,49 +5,34 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
-from drf_spectacular.utils import OpenApiResponse, extend_schema
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import TokenRefreshView
 
 from .views import (
+    DecoratedTokenObtainPairView,
+    DoctorOrClinicSignupView,
     SendOTPView,
-    SomeProtectedView,
     TestListView,
     VerifyOTPView,
     health_check,
 )
 
-
-class DecoratedTokenObtainPairView(TokenObtainPairView):
-    @extend_schema(
-        request=TokenObtainPairSerializer,
-        responses={
-            200: OpenApiResponse(response=dict, description="Токены получены"),
-            400: OpenApiResponse(description="Неверные учетные данные"),
-        },
-        description="Получение JWT токена по username и password",
-    )
-    def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
-
-
 SERVICE_TYPE = os.getenv("SERVICE_TYPE", "backend")
 common_patterns = [
     path("admin/", admin.site.urls),
-    path("api/auth/send/", SendOTPView.as_view(), name="signup"),
+    path("api/auth/send/", SendOTPView.as_view(), name="patient_signup"),
     path("api/auth/verify/", VerifyOTPView.as_view(), name="verify_code"),
+    path("api/doctor/signup/", DoctorOrClinicSignupView.as_view()),
     path(
         "api/auth/login/",
         DecoratedTokenObtainPairView.as_view(),
         name="token_obtain_pair",
     ),
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/protected-endpoint/", SomeProtectedView.as_view()),
     path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
     path("accounts/", include("allauth.urls")),
     path(
