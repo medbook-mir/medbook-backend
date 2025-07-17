@@ -1,0 +1,2242 @@
+[
+  {
+    "model": "medbook.specialty",
+    "pk": 1,
+    "fields": {
+      "name": "Cardiology",
+      "description": "Heart-related conditions",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-06-10 23:32:46Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 2,
+    "fields": {
+      "name": "Neurology",
+      "description": "Nervous system and brain",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-02-06 17:11:22Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 3,
+    "fields": {
+      "name": "Orthopedics",
+      "description": "Bones and muscles",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-03-02 18:46:29Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 4,
+    "fields": {
+      "name": "Pediatrics",
+      "description": "Child healthcare",
+      "category": "primary_care",
+      "is_active": true,
+      "created_at": "2025-05-24 00:31:49Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 5,
+    "fields": {
+      "name": "Dermatology",
+      "description": "Skin-related care",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-01-05 12:14:44Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 6,
+    "fields": {
+      "name": "Psychiatry",
+      "description": "Mental health",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-05-14 06:24:58Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 7,
+    "fields": {
+      "name": "Endocrinology",
+      "description": "Hormonal disorders",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-05-24 07:18:47Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 8,
+    "fields": {
+      "name": "Oncology",
+      "description": "Cancer care",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-01-01 13:56:54Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 9,
+    "fields": {
+      "name": "Gastroenterology",
+      "description": "Digestive system",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-01-10 01:05:25Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 10,
+    "fields": {
+      "name": "Nephrology",
+      "description": "Kidney health",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-06-11 17:47:16Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 11,
+    "fields": {
+      "name": "Pulmonology",
+      "description": "Lung and respiratory",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-06-30 09:14:27Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 12,
+    "fields": {
+      "name": "Rheumatology",
+      "description": "Joint and autoimmune disorders",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-06-23 21:09:50Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 13,
+    "fields": {
+      "name": "Hematology",
+      "description": "Blood disorders",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-06-30 21:53:12Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 14,
+    "fields": {
+      "name": "Ophthalmology",
+      "description": "Eye care",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-05-20 20:44:14Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 15,
+    "fields": {
+      "name": "Urology",
+      "description": "Urinary tract and male health",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-04-01 14:32:39Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 16,
+    "fields": {
+      "name": "Gynecology",
+      "description": "Female reproductive health",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-03-09 03:15:32Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 17,
+    "fields": {
+      "name": "General Surgery",
+      "description": "Surgical procedures",
+      "category": "surgery",
+      "is_active": true,
+      "created_at": "2025-06-16 21:19:39Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 18,
+    "fields": {
+      "name": "Internal Medicine",
+      "description": "Comprehensive adult care",
+      "category": "primary_care",
+      "is_active": true,
+      "created_at": "2025-02-23 22:48:58Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 19,
+    "fields": {
+      "name": "Family Medicine",
+      "description": "General health for families",
+      "category": "primary_care",
+      "is_active": true,
+      "created_at": "2025-04-30 12:04:52Z"
+    }
+  },
+  {
+    "model": "medbook.specialty",
+    "pk": 20,
+    "fields": {
+      "name": "Infectious Disease",
+      "description": "Infections and outbreaks",
+      "category": "specialist",
+      "is_active": true,
+      "created_at": "2025-04-01 09:07:25Z"
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 2,
+    "fields": {
+      "first_name": "Sarah",
+      "last_name": "Johnson",
+      "username": "sarah.johnson@example.com",
+      "gender": "female",
+      "email": "sarah.johnson@example.com",
+      "phone_number": "612.345.7890",
+      "password": "SecurePass123!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/400/400/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 15:30:25Z",
+      "created_at": "2025-03-15 08:45:12Z",
+      "updated_at": "2025-07-14 15:30:25Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 3,
+    "fields": {
+      "first_name": "Michael",
+      "last_name": "Chen",
+      "username": "michael.chen@example.com",
+      "gender": "male",
+      "email": "michael.chen@example.com",
+      "phone_number": "555.123.4567",
+      "password": "MedPass456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/450/450/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 09:15:40Z",
+      "created_at": "2025-02-20 14:22:35Z",
+      "updated_at": "2025-07-15 09:15:40Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 4,
+    "fields": {
+      "first_name": "Emily",
+      "last_name": "Davis",
+      "username": "emily.davis@example.com",
+      "gender": "female",
+      "email": "emily.davis@example.com",
+      "phone_number": "703.987.6543",
+      "password": "EmilySecure789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/350/350/people",
+      "is_verified": false,
+      "is_active": true,
+      "last_login_at": "2025-07-13 19:45:18Z",
+      "created_at": "2025-06-10 11:30:22Z",
+      "updated_at": "2025-07-13 19:45:18Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 5,
+    "fields": {
+      "first_name": "David",
+      "last_name": "Wilson",
+      "username": "david.wilson@example.com",
+      "gender": "male",
+      "email": "david.wilson@example.com",
+      "phone_number": "425.555.0123",
+      "password": "DavidPass321!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/500/500/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 07:00:00Z",
+      "created_at": "2025-01-05 16:15:45Z",
+      "updated_at": "2025-07-15 07:00:00Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 6,
+    "fields": {
+      "first_name": "Lisa",
+      "last_name": "Martinez",
+      "username": "lisa.martinez@example.com",
+      "gender": "female",
+      "email": "lisa.martinez@example.com",
+      "phone_number": "310.444.5678",
+      "password": "LisaHealth456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 12:20:15Z",
+      "created_at": "2025-04-18 09:30:50Z",
+      "updated_at": "2025-07-14 12:20:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 7,
+    "fields": {
+      "first_name": "Robert",
+      "last_name": "Anderson",
+      "username": "robert.anderson@example.com",
+      "gender": "male",
+      "email": "robert.anderson@example.com",
+      "phone_number": "972.333.7890",
+      "password": "RobertMed789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/420/420/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 08:45:30Z",
+      "created_at": "2025-03-25 13:45:20Z",
+      "updated_at": "2025-07-15 08:45:30Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 8,
+    "fields": {
+      "first_name": "Jennifer",
+      "last_name": "Taylor",
+      "username": "jennifer.taylor@example.com",
+      "gender": "female",
+      "email": "jennifer.taylor@example.com",
+      "phone_number": "404.222.1234",
+      "password": "JenTaylor123!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/360/360/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-06-20 14:30:45Z",
+      "created_at": "2025-05-12 10:15:30Z",
+      "updated_at": "2025-06-20 14:30:45Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 9,
+    "fields": {
+      "first_name": "Christopher",
+      "last_name": "Brown",
+      "username": "christopher.brown@example.com",
+      "gender": "male",
+      "email": "christopher.brown@example.com",
+      "phone_number": "713.111.9876",
+      "password": "ChrisBrown456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/440/440/people",
+      "is_verified": false,
+      "is_active": true,
+      "last_login_at": "2025-07-12 16:20:10Z",
+      "created_at": "2025-06-08 07:45:15Z",
+      "updated_at": "2025-07-12 16:20:10Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 10,
+    "fields": {
+      "first_name": "Amanda",
+      "last_name": "Garcia",
+      "username": "amanda.garcia@example.com",
+      "gender": "female",
+      "email": "amanda.garcia@example.com",
+      "phone_number": "858.777.5432",
+      "password": "AmandaHealth789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/390/390/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 11:10:25Z",
+      "created_at": "2025-02-14 15:20:40Z",
+      "updated_at": "2025-07-14 11:10:25Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 11,
+    "fields": {
+      "first_name": "Matthew",
+      "last_name": "Rodriguez",
+      "username": "matthew.rodriguez@example.com",
+      "gender": "male",
+      "email": "matthew.rodriguez@example.com",
+      "phone_number": "512.888.2468",
+      "password": "MattRod321!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/460/460/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 10:30:55Z",
+      "created_at": "2025-01-20 12:35:25Z",
+      "updated_at": "2025-07-15 10:30:55Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 12,
+    "fields": {
+      "first_name": "Jessica",
+      "last_name": "Lee",
+      "username": "jessica.lee@example.com",
+      "gender": "female",
+      "email": "jessica.lee@example.com",
+      "phone_number": "206.999.1357",
+      "password": "JessLee456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/370/370/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-13 13:45:20Z",
+      "created_at": "2025-04-30 09:20:15Z",
+      "updated_at": "2025-07-13 13:45:20Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 13,
+    "fields": {
+      "first_name": "Daniel",
+      "last_name": "White",
+      "username": "daniel.white@example.com",
+      "gender": "male",
+      "email": "daniel.white@example.com",
+      "phone_number": "303.666.8024",
+      "password": "DanWhite789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/480/480/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 06:15:30Z",
+      "created_at": "2025-01-10 14:50:40Z",
+      "updated_at": "2025-07-15 06:15:30Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 14,
+    "fields": {
+      "first_name": "Ashley",
+      "last_name": "Thomas",
+      "username": "ashley.thomas@example.com",
+      "gender": "female",
+      "email": "ashley.thomas@example.com",
+      "phone_number": "407.555.9753",
+      "password": "AshThomas123!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/340/340/people",
+      "is_verified": false,
+      "is_active": true,
+      "last_login_at": "2025-07-11 17:25:45Z",
+      "created_at": "2025-05-25 11:40:20Z",
+      "updated_at": "2025-07-11 17:25:45Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 15,
+    "fields": {
+      "first_name": "Joshua",
+      "last_name": "Harris",
+      "username": "joshua.harris@example.com",
+      "gender": "male",
+      "email": "joshua.harris@example.com",
+      "phone_number": "602.444.6180",
+      "password": "JoshHarris456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/410/410/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 15:50:10Z",
+      "created_at": "2025-03-08 16:25:35Z",
+      "updated_at": "2025-07-14 15:50:10Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 16,
+    "fields": {
+      "first_name": "Megan",
+      "last_name": "Clark",
+      "username": "megan.clark@example.com",
+      "gender": "female",
+      "email": "megan.clark@example.com",
+      "phone_number": "816.333.7159",
+      "password": "MeganClark789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/430/430/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 14:15:25Z",
+      "created_at": "2025-04-02 13:10:50Z",
+      "updated_at": "2025-07-14 14:15:25Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 17,
+    "fields": {
+      "first_name": "Andrew",
+      "last_name": "Lewis",
+      "username": "andrew.lewis@example.com",
+      "gender": "male",
+      "email": "andrew.lewis@example.com",
+      "phone_number": "901.222.4836",
+      "password": "AndrewLewis321!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/470/470/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-13 10:30:40Z",
+      "created_at": "2025-05-16 08:55:15Z",
+      "updated_at": "2025-07-13 10:30:40Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 18,
+    "fields": {
+      "first_name": "Stephanie",
+      "last_name": "Walker",
+      "username": "stephanie.walker@example.com",
+      "gender": "female",
+      "email": "stephanie.walker@example.com",
+      "phone_number": "214.111.5927",
+      "password": "StephWalker456@",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/320/320/people",
+      "is_verified": false,
+      "is_active": true,
+      "last_login_at": "2025-07-10 12:45:30Z",
+      "created_at": "2025-06-22 14:20:25Z",
+      "updated_at": "2025-07-10 12:45:30Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 19,
+    "fields": {
+      "first_name": "Kevin",
+      "last_name": "Young",
+      "username": "kevin.young@example.com",
+      "gender": "male",
+      "email": "kevin.young@example.com",
+      "phone_number": "480.777.3048",
+      "password": "KevinYoung789#",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/490/490/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15 09:20:15Z",
+      "created_at": "2025-02-28 17:40:30Z",
+      "updated_at": "2025-07-15 09:20:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 20,
+    "fields": {
+      "first_name": "Nicole",
+      "last_name": "King",
+      "username": "nicole.king@example.com",
+      "gender": "female",
+      "email": "nicole.king@example.com",
+      "phone_number": "503.888.6174",
+      "password": "NicoleKing123!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/350/350/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 16:35:50Z",
+      "created_at": "2025-01-15 10:25:45Z",
+      "updated_at": "2025-07-14 16:35:50Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 21,
+    "fields": {
+      "first_name": "Ali",
+      "last_name": "Xena",
+      "username": "ali.xena@example.com",
+      "gender": "female",
+      "email": "ali.xena@example.com",
+      "phone_number": "503.888.6174",
+      "password": "ALIXENA23!",
+      "role": "DOCTOR",
+      "profile_image_url": "https://placeimg.com/350/350/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14 16:35:50Z",
+      "created_at": "2025-01-15 10:25:45Z",
+      "updated_at": "2025-07-14 16:35:50Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 1,
+    "fields": {
+      "name": "Reid, Carter and Curry Clinic",
+      "website_url": "https://wilson-harris.biz/",
+      "profile_image_url": "https://placeimg.com/645/800/any",
+      "description": "Final police bit on attack board middle. Technology partner central because back better. Trial hard give president authority dark.",
+      "established_year": 2002,
+      "total_staff": 84,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-06-27 13:00:11Z",
+      "updated_at": "2025-04-12 23:59:29Z",
+      "is_deleted": null,
+      "user": 2
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 23,
+    "fields": {
+      "first_name": "Maria",
+      "last_name": "Rodriguez",
+      "username": "maria.rodriguez@example.com",
+      "gender": "female",
+      "email": "maria.rodriguez@example.com",
+      "phone_number": "718.555.1001",
+      "password": "MariaHealth456@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-14T12:20:15Z",
+      "created_at": "2025-04-18T09:30:50Z",
+      "updated_at": "2025-07-14T12:20:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 24,
+    "fields": {
+      "first_name": "Carlos",
+      "last_name": "Thompson",
+      "username": "carlos.thompson@example.com",
+      "gender": "male",
+      "email": "carlos.thompson@example.com",
+      "phone_number": "646.555.1002",
+      "password": "CarlosSecure789@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-15T14:30:22Z",
+      "created_at": "2025-03-22T11:45:30Z",
+      "updated_at": "2025-07-15T14:30:22Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 25,
+    "fields": {
+      "first_name": "Linda",
+      "last_name": "Mitchell",
+      "username": "linda.mitchell@example.com",
+      "gender": "female",
+      "email": "linda.mitchell@example.com",
+      "phone_number": "347.555.1003",
+      "password": "LindaHealth321@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-16T08:15:45Z",
+      "created_at": "2025-05-05T16:20:10Z",
+      "updated_at": "2025-07-16T08:15:45Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 26,
+    "fields": {
+      "first_name": "Thomas",
+      "last_name": "Phillips",
+      "username": "thomas.phillips@example.com",
+      "gender": "male",
+      "email": "thomas.phillips@example.com",
+      "phone_number": "929.555.1004",
+      "password": "ThomasSecure654@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-13T19:45:33Z",
+      "created_at": "2025-02-14T13:10:25Z",
+      "updated_at": "2025-07-13T19:45:33Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 27,
+    "fields": {
+      "first_name": "Patricia",
+      "last_name": "Nelson",
+      "username": "patricia.nelson@example.com",
+      "gender": "female",
+      "email": "patricia.nelson@example.com",
+      "phone_number": "917.555.1005",
+      "password": "PatriciaHealth987@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-12T10:30:15Z",
+      "created_at": "2025-06-01T09:45:40Z",
+      "updated_at": "2025-07-12T10:30:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 28,
+    "fields": {
+      "first_name": "Steven",
+      "last_name": "Murphy",
+      "username": "steven.murphy@example.com",
+      "gender": "male",
+      "email": "steven.murphy@example.com",
+      "phone_number": "631.555.1006",
+      "password": "StevenSecure123@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-11T15:20:50Z",
+      "created_at": "2025-01-30T12:30:55Z",
+      "updated_at": "2025-07-11T15:20:50Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 29,
+    "fields": {
+      "first_name": "Helen",
+      "last_name": "Roberts",
+      "username": "helen.roberts@example.com",
+      "gender": "female",
+      "email": "helen.roberts@example.com",
+      "phone_number": "516.555.1007",
+      "password": "HelenHealth456@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-10T13:45:22Z",
+      "created_at": "2025-03-15T14:55:30Z",
+      "updated_at": "2025-07-10T13:45:22Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 30,
+    "fields": {
+      "first_name": "George",
+      "last_name": "Parker",
+      "username": "george.parker@example.com",
+      "gender": "male",
+      "email": "george.parker@example.com",
+      "phone_number": "845.555.1008",
+      "password": "GeorgeSecure789@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-09T11:15:40Z",
+      "created_at": "2025-04-20T10:20:45Z",
+      "updated_at": "2025-07-09T11:15:40Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 31,
+    "fields": {
+      "first_name": "Nancy",
+      "last_name": "Evans",
+      "username": "nancy.evans@example.com",
+      "gender": "female",
+      "email": "nancy.evans@example.com",
+      "phone_number": "914.555.1009",
+      "password": "NancyHealth321@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-08T16:30:55Z",
+      "created_at": "2025-05-25T15:40:20Z",
+      "updated_at": "2025-07-08T16:30:55Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 32,
+    "fields": {
+      "first_name": "William",
+      "last_name": "Cooper",
+      "username": "william.cooper@example.com",
+      "gender": "male",
+      "email": "william.cooper@example.com",
+      "phone_number": "585.555.1010",
+      "password": "WilliamSecure654@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-07T12:45:30Z",
+      "created_at": "2025-02-28T11:15:35Z",
+      "updated_at": "2025-07-07T12:45:30Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 33,
+    "fields": {
+      "first_name": "Karen",
+      "last_name": "Rivera",
+      "username": "karen.rivera@example.com",
+      "gender": "female",
+      "email": "karen.rivera@example.com",
+      "phone_number": "315.555.1011",
+      "password": "KarenHealth987@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-06T14:20:15Z",
+      "created_at": "2025-06-10T13:25:50Z",
+      "updated_at": "2025-07-06T14:20:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 34,
+    "fields": {
+      "first_name": "Richard",
+      "last_name": "Turner",
+      "username": "richard.turner@example.com",
+      "gender": "male",
+      "email": "richard.turner@example.com",
+      "phone_number": "716.555.1012",
+      "password": "RichardSecure123@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-05T09:35:45Z",
+      "created_at": "2025-01-15T08:40:30Z",
+      "updated_at": "2025-07-05T09:35:45Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 35,
+    "fields": {
+      "first_name": "Dorothy",
+      "last_name": "Phillips",
+      "username": "dorothy.phillips@example.com",
+      "gender": "female",
+      "email": "dorothy.phillips@example.com",
+      "phone_number": "607.555.1013",
+      "password": "DorothyHealth456@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-04T17:50:20Z",
+      "created_at": "2025-03-08T16:55:15Z",
+      "updated_at": "2025-07-04T17:50:20Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 36,
+    "fields": {
+      "first_name": "Mark",
+      "last_name": "Campbell",
+      "username": "mark.campbell@example.com",
+      "gender": "male",
+      "email": "mark.campbell@example.com",
+      "phone_number": "518.555.1014",
+      "password": "MarkSecure789@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-03T11:25:35Z",
+      "created_at": "2025-04-12T10:30:40Z",
+      "updated_at": "2025-07-03T11:25:35Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 37,
+    "fields": {
+      "first_name": "Lisa",
+      "last_name": "Parker",
+      "username": "lisa.parker@example.com",
+      "gender": "female",
+      "email": "lisa.parker@example.com",
+      "phone_number": "585.555.1015",
+      "password": "LisaHealth321@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-02T15:40:50Z",
+      "created_at": "2025-05-18T14:45:25Z",
+      "updated_at": "2025-07-02T15:40:50Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 38,
+    "fields": {
+      "first_name": "Paul",
+      "last_name": "Edwards",
+      "username": "paul.edwards@example.com",
+      "gender": "male",
+      "email": "paul.edwards@example.com",
+      "phone_number": "716.555.1016",
+      "password": "PaulSecure654@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-07-01T13:15:25Z",
+      "created_at": "2025-02-05T12:20:30Z",
+      "updated_at": "2025-07-01T13:15:25Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 39,
+    "fields": {
+      "first_name": "Betty",
+      "last_name": "Collins",
+      "username": "betty.collins@example.com",
+      "gender": "female",
+      "email": "betty.collins@example.com",
+      "phone_number": "315.555.1017",
+      "password": "BettyHealth987@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-06-30T18:30:40Z",
+      "created_at": "2025-06-15T17:35:55Z",
+      "updated_at": "2025-06-30T18:30:40Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 40,
+    "fields": {
+      "first_name": "Donald",
+      "last_name": "Stewart",
+      "username": "donald.stewart@example.com",
+      "gender": "male",
+      "email": "donald.stewart@example.com",
+      "phone_number": "607.555.1018",
+      "password": "DonaldSecure123@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-06-29T10:45:15Z",
+      "created_at": "2025-01-22T09:50:20Z",
+      "updated_at": "2025-06-29T10:45:15Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 41,
+    "fields": {
+      "first_name": "Sandra",
+      "last_name": "Sanchez",
+      "username": "sandra.sanchez@example.com",
+      "gender": "female",
+      "email": "sandra.sanchez@example.com",
+      "phone_number": "914.555.1019",
+      "password": "SandraHealth456@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-06-28T12:20:30Z",
+      "created_at": "2025-03-30T11:25:45Z",
+      "updated_at": "2025-06-28T12:20:30Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.user",
+    "pk": 42,
+    "fields": {
+      "first_name": "Kenneth",
+      "last_name": "Morris",
+      "username": "kenneth.morris@example.com",
+      "gender": "male",
+      "email": "kenneth.morris@example.com",
+      "phone_number": "516.555.1020",
+      "password": "KennethSecure789@",
+      "role": "PATIENT",
+      "profile_image_url": "https://placeimg.com/380/380/people",
+      "is_verified": true,
+      "is_active": true,
+      "last_login_at": "2025-06-27T14:55:45Z",
+      "created_at": "2025-04-08T13:00:50Z",
+      "updated_at": "2025-06-27T14:55:45Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 2,
+    "fields": {
+      "name": "Sharp, Fischer and Cross Clinic",
+      "website_url": "https://farrell.com/",
+      "profile_image_url": "https://www.lorempixel.com/277/602",
+      "description": "Again star note born scene sense. Produce than live institution man film.",
+      "established_year": 1992,
+      "total_staff": 46,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-02-03 15:28:26Z",
+      "updated_at": "2025-03-21 07:18:01Z",
+      "is_deleted": null,
+      "user": 3
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 3,
+    "fields": {
+      "name": "Pugh-Singh Clinic",
+      "website_url": "https://www.knight-rose.org/",
+      "profile_image_url": "https://dummyimage.com/455x705",
+      "description": "Number least allow morning. Ball thing attention buy conference. Wide write laugh own series teach star.",
+      "established_year": 2015,
+      "total_staff": 12,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-03-03 09:07:50Z",
+      "updated_at": "2025-03-03 19:47:36Z",
+      "is_deleted": null,
+      "user": 4
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 4,
+    "fields": {
+      "name": "Gonzalez, Evans and Donaldson Clinic",
+      "website_url": "https://washington-adkins.org/",
+      "profile_image_url": "https://placeimg.com/352/81/any",
+      "description": "Top late beat show pattern idea. Could night political down boy picture. Recognize suffer affect agreement democratic suffer thousand.",
+      "established_year": 2006,
+      "total_staff": 84,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-03-31 22:20:32Z",
+      "updated_at": "2025-06-27 11:28:48Z",
+      "is_deleted": null,
+      "user": 5
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 5,
+    "fields": {
+      "name": "Smith-Holder Clinic",
+      "website_url": "http://vasquez.com/",
+      "profile_image_url": "https://placekitten.com/607/1018",
+      "description": "Day like police ready set meet throw. Enough show food however thus stuff. Particular chair bad yard popular.",
+      "established_year": 1997,
+      "total_staff": 91,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-03-08 03:19:17Z",
+      "updated_at": "2025-01-31 16:39:05Z",
+      "is_deleted": null,
+      "user": 6
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 6,
+    "fields": {
+      "name": "Obrien PLC Clinic",
+      "website_url": "http://leblanc.com/",
+      "profile_image_url": "https://www.lorempixel.com/374/873",
+      "description": "Analysis move long miss result accept cell. Give stop stock hit.",
+      "established_year": 1996,
+      "total_staff": 60,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-02-25 15:25:50Z",
+      "updated_at": "2025-04-18 02:23:58Z",
+      "is_deleted": null,
+      "user": 7
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 7,
+    "fields": {
+      "name": "Hardin-Barron Clinic",
+      "website_url": "http://green.com/",
+      "profile_image_url": "https://placeimg.com/627/633/any",
+      "description": "Far able four customer month quickly. Result along treat close. Control push also I specific feel.",
+      "established_year": 2010,
+      "total_staff": 97,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-04-02 14:23:14Z",
+      "updated_at": "2025-03-02 17:21:05Z",
+      "is_deleted": null,
+      "user": 8
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 8,
+    "fields": {
+      "name": "Martin Ltd Clinic",
+      "website_url": "http://www.wood.com/",
+      "profile_image_url": "https://placekitten.com/485/700",
+      "description": "Strong null threat. Receive huge fund dinner. Citizen score month management ready prevent assume today.",
+      "established_year": 1993,
+      "total_staff": 65,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-05-07 07:40:51Z",
+      "updated_at": "2025-06-06 02:39:56Z",
+      "is_deleted": null,
+      "user": 9
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 9,
+    "fields": {
+      "name": "Hoffman Ltd Clinic",
+      "website_url": "https://www.evans.net/",
+      "profile_image_url": "https://dummyimage.com/433x14",
+      "description": "Choice sense able strong. Else gun task church role response consider.\nRecent since because should student share. Morning discuss sit teacher.",
+      "established_year": 2008,
+      "total_staff": 65,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-07-12 17:02:42Z",
+      "updated_at": "2025-04-19 23:18:46Z",
+      "is_deleted": null,
+      "user": 10
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 10,
+    "fields": {
+      "name": "Black, Wu and Love Clinic",
+      "website_url": "https://www.schneider.net/",
+      "profile_image_url": "https://placekitten.com/345/684",
+      "description": "Would and world recent. Work follow product discuss expert scene. My partner join citizen friend.",
+      "established_year": 2022,
+      "total_staff": 56,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-05-02 20:18:01Z",
+      "updated_at": "2025-01-15 11:53:17Z",
+      "is_deleted": null,
+      "user": 11
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 11,
+    "fields": {
+      "name": "Gill Ltd Clinic",
+      "website_url": "http://www.solis.org/",
+      "profile_image_url": "https://dummyimage.com/176x734",
+      "description": "Song program happen able point week reach talk.\nBox cost down no at. Hard whatever job own lawyer order.",
+      "established_year": 1985,
+      "total_staff": 23,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-04-27 22:08:48Z",
+      "updated_at": "2025-03-27 03:32:09Z",
+      "is_deleted": null,
+      "user": 12
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 12,
+    "fields": {
+      "name": "Barry-Bates Clinic",
+      "website_url": "http://daniels.com/",
+      "profile_image_url": "https://placekitten.com/339/180",
+      "description": "Price city and computer everybody. To owner sure treat. Weight much difference speech.",
+      "established_year": 2016,
+      "total_staff": 20,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-01-15 15:36:47Z",
+      "updated_at": "2025-07-02 22:36:30Z",
+      "is_deleted": null,
+      "user": 13
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 13,
+    "fields": {
+      "name": "Bell, Morgan and Powell Clinic",
+      "website_url": "http://www.miles-taylor.com/",
+      "profile_image_url": "https://www.lorempixel.com/765/309",
+      "description": "Type fall sell job true money. Catch catch involve will despite first we tend. Baby pretty student image indeed.",
+      "established_year": 2009,
+      "total_staff": 28,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-06-01 11:03:45Z",
+      "updated_at": "2025-03-31 09:37:23Z",
+      "is_deleted": null,
+      "user": 14
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 14,
+    "fields": {
+      "name": "Harvey, Aguirre and Wilson Clinic",
+      "website_url": "https://www.sanchez-nelson.com/",
+      "profile_image_url": "https://www.lorempixel.com/608/129",
+      "description": "Line everything begin establish staff. Least message window defense.",
+      "established_year": 1983,
+      "total_staff": 33,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-01-03 10:27:14Z",
+      "updated_at": "2025-06-22 15:03:06Z",
+      "is_deleted": null,
+      "user": 15
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 15,
+    "fields": {
+      "name": "White, Turner and Adkins Clinic",
+      "website_url": "https://chandler.com/",
+      "profile_image_url": "https://www.lorempixel.com/78/1014",
+      "description": "Wish represent rule also front amount. Town able mind same computer.",
+      "established_year": 1992,
+      "total_staff": 54,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-03-20 14:30:13Z",
+      "updated_at": "2025-01-26 16:47:58Z",
+      "is_deleted": null,
+      "user": 16
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 16,
+    "fields": {
+      "name": "Davis-Blake Clinic",
+      "website_url": "https://www.stewart.com/",
+      "profile_image_url": "https://placekitten.com/113/752",
+      "description": "Question woman bring issue learn. Another society city song.\nRepublican compare staff job mind natural. Individual around cut agency car watch.",
+      "established_year": 2007,
+      "total_staff": 43,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-05-14 22:53:22Z",
+      "updated_at": "2025-02-20 05:03:52Z",
+      "is_deleted": null,
+      "user": 17
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 17,
+    "fields": {
+      "name": "Hall-Booth Clinic",
+      "website_url": "https://www.lewis-chavez.net/",
+      "profile_image_url": "https://dummyimage.com/26x306",
+      "description": "Book even environment herself above least suggest various.",
+      "established_year": 2011,
+      "total_staff": 63,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-04-04 23:46:27Z",
+      "updated_at": "2025-01-24 00:18:10Z",
+      "is_deleted": null,
+      "user": 18
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 18,
+    "fields": {
+      "name": "Marshall-Krause Clinic",
+      "website_url": "http://www.miller.com/",
+      "profile_image_url": "https://placeimg.com/601/626/any",
+      "description": "Watch Democrat leave dream economy. Away establish forget majority baby suffer leader.",
+      "established_year": 2010,
+      "total_staff": 91,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-05-18 20:01:23Z",
+      "updated_at": "2025-03-02 01:00:51Z",
+      "is_deleted": null,
+      "user": 19
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 19,
+    "fields": {
+      "name": "Bass, Sharp and Galloway Clinic",
+      "website_url": "http://young.info/",
+      "profile_image_url": "https://placekitten.com/160/819",
+      "description": "Cup understand figure include sound.\nRealize relationship its discussion student society next last. At school dark.",
+      "established_year": 2002,
+      "total_staff": 51,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-04-14 08:00:16Z",
+      "updated_at": "2025-04-01 04:25:36Z",
+      "is_deleted": null,
+      "user": 20
+    }
+  },
+  {
+    "model": "medbook.clinic",
+    "pk": 20,
+    "fields": {
+      "name": "Anderson, Sanchez and Allen Clinic",
+      "website_url": "https://graham-andrews.com/",
+      "profile_image_url": "https://placekitten.com/131/823",
+      "description": "Item role since television subject war decision. By describe easy view nature even. Speak save enough follow team area military.",
+      "established_year": 2016,
+      "total_staff": 86,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-02-16 23:29:15Z",
+      "updated_at": "2025-05-21 18:10:35Z",
+      "is_deleted": null,
+      "user": 21
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 2,
+    "fields": {
+      "user_id": 2,
+      "clinic_id": 1,
+      "license_number": "DOC2166024",
+      "consultation_fee": 150.38,
+      "online_consultation_fee": 46.62,
+      "average_consultation_time": 45,
+      "is_online_consultation_available": true,
+      "rating": 4.74,
+      "total_reviews": 142,
+      "total_patients": 331,
+      "bio": "Program walk relate window. Far less born themselves future hit. City adult share already almost kitchen.",
+      "years_of_experience": 24,
+      "specialty_id": 5,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-03-11 17:55:51Z",
+      "updated_at": "2025-04-11 16:29:08Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 3,
+    "fields": {
+      "user_id": 3,
+      "clinic_id": 2,
+      "license_number": "DOC1283749",
+      "consultation_fee": 120.50,
+      "online_consultation_fee": 40.00,
+      "average_consultation_time": 30,
+      "is_online_consultation_available": true,
+      "rating": 4.85,
+      "total_reviews": 95,
+      "total_patients": 245,
+      "bio": "Dedicated to patient care with a focus on preventive medicine and holistic health.",
+      "years_of_experience": 18,
+      "specialty_id": 3,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-02-15 09:12:34Z",
+      "updated_at": "2025-04-20 14:45:22Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 4,
+    "fields": {
+      "user_id": 4,
+      "clinic_id": 3,
+      "license_number": "DOC9876543",
+      "consultation_fee": 175.00,
+      "online_consultation_fee": 50.25,
+      "average_consultation_time": 40,
+      "is_online_consultation_available": false,
+      "rating": 4.62,
+      "total_reviews": 178,
+      "total_patients": 412,
+      "bio": "Experienced in chronic disease management and patient education.",
+      "years_of_experience": 15,
+      "specialty_id": 7,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-01-22 12:30:45Z",
+      "updated_at": "2025-03-30 10:15:17Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 5,
+    "fields": {
+      "user_id": 5,
+      "clinic_id": 4,
+      "license_number": "DOC4567891",
+      "consultation_fee": 200.75,
+      "online_consultation_fee": 60.00,
+      "average_consultation_time": 50,
+      "is_online_consultation_available": true,
+      "rating": 4.91,
+      "total_reviews": 203,
+      "total_patients": 567,
+      "bio": "Passionate about pediatric care and family health solutions.",
+      "years_of_experience": 22,
+      "specialty_id": 1,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 4,
+      "created_at": "2025-04-01 08:22:11Z",
+      "updated_at": "2025-05-10 13:50:29Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 6,
+    "fields": {
+      "user_id": 6,
+      "clinic_id": 5,
+      "license_number": "DOC3214567",
+      "consultation_fee": 135.20,
+      "online_consultation_fee": 45.80,
+      "average_consultation_time": 35,
+      "is_online_consultation_available": true,
+      "rating": 4.45,
+      "total_reviews": 88,
+      "total_patients": 198,
+      "bio": "Specialized in cardiology with a patient-centered approach.",
+      "years_of_experience": 19,
+      "specialty_id": 2,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-03-05 15:10:33Z",
+      "updated_at": "2025-04-25 11:20:44Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 7,
+    "fields": {
+      "user_id": 7,
+      "clinic_id": 6,
+      "license_number": "DOC7891234",
+      "consultation_fee": 160.00,
+      "online_consultation_fee": 48.90,
+      "average_consultation_time": 42,
+      "is_online_consultation_available": true,
+      "rating": 4.78,
+      "total_reviews": 156,
+      "total_patients": 389,
+      "bio": "Focused on orthopedic care and sports injury recovery.",
+      "years_of_experience": 17,
+      "specialty_id": 6,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-02-28 10:05:12Z",
+      "updated_at": "2025-04-15 09:35:27Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 8,
+    "fields": {
+      "user_id": 8,
+      "clinic_id": 7,
+      "license_number": "DOC6543210",
+      "consultation_fee": 145.30,
+      "online_consultation_fee": 42.15,
+      "average_consultation_time": 38,
+      "is_online_consultation_available": false,
+      "rating": 4.65,
+      "total_reviews": 134,
+      "total_patients": 276,
+      "bio": "Expert in dermatology with a focus on skin cancer prevention.",
+      "years_of_experience": 13,
+      "specialty_id": 4,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-03-20 14:25:56Z",
+      "updated_at": "2025-05-05 12:10:33Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 9,
+    "fields": {
+      "user_id": 9,
+      "clinic_id": 8,
+      "license_number": "DOC1472583",
+      "consultation_fee": 180.90,
+      "online_consultation_fee": 55.00,
+      "average_consultation_time": 47,
+      "is_online_consultation_available": true,
+      "rating": 4.88,
+      "total_reviews": 192,
+      "total_patients": 451,
+      "bio": "Specializing in neurology and headache management.",
+      "years_of_experience": 21,
+      "specialty_id": 8,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 4,
+      "created_at": "2025-01-10 11:45:22Z",
+      "updated_at": "2025-03-15 16:30:19Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 10,
+    "fields": {
+      "user_id": 10,
+      "clinic_id": 9,
+      "license_number": "DOC2583694",
+      "consultation_fee": 165.25,
+      "online_consultation_fee": 49.75,
+      "average_consultation_time": 41,
+      "is_online_consultation_available": true,
+      "rating": 4.72,
+      "total_reviews": 167,
+      "total_patients": 398,
+      "bio": "Committed to mental health and psychiatric care.",
+      "years_of_experience": 16,
+      "specialty_id": 9,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-02-10 13:20:45Z",
+      "updated_at": "2025-04-22 15:55:11Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 11,
+    "fields": {
+      "user_id": 11,
+      "clinic_id": 10,
+      "license_number": "DOC3692581",
+      "consultation_fee": 190.00,
+      "online_consultation_fee": 58.50,
+      "average_consultation_time": 50,
+      "is_online_consultation_available": true,
+      "rating": 4.93,
+      "total_reviews": 214,
+      "total_patients": 512,
+      "bio": "Expert in gastroenterology and digestive health.",
+      "years_of_experience": 25,
+      "specialty_id": 10,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-03-25 09:15:33Z",
+      "updated_at": "2025-05-12 14:25:47Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 12,
+    "fields": {
+      "user_id": 12,
+      "clinic_id": 11,
+      "license_number": "DOC7418529",
+      "consultation_fee": 140.80,
+      "online_consultation_fee": 43.20,
+      "average_consultation_time": 36,
+      "is_online_consultation_available": false,
+      "rating": 4.59,
+      "total_reviews": 123,
+      "total_patients": 287,
+      "bio": "Focused on endocrinology and hormonal disorders.",
+      "years_of_experience": 14,
+      "specialty_id": 11,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-01-30 16:40:22Z",
+      "updated_at": "2025-04-18 11:10:55Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 13,
+    "fields": {
+      "user_id": 13,
+      "clinic_id": 12,
+      "license_number": "DOC8529637",
+      "consultation_fee": 155.60,
+      "online_consultation_fee": 47.90,
+      "average_consultation_time": 44,
+      "is_online_consultation_available": true,
+      "rating": 4.80,
+      "total_reviews": 181,
+      "total_patients": 423,
+      "bio": "Specializing in rheumatology and autoimmune diseases.",
+      "years_of_experience": 20,
+      "specialty_id": 12,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 4,
+      "created_at": "2025-02-20 10:55:11Z",
+      "updated_at": "2025-04-28 13:35:29Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 14,
+    "fields": {
+      "user_id": 14,
+      "clinic_id": 13,
+      "license_number": "DOC9637412",
+      "consultation_fee": 170.40,
+      "online_consultation_fee": 51.25,
+      "average_consultation_time": 39,
+      "is_online_consultation_available": true,
+      "rating": 4.66,
+      "total_reviews": 149,
+      "total_patients": 356,
+      "bio": "Dedicated to oncology and cancer care.",
+      "years_of_experience": 18,
+      "specialty_id": 13,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-03-15 14:20:33Z",
+      "updated_at": "2025-05-08 09:45:22Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 15,
+    "fields": {
+      "user_id": 15,
+      "clinic_id": 14,
+      "license_number": "DOC1597532",
+      "consultation_fee": 185.70,
+      "online_consultation_fee": 56.80,
+      "average_consultation_time": 48,
+      "is_online_consultation_available": true,
+      "rating": 4.87,
+      "total_reviews": 197,
+      "total_patients": 465,
+      "bio": "Expert in pulmonology and respiratory health.",
+      "years_of_experience": 23,
+      "specialty_id": 14,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-01-05 12:15:44Z",
+      "updated_at": "2025-03-22 16:50:11Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 16,
+    "fields": {
+      "user_id": 16,
+      "clinic_id": 15,
+      "license_number": "DOC7531598",
+      "consultation_fee": 130.90,
+      "online_consultation_fee": 41.50,
+      "average_consultation_time": 33,
+      "is_online_consultation_available": false,
+      "rating": 4.55,
+      "total_reviews": 112,
+      "total_patients": 234,
+      "bio": "Focused on urology and men’s health.",
+      "years_of_experience": 12,
+      "specialty_id": 15,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-02-25 11:30:22Z",
+      "updated_at": "2025-04-30 14:25:33Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 17,
+    "fields": {
+      "user_id": 17,
+      "clinic_id": 16,
+      "license_number": "DOC9513574",
+      "consultation_fee": 195.20,
+      "online_consultation_fee": 59.00,
+      "average_consultation_time": 52,
+      "is_online_consultation_available": true,
+      "rating": 4.90,
+      "total_reviews": 221,
+      "total_patients": 534,
+      "bio": "Specializing in ophthalmology and vision care.",
+      "years_of_experience": 26,
+      "specialty_id": 16,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 4,
+      "created_at": "2025-03-10 09:45:55Z",
+      "updated_at": "2025-05-15 12:10:44Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 18,
+    "fields": {
+      "user_id": 18,
+      "clinic_id": 17,
+      "license_number": "DOC3579514",
+      "consultation_fee": 150.00,
+      "online_consultation_fee": 45.00,
+      "average_consultation_time": 37,
+      "is_online_consultation_available": true,
+      "rating": 4.70,
+      "total_reviews": 165,
+      "total_patients": 387,
+      "bio": "Dedicated to ENT and hearing health solutions.",
+      "years_of_experience": 17,
+      "specialty_id": 17,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 3,
+      "created_at": "2025-01-15 15:20:11Z",
+      "updated_at": "2025-04-10 10:55:22Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 19,
+    "fields": {
+      "user_id": 19,
+      "clinic_id": 18,
+      "license_number": "DOC2581479",
+      "consultation_fee": 175.80,
+      "online_consultation_fee": 53.40,
+      "average_consultation_time": 46,
+      "is_online_consultation_available": true,
+      "rating": 4.82,
+      "total_reviews": 188,
+      "total_patients": 442,
+      "bio": "Expert in nephrology and kidney health.",
+      "years_of_experience": 21,
+      "specialty_id": 18,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 2,
+      "created_at": "2025-02-05 13:10:33Z",
+      "updated_at": "2025-04-20 15:30:11Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 20,
+    "fields": {
+      "user_id": 20,
+      "clinic_id": 19,
+      "license_number": "DOC1479632",
+      "consultation_fee": 160.50,
+      "online_consultation_fee": 48.75,
+      "average_consultation_time": 43,
+      "is_online_consultation_available": false,
+      "rating": 4.68,
+      "total_reviews": 143,
+      "total_patients": 321,
+      "bio": "Focused on allergy and immunology care.",
+      "years_of_experience": 15,
+      "specialty_id": 19,
+      "is_primary": false,
+      "is_active": true,
+      "verified_by": 21,
+      "created_at": "2025-03-01 10:25:44Z",
+      "updated_at": "2025-05-01 11:45:55Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.doctor",
+    "pk": 21,
+    "fields": {
+      "user_id": 21,
+      "clinic_id": 20,
+      "license_number": "DOC3697418",
+      "consultation_fee": 200.00,
+      "online_consultation_fee": 60.00,
+      "average_consultation_time": 49,
+      "is_online_consultation_available": true,
+      "rating": 4.95,
+      "total_reviews": 230,
+      "total_patients": 560,
+      "bio": "Specializing in infectious diseases and global health.",
+      "years_of_experience": 27,
+      "specialty_id": 20,
+      "is_primary": true,
+      "is_active": true,
+      "verified_by": 4,
+      "created_at": "2025-01-25 12:35:22Z",
+      "updated_at": "2025-04-15 14:20:33Z",
+      "is_deleted": null
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 1,
+    "fields": {
+      "user": 23,
+      "birthday": "1985-03-15",
+      "blood_group": "A+",
+      "medical_allergies": "Penicillin, Shellfish",
+      "current_medications": "Lisinopril 10mg daily, Metformin 500mg twice daily",
+      "insurance_provider": "Blue Cross Blue Shield",
+      "insurance_number": "BC123456789",
+      "is_deleted": null,
+      "created_at": "2024-01-15T08:30:00Z",
+      "updated_at": "2024-01-15T08:30:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 2,
+    "fields": {
+      "user": 24,
+      "birthday": "1992-07-22",
+      "blood_group": "O-",
+      "medical_allergies": "Latex, Aspirin",
+      "current_medications": "Birth control pills, Vitamin D3 1000 IU daily",
+      "insurance_provider": "Aetna",
+      "insurance_number": "AET987654321",
+      "is_deleted": null,
+      "created_at": "2024-01-16T09:15:00Z",
+      "updated_at": "2024-01-16T09:15:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 3,
+    "fields": {
+      "user": 25,
+      "birthday": "1978-11-08",
+      "blood_group": "B+",
+      "medical_allergies": "Sulfa drugs, Peanuts",
+      "current_medications": "Atorvastatin 20mg daily, Omeprazole 40mg daily",
+      "insurance_provider": "Cigna",
+      "insurance_number": "CIG456789123",
+      "is_deleted": null,
+      "created_at": "2024-01-17T10:45:00Z",
+      "updated_at": "2024-01-17T10:45:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 4,
+    "fields": {
+      "user": 26,
+      "birthday": "1995-05-12",
+      "blood_group": "AB+",
+      "medical_allergies": null,
+      "current_medications": "Albuterol inhaler as needed",
+      "insurance_provider": "United Healthcare",
+      "insurance_number": "UHC789123456",
+      "is_deleted": null,
+      "created_at": "2024-01-18T11:20:00Z",
+      "updated_at": "2024-01-18T11:20:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 5,
+    "fields": {
+      "user": 27,
+      "birthday": "1988-09-30",
+      "blood_group": "A-",
+      "medical_allergies": "Codeine, Dairy products",
+      "current_medications": "Levothyroxine 50mcg daily, Calcium carbonate 1000mg daily",
+      "insurance_provider": "Humana",
+      "insurance_number": "HUM321654987",
+      "is_deleted": null,
+      "created_at": "2024-01-19T12:00:00Z",
+      "updated_at": "2024-01-19T12:00:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 6,
+    "fields": {
+      "user": 28,
+      "birthday": "1982-12-25",
+      "blood_group": "O+",
+      "medical_allergies": "Ibuprofen, Eggs",
+      "current_medications": "Sertraline 100mg daily, Multivitamin daily",
+      "insurance_provider": "Kaiser Permanente",
+      "insurance_number": "KP654987321",
+      "is_deleted": null,
+      "created_at": "2024-01-20T13:30:00Z",
+      "updated_at": "2024-01-20T13:30:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 7,
+    "fields": {
+      "user": 29,
+      "birthday": "1976-04-18",
+      "blood_group": "B-",
+      "medical_allergies": "Morphine, Tree nuts",
+      "current_medications": "Amlodipine 5mg daily, Metoprolol 25mg twice daily",
+      "insurance_provider": "Anthem",
+      "insurance_number": "ANT147258369",
+      "is_deleted": null,
+      "created_at": "2024-01-21T14:15:00Z",
+      "updated_at": "2024-01-21T14:15:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 8,
+    "fields": {
+      "user": 30,
+      "birthday": "1991-08-03",
+      "blood_group": "AB-",
+      "medical_allergies": "Vancomycin",
+      "current_medications": "Fluoxetine 20mg daily, Iron supplement 325mg daily",
+      "insurance_provider": "Molina Healthcare",
+      "insurance_number": "MOL369258147",
+      "is_deleted": null,
+      "created_at": "2024-01-22T15:45:00Z",
+      "updated_at": "2024-01-22T15:45:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 9,
+    "fields": {
+      "user": 31,
+      "birthday": "1984-01-14",
+      "blood_group": "A+",
+      "medical_allergies": "Contrast dye, Strawberries",
+      "current_medications": "Warfarin 5mg daily, Vitamin K 100mcg daily",
+      "insurance_provider": "Medicaid",
+      "insurance_number": "MCD582741639",
+      "is_deleted": null,
+      "created_at": "2024-01-23T16:20:00Z",
+      "updated_at": "2024-01-23T16:20:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 10,
+    "fields": {
+      "user": 32,
+      "birthday": "1993-06-27",
+      "blood_group": "O+",
+      "medical_allergies": null,
+      "current_medications": "Prenatal vitamins, Folic acid 400mcg daily",
+      "insurance_provider": "Blue Cross Blue Shield",
+      "insurance_number": "BC741852963",
+      "is_deleted": null,
+      "created_at": "2024-01-24T17:00:00Z",
+      "updated_at": "2024-01-24T17:00:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 11,
+    "fields": {
+      "user": 33,
+      "birthday": "1987-10-09",
+      "blood_group": "B+",
+      "medical_allergies": "Erythromycin, Soy",
+      "current_medications": "Losartan 50mg daily, Hydrochlorothiazide 25mg daily",
+      "insurance_provider": "Aetna",
+      "insurance_number": "AET963852741",
+      "is_deleted": null,
+      "created_at": "2024-01-25T18:30:00Z",
+      "updated_at": "2024-01-25T18:30:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 12,
+    "fields": {
+      "user": 34,
+      "birthday": "1979-02-16",
+      "blood_group": "A-",
+      "medical_allergies": "Tetracycline, Milk",
+      "current_medications": "Insulin glargine 20 units daily, Metformin 1000mg twice daily",
+      "insurance_provider": "Cigna",
+      "insurance_number": "CIG159753468",
+      "is_deleted": null,
+      "created_at": "2024-01-26T19:15:00Z",
+      "updated_at": "2024-01-26T19:15:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 13,
+    "fields": {
+      "user": 35,
+      "birthday": "1996-11-21",
+      "blood_group": "O-",
+      "medical_allergies": "Doxycycline, Tomatoes",
+      "current_medications": "Adderall XR 20mg daily, Omega-3 1000mg daily",
+      "insurance_provider": "United Healthcare",
+      "insurance_number": "UHC753951846",
+      "is_deleted": null,
+      "created_at": "2024-01-27T20:00:00Z",
+      "updated_at": "2024-01-27T20:00:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 14,
+    "fields": {
+      "user": 36,
+      "birthday": "1983-07-05",
+      "blood_group": "AB+",
+      "medical_allergies": "Chloramphenicol, Sesame seeds",
+      "current_medications": "Prednisone 10mg daily, Calcium 600mg twice daily",
+      "insurance_provider": "Humana",
+      "insurance_number": "HUM846157392",
+      "is_deleted": null,
+      "created_at": "2024-01-28T21:45:00Z",
+      "updated_at": "2024-01-28T21:45:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 15,
+    "fields": {
+      "user": 37,
+      "birthday": "1990-12-13",
+      "blood_group": "B-",
+      "medical_allergies": "Quinolones, Wheat",
+      "current_medications": "Montelukast 10mg daily, Cetirizine 10mg daily",
+      "insurance_provider": "Kaiser Permanente",
+      "insurance_number": "KP392847561",
+      "is_deleted": null,
+      "created_at": "2024-01-29T22:30:00Z",
+      "updated_at": "2024-01-29T22:30:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 16,
+    "fields": {
+      "user": 38,
+      "birthday": "1981-05-28",
+      "blood_group": "A+",
+      "medical_allergies": "Tramadol, Bananas",
+      "current_medications": "Gabapentin 300mg three times daily, Vitamin B12 1000mcg daily",
+      "insurance_provider": "Anthem",
+      "insurance_number": "ANT571849263",
+      "is_deleted": null,
+      "created_at": "2024-01-30T23:15:00Z",
+      "updated_at": "2024-01-30T23:15:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 17,
+    "fields": {
+      "user": 39,
+      "birthday": "1994-09-11",
+      "blood_group": "O+",
+      "medical_allergies": null,
+      "current_medications": "Escitalopram 10mg daily, Probiotics daily",
+      "insurance_provider": "Molina Healthcare",
+      "insurance_number": "MOL684279135",
+      "is_deleted": null,
+      "created_at": "2024-01-31T08:00:00Z",
+      "updated_at": "2024-01-31T08:00:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 18,
+    "fields": {
+      "user": 40,
+      "birthday": "1986-03-07",
+      "blood_group": "AB-",
+      "medical_allergies": "Cephalexin, Citrus fruits",
+      "current_medications": "Tamsulosin 0.4mg daily, Saw palmetto 320mg daily",
+      "insurance_provider": "Medicaid",
+      "insurance_number": "MCD135792468",
+      "is_deleted": null,
+      "created_at": "2024-02-01T09:30:00Z",
+      "updated_at": "2024-02-01T09:30:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 19,
+    "fields": {
+      "user": 41,
+      "birthday": "1977-08-19",
+      "blood_group": "B+",
+      "medical_allergies": "Diclofenac, Avocado",
+      "current_medications": "Simvastatin 40mg daily, Aspirin 81mg daily",
+      "insurance_provider": "Blue Cross Blue Shield",
+      "insurance_number": "BC468135792",
+      "is_deleted": null,
+      "created_at": "2024-02-02T10:45:00Z",
+      "updated_at": "2024-02-02T10:45:00Z"
+    }
+  },
+  {
+    "model": "medbook.patient",
+    "pk": 20,
+    "fields": {
+      "user": 42,
+      "birthday": "1989-01-26",
+      "blood_group": "A-",
+      "medical_allergies": "Amoxicillin, Corn",
+      "current_medications": "Topiramate 100mg twice daily, Magnesium 400mg daily",
+      "insurance_provider": "Aetna",
+      "insurance_number": "AET792468135",
+      "is_deleted": null,
+      "created_at": "2024-02-03T11:20:00Z",
+      "updated_at": "2024-02-03T11:20:00Z"
+    }
+  }
+]
