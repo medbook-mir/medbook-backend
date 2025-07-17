@@ -1,3 +1,4 @@
+import os
 import random
 import re
 import string
@@ -83,7 +84,7 @@ class User(AbstractUser, BaseTimeStampModel):
         send_mail(
             "Your Medbook Verification Code",
             f"Your email verification code is: {code}",
-            "example@gmail.com",
+            os.getenv('EMAIL_HOST_USER'),
             [self.email],
             fail_silently=False,
         )
@@ -152,7 +153,6 @@ class Clinic(BaseTimeStampModel):
 
     def __str__(self):
         return self.name
-
 
 class Doctor(BaseTimeStampModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
