@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework import generics, status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -11,9 +12,11 @@ from rest_framework_simplejwt.serializers import (
 )
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
-from .models import MedicalTest
+from .models import Doctor, MedicalTest
 from .serializers import (
+    DoctorDetailSerializer,
     DoctorOrClinicSignupSerializer,
+    DoctorSerializer,
     SendOTPSerializer,
     TestSerializer,
     VerifyOTPSerializer,
@@ -416,3 +419,389 @@ class DoctorOrClinicSignupView(APIView):
                 status=status.HTTP_201_CREATED,
             )
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DoctorPagination(PageNumberPagination):
+    """Custom pagination class for doctor listings."""
+    
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    page_query_param = 'page'
+
+
+class GetDoctorsView(APIView):
+    """API view for retrieving a paginated list of doctors."""
+    
+    permission_classes = [IsAuthenticated]
+    pagination_class = DoctorPagination
+
+    @extend_schema(
+        operation_id="get_doctors",
+        summary="Get Doctors List API",
+        description=(
+            "Retrieve a paginated list of all active doctors "
+            "with their basic information"
+        ),
+        parameters=[
+            {
+                "name": "page",
+                "in": "query",
+                "description": "Page number for pagination",
+                "required": False,
+                "type": "integer",
+                "default": 1,
+            },
+            {
+                "name": "page_size",
+                "in": "query",
+                "description": "Number of items per page (max 100)",
+                "required": False,
+                "type": "integer",
+                "default": 10,
+            },
+            {
+                "name": "specialty",
+                "in": "query",
+                "description": "Filter doctors by specialty ID",
+                "required": False,
+                "type": "integer",
+            },
+            {
+                "name": "clinic",
+                "in": "query",
+                "description": "Filter doctors by clinic ID",
+                "required": False,
+                "type": "integer",
+            },
+            {
+                "name": "is_online",
+                "in": "query",
+                "description": "Filter doctors by online consultation availability",
+                "required": False,
+                "type": "boolean",
+            },
+            {
+                "name": "is_primary",
+                "in": "query",
+                "description": "Filter doctors by primary care status",
+                "required": False,
+                "type": "boolean",
+            },
+        ],
+        responses={
+            200: OpenApiResponse(
+                response={
+                    "type": "object",
+                    "properties": {
+                        "count": {"type": "integer", "example": 25},
+                        "next": {
+                            "type": "string",
+                            "nullable": True,
+                            "example": "http://example.com/api/doctors/?page=2"
+                        },
+                        "previous": {
+                            "type": "string",
+                            "nullable": True,
+                            "example": None
+                        },
+                        "results": {
+                            "type": "array",
+                            "items": {"$ref": "#/components/schemas/DoctorSerializer"},
+                        },
+                    },
+                },
+                description="Paginated list of doctors retrieved successfully",
+            ),
+            400: OpenApiResponse(description="Invalid query parameters"),
+        },
+        examples=[
+            OpenApiExample(
+                name="Successful Response",
+                value={
+                    "count": 25,
+                    "next": "http://example.com/api/doctors/?page=2",
+                    "previous": None,
+                    "results": [
+                        {
+                            "id": 1,
+                            "user": {
+                                "id": 1,
+                                "first_name": "John",
+                                "last_name": "Doe",
+                                "email": "john.doe@example.com",
+                                "phone_number": "+998901234567",
+                                "gender": "male",
+                                "profile_image_url": "https://example.com/doctor1.jpg",
+                                "is_verified": True,
+                            },
+                            "clinic": {
+                                "id": 1,
+                                "name": "Health Plus Medical Center",
+                                "website_url": "https://healthplus.com",
+                                "profile_image_url": "https://example.com/clinic1.jpg",
+                                "description": "Leading medical center",
+                                "established_year": 2010,
+                                "total_staff": 50,
+                            },
+                            "license_number": "MD123456",
+                            "consultation_fee": "50.00",
+                            "online_consultation_fee": "30.00",
+                            "average_consultation_time": 30,
+                            "is_online_consultation_available": True,
+                            "rating": "4.8",
+                            "total_reviews": 150,
+                            "total_patients": 500,
+                            "bio": "Experienced cardiologist with 10+ years of practice",
+                            "years_of_experience": 10,
+                            "specialty": {
+                                "id": 1,
+                                "name": "Cardiology",
+                                "description": "Heart and cardiovascular system",
+                                "category": "specialist",
+                            },
+                            "is_primary": False,
+                            "is_active": True,
+                            "created_at": "2024-01-15T10:30:00Z",
+                            "updated_at": "2024-01-15T10:30:00Z",
+                        }
+                    ],
+                },
+                response_only=True,
+            )
+        ],
+        tags=["Doctors"],
+    )
+    def get(self, request):
+        """Handle GET request to retrieve paginated list of doctors."""
+        try:
+            # Get query parameters for filtering
+            specialty_id = request.query_params.get("specialty")
+            clinic_id = request.query_params.get("clinic")
+            is_online = request.query_params.get("is_online")
+            is_primary = request.query_params.get("is_primary")
+
+            # Start with all active doctors
+            queryset = Doctor.objects.filter(
+                is_active=True, 
+                is_deleted__isnull=True
+            )
+
+            # Apply filters
+            if specialty_id:
+                queryset = queryset.filter(specialty_id=specialty_id)
+            
+            if clinic_id:
+                queryset = queryset.filter(clinic_id=clinic_id)
+            
+            if is_online is not None:
+                is_online_bool = is_online.lower() == "true"
+                queryset = queryset.filter(
+                    is_online_consultation_available=is_online_bool
+                )
+            
+            if is_primary is not None:
+                is_primary_bool = is_primary.lower() == "true"
+                queryset = queryset.filter(is_primary=is_primary_bool)
+
+            # Order by rating (highest first) and then by name
+            queryset = queryset.order_by(
+                "-rating", 
+                "user__first_name", 
+                "user__last_name"
+            )
+
+            # Apply pagination
+            paginator = self.pagination_class()
+            paginated_queryset = paginator.paginate_queryset(queryset, request)
+            
+            # Serialize the data
+            serializer = DoctorSerializer(paginated_queryset, many=True)
+            
+            return paginator.get_paginated_response(serializer.data)
+
+        except Exception as e:
+            return Response(
+                {"error": f"Error retrieving doctors: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+
+class GetDoctorByIdView(APIView):
+    """API view for retrieving a specific doctor by ID."""
+    
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        operation_id="get_doctor_by_id",
+        summary="Get Doctor by ID API",
+        description=(
+            "Retrieve detailed information about a specific doctor by their ID"
+        ),
+        parameters=[
+            {
+                "name": "id",
+                "in": "path",
+                "description": "Doctor ID",
+                "required": True,
+                "type": "integer",
+            },
+        ],
+        responses={
+            200: OpenApiResponse(
+                response={
+                    "type": "object",
+                    "properties": {
+                        "id": {"type": "integer", "example": 1},
+                        "user": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "integer"},
+                                "first_name": {"type": "string"},
+                                "last_name": {"type": "string"},
+                                "email": {"type": "string"},
+                                "phone_number": {"type": "string"},
+                                "gender": {"type": "string"},
+                                "profile_image_url": {"type": "string"},
+                                "is_verified": {"type": "boolean"},
+                            },
+                        },
+                        "clinic": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "integer"},
+                                "name": {"type": "string"},
+                                "website_url": {"type": "string"},
+                                "profile_image_url": {"type": "string"},
+                                "description": {"type": "string"},
+                                "established_year": {"type": "integer"},
+                                "total_staff": {"type": "integer"},
+                            },
+                        },
+                        "license_number": {"type": "string"},
+                        "consultation_fee": {"type": "string"},
+                        "online_consultation_fee": {"type": "string"},
+                        "average_consultation_time": {"type": "integer"},
+                        "is_online_consultation_available": {"type": "boolean"},
+                        "rating": {"type": "string"},
+                        "total_reviews": {"type": "integer"},
+                        "total_patients": {"type": "integer"},
+                        "bio": {"type": "string"},
+                        "years_of_experience": {"type": "integer"},
+                        "specialty": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "integer"},
+                                "name": {"type": "string"},
+                                "description": {"type": "string"},
+                                "category": {"type": "string"},
+                            },
+                        },
+                        "is_primary": {"type": "boolean"},
+                        "is_active": {"type": "boolean"},
+                        "verified_by": {
+                            "type": "object",
+                            "properties": {
+                                "id": {"type": "integer"},
+                                "first_name": {"type": "string"},
+                                "last_name": {"type": "string"},
+                            },
+                        },
+                        "created_at": {"type": "string", "format": "date-time"},
+                        "updated_at": {"type": "string", "format": "date-time"},
+                    },
+                },
+                description="Doctor details retrieved successfully",
+            ),
+            404: OpenApiResponse(
+                response={
+                    "type": "object",
+                    "properties": {
+                        "error": {
+                            "type": "string",
+                            "example": "Doctor not found",
+                        },
+                    },
+                },
+                description="Doctor not found",
+            ),
+        },
+        examples=[
+            OpenApiExample(
+                name="Successful Response",
+                value={
+                    "id": 1,
+                    "user": {
+                        "id": 1,
+                        "first_name": "John",
+                        "last_name": "Doe",
+                        "email": "john.doe@example.com",
+                        "phone_number": "+998901234567",
+                        "gender": "male",
+                        "profile_image_url": "https://example.com/doctor1.jpg",
+                        "is_verified": True,
+                    },
+                    "clinic": {
+                        "id": 1,
+                        "name": "Health Plus Medical Center",
+                        "website_url": "https://healthplus.com",
+                        "profile_image_url": "https://example.com/clinic1.jpg",
+                        "description": "Leading medical center",
+                        "established_year": 2010,
+                        "total_staff": 50,
+                    },
+                    "license_number": "MD123456",
+                    "consultation_fee": "50.00",
+                    "online_consultation_fee": "30.00",
+                    "average_consultation_time": 30,
+                    "is_online_consultation_available": True,
+                    "rating": "4.8",
+                    "total_reviews": 150,
+                    "total_patients": 500,
+                    "bio": (
+                        "Experienced cardiologist with 10+ years of practice "
+                        "specializing in interventional cardiology and preventive care."
+                    ),
+                    "years_of_experience": 10,
+                    "specialty": {
+                        "id": 1,
+                        "name": "Cardiology",
+                        "description": "Heart and cardiovascular system",
+                        "category": "specialist",
+                    },
+                    "is_primary": False,
+                    "is_active": True,
+                    "verified_by": {
+                        "id": 1,
+                        "first_name": "Admin",
+                        "last_name": "User",
+                    },
+                    "created_at": "2024-01-15T10:30:00Z",
+                    "updated_at": "2024-01-15T10:30:00Z",
+                },
+                response_only=True,
+            )
+        ],
+        tags=["Doctors"],
+    )
+    def get(self, request, doctor_id):
+        """Handle GET request to retrieve a specific doctor by ID."""
+        try:
+            doctor = Doctor.objects.get(
+                id=doctor_id, 
+                is_active=True, 
+                is_deleted__isnull=True
+            )
+            serializer = DoctorDetailSerializer(doctor)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+            
+        except Doctor.DoesNotExist:
+            return Response(
+                {"error": "Doctor not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        except Exception as e:
+            return Response(
+                {"error": f"Error retrieving doctor: {str(e)}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
