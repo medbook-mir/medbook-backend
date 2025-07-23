@@ -15,6 +15,8 @@ from .views import (
     DecoratedTokenObtainPairView,
     DecoratedTokenRefreshView,
     DoctorOrClinicSignupView,
+    GetDoctorByIdView,
+    GetDoctorsView,
     SendOTPView,
     TestListView,
     VerifyOTPView,
@@ -36,6 +38,8 @@ common_patterns = [
         "api/token/refresh/", DecoratedTokenRefreshView.as_view(), name="token_refresh"
     ),
     path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
+    path("api/doctors/", GetDoctorsView.as_view(), name="doctors-list"),
+    path("api/doctors/<int:doctor_id>/", GetDoctorByIdView.as_view(), name="doctor-detail"),
     path("accounts/", include("allauth.urls")),
     path(
         "api/auth/google/",

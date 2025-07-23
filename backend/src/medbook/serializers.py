@@ -190,3 +190,87 @@ class TestSerializer(serializers.ModelSerializer):
     class Meta:
         model = MedicalTest
         fields = ["id", "name", "age", "created_at"]
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField()
+    specialty = serializers.SerializerMethodField()
+    clinic = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Doctor
+        fields = [
+            "id",
+            "user",
+            "clinic",
+            "license_number",
+            "consultation_fee",
+            "online_consultation_fee",
+            "average_consultation_time",
+            "is_online_consultation_available",
+            "rating",
+            "total_reviews",
+            "total_patients",
+            "bio",
+            "years_of_experience",
+            "specialty",
+            "is_primary",
+            "is_active",
+            "created_at",
+            "updated_at",
+        ]
+
+    def get_user(self, obj):
+        if obj.user:
+            return {
+                "id": obj.user.id,
+                "first_name": obj.user.first_name,
+                "last_name": obj.user.last_name,
+                "email": obj.user.email,
+                "phone_number": obj.user.phone_number,
+                "gender": obj.user.gender,
+                "profile_image_url": obj.user.profile_image_url,
+                "is_verified": obj.user.is_verified,
+            }
+        return None
+
+    def get_specialty(self, obj):
+        if obj.specialty:
+            return {
+                "id": obj.specialty.id,
+                "name": obj.specialty.name,
+                "description": obj.specialty.description,
+                "category": obj.specialty.category,
+            }
+        return None
+
+    def get_clinic(self, obj):
+        if obj.clinic:
+            return {
+                "id": obj.clinic.id,
+                "name": obj.clinic.name,
+                "website_url": obj.clinic.website_url,
+                "profile_image_url": obj.clinic.profile_image_url,
+                "description": obj.clinic.description,
+                "established_year": obj.clinic.established_year,
+                "total_staff": obj.clinic.total_staff,
+            }
+        return None
+
+
+class DoctorDetailSerializer(DoctorSerializer):
+    """Extended serializer for detailed doctor information"""
+    
+    class Meta(DoctorSerializer.Meta):
+        fields = DoctorSerializer.Meta.fields + [
+            "verified_by",
+        ]
+
+    def get_verified_by(self, obj):
+        if obj.verified_by:
+            return {
+                "id": obj.verified_by.id,
+                "first_name": obj.verified_by.first_name,
+                "last_name": obj.verified_by.last_name,
+            }
+        return None
