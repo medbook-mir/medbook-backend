@@ -51,6 +51,7 @@ common_patterns = [
 
 if SERVICE_TYPE == "api":
     urlpatterns = [
+        path("", RedirectView.as_view(url="/swagger/", permanent=False)),
         path("schema/", SpectacularAPIView.as_view(), name="schema"),
         path(
             "swagger/",
