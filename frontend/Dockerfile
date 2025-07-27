@@ -1,9 +1,8 @@
 FROM node:18-alpine
 WORKDIR /app
-
-COPY package.json ./
-
+COPY package.json package-lock.json* ./
 RUN npm install
-COPY --chown=node:node . .
-
-CMD ["npm", "run", "dev"]
+COPY . .
+RUN npm run build
+EXPOSE 3000
+CMD ["npm", "start"]
