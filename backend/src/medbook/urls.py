@@ -23,7 +23,7 @@ from .views import (
     health_check,
 )
 
-SERVICE_TYPE = os.getenv("SERVICE_TYPE", "backend")
+SERVICE_TYPE = os.getenv("SERVICE_TYPE", "api")
 common_patterns = [
     path("admin/", admin.site.urls),
     path("api/auth/send/", SendOTPView.as_view(), name="patient_signup"),
