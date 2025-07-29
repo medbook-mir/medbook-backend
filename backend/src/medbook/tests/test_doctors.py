@@ -21,21 +21,6 @@ class DoctorViewsTests(TestCase):
         """Set up test data and authentication."""
         self.client = APIClient()
         
-        # Create test user for authentication
-        self.test_user = User.objects.create(
-            username="testuser",
-            email="testuser@example.com",
-            phone_number="1234567890",
-            password=make_password("testpassword123"),
-            is_active=True,
-            role="PATIENT",
-        )
-        
-        # Create authentication token
-        refresh = RefreshToken.for_user(self.test_user)
-        self.token = str(refresh.access_token)
-        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {self.token}")
-        
         # Create test specialty
         self.specialty = Specialty.objects.create(
             name="Cardiology",
@@ -114,7 +99,7 @@ class DoctorViewsTests(TestCase):
         )
 
     def test_get_doctors_list_success(self):
-        """Test successful retrieval of doctors list."""
+        """Test successful retrieval of doctors list without authentication."""
         response = self.client.get("/api/doctors/")
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -203,17 +188,8 @@ class DoctorViewsTests(TestCase):
         for doctor in response.data["results"]:
             self.assertTrue(doctor["is_primary"])
 
-    def test_get_doctors_list_unauthorized(self):
-        """Test that unauthorized requests are rejected."""
-        # Remove authentication
-        self.client.credentials()
-        
-        response = self.client.get("/api/doctors/")
-        
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
     def test_get_doctor_by_id_success(self):
-        """Test successful retrieval of a specific doctor."""
+        """Test successful retrieval of a specific doctor without authentication."""
         response = self.client.get(f"/api/doctors/{self.doctor1.id}/")
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -261,15 +237,6 @@ class DoctorViewsTests(TestCase):
         
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.data["error"], "Doctor not found")
-
-    def test_get_doctor_by_id_unauthorized(self):
-        """Test that unauthorized requests are rejected."""
-        # Remove authentication
-        self.client.credentials()
-        
-        response = self.client.get(f"/api/doctors/{self.doctor1.id}/")
-        
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_inactive_doctor_by_id(self):
         """Test that inactive doctors are not returned."""
@@ -333,6 +300,32 @@ class DoctorViewsTests(TestCase):
         # Should default to max_page_size (100)
         self.assertLessEqual(len(response.data["results"]), 100)
 
+    def test_get_doctors_empty_list(self):
+        """Test behavior when no doctors exist."""
+        # Remove all doctors
+        Doctor.objects.all().delete()
+
+        response = self.client.get("/api/doctors/")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 0)
+        self.assertEqual(len(response.data["results"]), 0)
+
+    def test_get_doctors_list_filter_no_results(self):
+        """Test filtering that returns no results."""
+        # Create a new specialty that no doctor has
+        new_specialty = Specialty.objects.create(
+            name="Test Specialty",
+            description="Test specialty",
+            category="specialist"
+        )
+
+        response = self.client.get(f"/api/doctors/?specialty={new_specialty.id}")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 0)
+        self.assertEqual(len(response.data["results"]), 0)
+
 
 # Example usage and testing instructions
 """
@@ -344,53 +337,40 @@ HOW TO TEST THE DOCTOR VIEWS:
    python manage.py test medbook.tests.test_doctors
    ```
 
-2. **Manual Testing with curl:**
+2. **Manual Testing with curl (No Authentication Required):**
 
    **Get Doctors List:**
    ```bash
    # Get all doctors
-   curl -H "Authorization: Bearer YOUR_TOKEN" \
-        http://localhost:8000/api/doctors/
+   curl http://localhost:8000/api/doctors/
    
    # With pagination
-   curl -H "Authorization: Bearer YOUR_TOKEN" \
-        http://localhost:8000/api/doctors/?page=1&page_size=10
+   curl "http://localhost:8000/api/doctors/?page=1&page_size=10"
    
    # With filters
-   curl -H "Authorization: Bearer YOUR_TOKEN" \
-        http://localhost:8000/api/doctors/?specialty=1&is_online=true
+   curl "http://localhost:8000/api/doctors/?specialty=1&is_online=true"
    ```
 
    **Get Doctor by ID:**
    ```bash
-   curl -H "Authorization: Bearer YOUR_TOKEN" \
-        http://localhost:8000/api/doctors/1/
+   curl http://localhost:8000/api/doctors/1/
    ```
 
 3. **Testing with Python requests:**
    ```python
    import requests
    
-   # Get access token first
-   auth_response = requests.post('http://localhost:8000/api/auth/login/', {
-       'username': 'testuser@example.com',
-       'password': 'testpassword123'
-   })
-   token = auth_response.json()['access']
-   
-   headers = {'Authorization': f'Bearer {token}'}
-   
-   # Test GetDoctorsView
-   response = requests.get('http://localhost:8000/api/doctors/', headers=headers)
+   # Test GetDoctorsView (no authentication needed)
+   response = requests.get('http://localhost:8000/api/doctors/')
    print(response.json())
    
-   # Test GetDoctorByIdView
-   response = requests.get('http://localhost:8000/api/doctors/1/', headers=headers)
+   # Test GetDoctorByIdView (no authentication needed)
+   response = requests.get('http://localhost:8000/api/doctors/1/')
    print(response.json())
    ```
 
 4. **Testing with Postman:**
-   - Set Authorization header: `Bearer YOUR_TOKEN`
+   - No authentication headers needed
    - GET http://localhost:8000/api/doctors/
    - GET http://localhost:8000/api/doctors/1/
    - Add query parameters for filtering
@@ -414,7 +394,7 @@ HOW TO TEST THE DOCTOR VIEWS:
            "phone_number": null,
            "gender": null,
            "profile_image_url": null,
-           "is_verified": false
+           "is_verified": true
          },
          "clinic": {
            "id": 1,
@@ -430,7 +410,7 @@ HOW TO TEST THE DOCTOR VIEWS:
          "online_consultation_fee": "30.00",
          "average_consultation_time": 30,
          "is_online_consultation_available": true,
-         "rating": "4.8",
+         "rating": "4.80",
          "total_reviews": 150,
          "total_patients": 500,
          "bio": "Experienced cardiologist with 10+ years of practice",
@@ -462,7 +442,7 @@ HOW TO TEST THE DOCTOR VIEWS:
        "phone_number": null,
        "gender": null,
        "profile_image_url": null,
-       "is_verified": false
+       "is_verified": true
      },
      "clinic": {
        "id": 1,
@@ -478,7 +458,7 @@ HOW TO TEST THE DOCTOR VIEWS:
      "online_consultation_fee": "30.00",
      "average_consultation_time": 30,
      "is_online_consultation_available": true,
-     "rating": "4.8",
+     "rating": "4.80",
      "total_reviews": 150,
      "total_patients": 500,
      "bio": "Experienced cardiologist with 10+ years of practice",
@@ -499,13 +479,6 @@ HOW TO TEST THE DOCTOR VIEWS:
 
 6. **Error Response Examples:**
 
-   **Unauthorized (401):**
-   ```json
-   {
-     "detail": "Authentication credentials were not provided."
-   }
-   ```
-
    **Doctor Not Found (404):**
    ```json
    {
@@ -519,4 +492,15 @@ HOW TO TEST THE DOCTOR VIEWS:
      "error": "Error retrieving doctors: invalid literal for int() with base 10: 'invalid'"
    }
    ```
+
+7. **Test Coverage:**
+   - ✅ Public access (no authentication required)
+   - ✅ Pagination functionality
+   - ✅ Filtering by specialty, clinic, online consultation, primary care
+   - ✅ Multiple filter combinations
+   - ✅ Ordering by rating and name
+   - ✅ Exclusion of inactive doctors
+   - ✅ Empty result handling
+   - ✅ Non-existent doctor handling
+   - ✅ Edge cases and error conditions
 """ 
