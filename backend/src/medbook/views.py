@@ -433,7 +433,7 @@ class DoctorPagination(PageNumberPagination):
 class GetDoctorsView(APIView):
     """API view for retrieving a paginated list of doctors."""
     
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
     pagination_class = DoctorPagination
 
     @extend_schema(
@@ -630,7 +630,7 @@ class GetDoctorsView(APIView):
 class GetDoctorByIdView(APIView):
     """API view for retrieving a specific doctor by ID."""
     
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     @extend_schema(
         operation_id="get_doctor_by_id",
