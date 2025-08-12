@@ -7,6 +7,8 @@ db.sqlite3
 /backend/static/
 /backend/staticfiles/
 /backend/src/celery.py
+/backend/images/
+media/
 
 /frontend/node_modules/
 /frontend/dist/
