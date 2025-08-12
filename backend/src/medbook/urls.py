@@ -5,6 +5,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
+from .routers import router
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularRedocView,
@@ -15,10 +16,7 @@ from .views import (
     DecoratedTokenObtainPairView,
     DecoratedTokenRefreshView,
     DoctorOrClinicSignupView,
-    GetDoctorByIdView,
-    GetDoctorsView,
     SendOTPView,
-    TestListView,
     VerifyOTPView,
     health_check,
 )
@@ -37,9 +35,8 @@ common_patterns = [
     path(
         "api/token/refresh/", DecoratedTokenRefreshView.as_view(), name="token_refresh"
     ),
-    path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
-    path("api/doctors/", GetDoctorsView.as_view(), name="doctors-list"),
-    path("api/doctors/<int:doctor_id>/", GetDoctorByIdView.as_view(), name="doctor-detail"),
+    # path("api/medical-tests/", TestListView.as_view(), name="medical-tests-list"),
+    path('api/', include(router.urls)),
     path("accounts/", include("allauth.urls")),
     path(
         "api/auth/google/",
@@ -73,3 +70,5 @@ else:
     ] + common_patterns
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
