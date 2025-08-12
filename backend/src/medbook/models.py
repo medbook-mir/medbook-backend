@@ -553,7 +553,7 @@ class Review(AbstractBaseTimeStampModel):
         blank=True,
         related_name="reviews",
     )
-    rating = models.FloatFields(null=False)
+    rating = models.FloatField(null=False)
     title = models.CharField(max_length=255, null=True, blank=True)
     comment = models.TextField(null=True, blank=True)
     would_recommend = models.BooleanField(null=True, blank=True)
