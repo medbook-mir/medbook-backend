@@ -22,7 +22,6 @@ from rest_framework_simplejwt.views import (
 )
 from .mixins import (
     BaseCreateRetrieveViewSet,
-    BaseCreateViewSet,
     BaseListViewSet,
     BaseRetrieveViewSet, 
     BaseViewSet
@@ -352,7 +351,7 @@ class VerifyOTPView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DoctorOrClinicSignupView(BaseCreateViewSet):
+class DoctorOrClinicSignupView(APIView):
     permission_classes = [AllowAny]
 
     @extend_schema(
