@@ -3,12 +3,54 @@ from datetime import date
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
+from django.shortcuts import get_object_or_404
 from django.db import transaction
 from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
-from .models import Clinic, Doctor, MedicalTest, Patient
+from .models import (
+    Clinic, 
+    ClinicDocument, 
+    ClinicImage, 
+    ClinicSocialMedia, 
+    ClinicWorkingHour, 
+    Doctor, 
+    DoctorCertificate, 
+    DoctorDocument, 
+    DoctorEducation, 
+    DoctorExperience, 
+    DoctorImage, 
+    DoctorLanguage, 
+    DoctorService, 
+    DoctorSocialMedia, 
+    DoctorWorkingHour, 
+    MedicalTest, 
+    Patient, 
+    PatientImage, 
+    Review,
+    Address,
+    Specialty
+)
 
 User = get_user_model()
+
+
+class StandardResponseSerializer(serializers.Serializer):
+    success = serializers.BooleanField()
+    message = serializers.CharField(required=False)
+
+
+class ListResponseSerializer(StandardResponseSerializer):
+    data = serializers.ListField(child=serializers.DictField())
+    count = serializers.IntegerField()
+
+
+class DetailResponseSerializer(StandardResponseSerializer):
+    data = serializers.DictField()
+
+
+class ErrorResponseSerializer(StandardResponseSerializer):
+    errors = serializers.DictField()
 
 
 class SendOTPSerializer(serializers.ModelSerializer):
@@ -20,13 +62,17 @@ class SendOTPSerializer(serializers.ModelSerializer):
         email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         phone_pattern = r"^\+?[\d\s-]{9,15}$"
 
-        if not (re.match(email_pattern, value) or re.match(phone_pattern, value)):
+        if not (
+            re.match(email_pattern, value) or re.match(phone_pattern, value)
+        ):
             raise serializers.ValidationError(
                 "Please enter a valid email or phone number."
             )
 
         if User.objects.filter(username=value).exists():
-            raise serializers.ValidationError("This contact is already registered.")
+            raise serializers.ValidationError(
+                "This contact is already registered."
+            )
         return value
 
     def validate_password(self, value):
@@ -39,7 +85,9 @@ class SendOTPSerializer(serializers.ModelSerializer):
         today = date.today()
 
         if value > today:
-            raise serializers.ValidationError("Birthday cannot be in the future.")
+            raise serializers.ValidationError(
+                "Birthday cannot be in the future."
+            )
         return value
 
     class Meta:
@@ -104,7 +152,9 @@ class DoctorOrClinicSignupSerializer(serializers.ModelSerializer):
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError("A user with this email already exists.")
+            raise serializers.ValidationError(
+                "A user with this email already exists."
+            )
         return value
 
     def validate(self, data):
@@ -192,85 +242,328 @@ class TestSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "age", "created_at"]
 
 
-class DoctorSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField()
-    specialty = serializers.SerializerMethodField()
-    clinic = serializers.SerializerMethodField()
+class UserInfoSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    gender = serializers.CharField()
+    email = serializers.EmailField()
+    phone_number = serializers.CharField(required=False)
+    profile_image = serializers.URLField(required=False)
+    is_verified = serializers.BooleanField()
+
+
+class SpecialtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialty
+        fields = ["id", "name", "category", "description", "is_active"]
+
+
+class AddressSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Address
+        exclude = ['updated_at']
+        read_only_fields = ('id', 'created_at')
+
+    def validate(self, data):
+        doctor = data.get('doctor')
+        clinic = data.get('clinic')
+        
+        if not doctor and not clinic:
+            raise serializers.ValidationError("Either doctor or clinic must be specified")
+        
+        if doctor and clinic:
+            raise serializers.ValidationError("Cannot specify both doctor and clinic")
+            
+        return data
+
+
+class VerifiedBySerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+
+
+class DoctorShortSerilaizer(serializers.ModelSerializer):
+    doctor_id = serializers.IntegerField(source="id")
+    user = UserInfoSerializer(read_only=True)
+    specialty = SpecialtySerializer(read_only=True)
+    address = AddressSerializer(read_only=True)
 
     class Meta:
         model = Doctor
+        fields = ["doctor_id", "user", "specialty", "address"]
+
+
+class BaseImageSerializer(serializers.ModelSerializer):
+    instance_model = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if not self.instance_model:
+            raise ValueError(f"{self.__class__.__name__} must define 'instance_model'")
+
+    def validate(self, attrs):
+        request = self.context.get('request')
+        if not request or not request.user.is_authenticated:
+            raise ValidationError("User must be authenticated")
+
+        try:
+            instance = self.instance_model.objects.get(user=request.user)
+            attrs['instance'] = instance
+        except self.instance_model.DoesNotExist:
+            raise ValidationError(f"No {self.instance_model.__name__} profile found for this user")
+        return attrs
+
+
+class ClinicImageSerializer(BaseImageSerializer):
+    instance_model = Clinic
+    clinic_id = serializers.IntegerField(source='instance.id', read_only=True)
+
+    class Meta:
+        model = ClinicImage
+        fields = ['id',  'clinic_id', 'image', 'status']
+        read_only_fields = ['id', 'instance']
+
+
+class DoctorImageSerializer(BaseImageSerializer):
+    instance_model = Doctor
+    doctor_id = serializers.IntegerField(source='instance.id', read_only=True)
+
+    class Meta:
+        model = DoctorImage
+        fields = ['id', 'doctor_id', 'image', 'status']
+        read_only_fields = ['id', 'instance']
+
+
+class PatientImageSerializer(BaseImageSerializer):
+    instance_model = Patient
+    patient_id = serializers.IntegerField(source='instance.id', read_only=True)
+
+    class Meta:
+        model = PatientImage
+        fields = ['id', 'patient_id', 'image', 'status']
+        read_only_fields = ['id', 'instance']
+
+
+class BaseDocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = [
+            'id', 
+            'instance',
+            'file',
+            'name', 
+            'is_active', 
+            'created_at', 
+        ]
+        read_only_fields = ['id', 'instance', 'created_at']
+
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        
+        if hasattr(instance, 'instance') and instance.instance:
+            model_name = instance.instance.__class__.__name__.lower()
+            field_name = f"{model_name}_id"
+            data[field_name] = data.pop('instance')
+        
+        return data
+
+
+class DoctorDocumentSerializer(BaseDocumentSerializer):
+    class Meta(BaseDocumentSerializer.Meta):
+        model = DoctorDocument
+        fields = BaseDocumentSerializer.Meta.fields
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        try:
+            doctor = Doctor.objects.get(user=user)
+            validated_data['instance'] = doctor
+        except Doctor.DoesNotExist:
+            raise serializers.ValidationError("No doctor profile found for this user")
+        
+        return super().create(validated_data)
+
+
+class ClinicDocumentSerializer(BaseDocumentSerializer):
+    class Meta(BaseDocumentSerializer.Meta):
+        model = ClinicDocument
+        fields = BaseDocumentSerializer.Meta.fields
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        try:
+            clinic = Clinic.objects.get(user=user)  
+            validated_data['instance'] = clinic
+        except Clinic.DoesNotExist:
+            raise serializers.ValidationError("No clinic profile found for this user") 
+        
+        return super().create(validated_data)
+    
+
+class DoctorCertificateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorCertificate
+        exclude = ['updated_at']
+        read_only_fields = ['id', 'doctor', 'created_at']
+
+    def validate(self, data):
+        if data.get('expiry_date') and data.get('issue_date'):
+            if data['expiry_date'] <= data['issue_date']:
+                raise serializers.ValidationError("Expiry date must be after issue date.")
+        return data
+
+
+class DoctorLanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorLanguage
+        fields = [
+            'id', 
+            'doctor', 
+            'language_code', 
+            'language_name', 
+            'proficiency_level', 
+            'created_at'
+        ]
+        read_only_fields = ['id', 'doctor', 'created_at']
+
+    def validate_language_code(self, value):
+        if len(value) > 5:
+            raise serializers.ValidationError("Language code cannot exceed 5 characters.")
+        return value.lower()
+    
+
+class DoctorEducationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorEducation
+        exclude = ['updated_at']
+        read_only_fields = ("id", "created_at", "updated_at")
+
+    def validate(self, attrs):
+        doctor = attrs.get("doctor") or getattr(self.instance, "doctor", None)
+        if doctor:
+            get_object_or_404(Doctor, id=doctor.id, is_active=True)
+        return attrs
+    
+
+class DoctorServiceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorService
+        exclude = ['updated_at']
+        read_only_fields = ('id', 'created_at',)
+
+
+class DoctorExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorExperience
+        exclude = ['updated_at', 'doctor']
+        read_only_fields = ('id', 'created_at')
+
+
+class DoctorSocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorSocialMedia
+        exclude = ("updated_at", 'doctor')
+
+
+class ClinicSocialMediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClinicSocialMedia
+        exclude = ("updated_at", 'clinic')
+
+
+class DoctorWorkingHourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DoctorWorkingHour
+        exclude = ("updated_at", 'doctor')
+
+
+class ClinicWorkingHourSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClinicWorkingHour
+        exclude = ("updated_at", 'clinic')
+
+
+class ReviewSerializer(serializers.ModelSerializer):
+    clinic_name = serializers.CharField(source="clinic.name", read_only=True)
+    doctor_name = serializers.CharField(source="doctor.full_name", read_only=True)
+    patient_name = serializers.CharField(source="patient.full_name", read_only=True)
+
+    class Meta:
+        model = Review
         fields = [
             "id",
-            "user",
+            "patient",
+            "patient_name",
+            "doctor",
+            "doctor_name",
             "clinic",
-            "license_number",
-            "consultation_fee",
-            "online_consultation_fee",
-            "average_consultation_time",
-            "is_online_consultation_available",
+            "clinic_name",
+            "appointment",
             "rating",
-            "total_reviews",
-            "total_patients",
-            "bio",
-            "years_of_experience",
-            "specialty",
-            "is_primary",
+            "title",
+            "comment",
+            "would_recommend",
+            "is_verified",
+            "is_anonymous",
+            "helpful_count",
             "is_active",
             "created_at",
-            "updated_at",
+        ]
+        read_only_fields = [
+            "id",
+            "is_verified",
+            "helpful_count",
+            "created_at",
         ]
 
-    def get_user(self, obj):
-        if obj.user:
-            return {
-                "id": obj.user.id,
-                "first_name": obj.user.first_name,
-                "last_name": obj.user.last_name,
-                "email": obj.user.email,
-                "phone_number": obj.user.phone_number,
-                "gender": obj.user.gender,
-                "profile_image_url": obj.user.profile_image_url,
-                "is_verified": obj.user.is_verified,
-            }
-        return None
 
-    def get_specialty(self, obj):
-        if obj.specialty:
-            return {
-                "id": obj.specialty.id,
-                "name": obj.specialty.name,
-                "description": obj.specialty.description,
-                "category": obj.specialty.category,
-            }
-        return None
-
-    def get_clinic(self, obj):
-        if obj.clinic:
-            return {
-                "id": obj.clinic.id,
-                "name": obj.clinic.name,
-                "website_url": obj.clinic.website_url,
-                "profile_image_url": obj.clinic.profile_image_url,
-                "description": obj.clinic.description,
-                "established_year": obj.clinic.established_year,
-                "total_staff": obj.clinic.total_staff,
-            }
-        return None
+class DayScheduleSerializer(serializers.Serializer):
+    start_time = serializers.TimeField(required=False, allow_null=True)
+    end_time = serializers.TimeField(required=False, allow_null=True)
 
 
-class DoctorDetailSerializer(DoctorSerializer):
-    """Extended serializer for detailed doctor information"""
+class WorkingHoursSerializer(serializers.Serializer):
+    monday = DayScheduleSerializer(read_only=True)
+    tuesday = DayScheduleSerializer(read_only=True)
+    wednesday = DayScheduleSerializer(read_only=True)
+    thursday = DayScheduleSerializer(read_only=True)
+    friday = DayScheduleSerializer(read_only=True)
+    saturday = DayScheduleSerializer(read_only=True)
+    sunday = DayScheduleSerializer(read_only=True)
+
+
+class DoctorDetailSerializer(DoctorShortSerilaizer):
+    verified_by = VerifiedBySerializer(read_only=True)
+    experience = DoctorExperienceSerializer(many=True, read_only=True)
+    certificates = DoctorCertificateSerializer(many=True, read_only=True)
+    services = DoctorServiceSerializer(many=True, read_only=True)
+    languages = DoctorLanguageSerializer(many=True, read_only=True)
+    working_hours = WorkingHoursSerializer(read_only=True)
+    education = DoctorEducationSerializer(many=True, read_only=True)
+    social_media = DoctorSocialMediaSerializer(read_only=True)
+    total_reviews = serializers.IntegerField(read_only=True)
+    total_patients = serializers.IntegerField(read_only=True) 
+    rating = serializers.FloatField(read_only=True)
+
+    class Meta(DoctorShortSerilaizer.Meta):
+        fields = DoctorShortSerilaizer.Meta.fields + [
+            'doctor_id',
+            'user', 
+            'specialty',
+            'address',
+            'verified_by', 
+            'experience',
+            'certificates',
+            'services',
+            'languages',
+            'working_hours',
+            'education',
+            'social_media',
+            'total_reviews',
+            'total_patients',
+            'rating'
+        ]
     
-    class Meta(DoctorSerializer.Meta):
-        fields = DoctorSerializer.Meta.fields + [
-            "verified_by",
-        ]
 
-    def get_verified_by(self, obj):
-        if obj.verified_by:
-            return {
-                "id": obj.verified_by.id,
-                "first_name": obj.verified_by.first_name,
-                "last_name": obj.verified_by.last_name,
-            }
-        return None
