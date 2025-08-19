@@ -138,7 +138,7 @@ class User(AbstractUser, AbstractBaseTimeStampModel):
         SUPERADMIN = "SUPERADMIN", "Superadmin"
         ADMIN = "ADMIN", "Admin"
         DOCTOR = "DOCTOR", "Doctor"
-        PATIENT = "PATIENT", "Patinet"
+        PATIENT = "PATIENT", "Patient"
         CLINIC = "CLINIC", "Clinic"
 
     base_role = Role.SUPERADMIN
@@ -180,6 +180,10 @@ class User(AbstractUser, AbstractBaseTimeStampModel):
             else:
                 self.phone_number = self.username
         super().save(*args, **kwargs)
+
+
+    def get_full_name(self):
+        return super().get_full_name()
 
     @staticmethod
     def generate_verification_code(length=4) -> str:
@@ -269,7 +273,7 @@ class Clinic(AbstractBaseTimeStampModel):
 
 
 class Doctor(AbstractBaseTimeStampModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="doctor_profile")
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, blank=True, null=True)
     license_number = models.CharField(
         max_length=100, unique=True, blank=True, null=True
@@ -390,6 +394,10 @@ class DoctorEducation(AbstractBaseTimeStampModel):
 
     def __str__(self):
         return f"{self.id} - {self.degree} - {self.doctor}"
+    
+    def clean(self):
+        if self.end_date and self.start_date and self.end_date < self.start_date:
+            raise ValidationError("End date cannot be earlier than start date.")
 
     class Meta:
         verbose_name = "Doctor Education"
@@ -629,7 +637,7 @@ class DoctorDocument(AbstractBaseDocument):
         upload_to="doctor_documents_/%Y/%m/%d/",
         validators=[FileExtensionValidator(
             allowed_extensions=[
-                "jpg", "jpeg", "png", 'pdf' 'docx', 'doc'
+                "jpg", "jpeg", "png", "pdf", "docx", "doc"
             ])],
         null=True,
         blank=True,
@@ -651,7 +659,7 @@ class ClinicDocument(AbstractBaseDocument):
         upload_to="clinic_documents_/%Y/%m/%d/",
         validators=[FileExtensionValidator(
             allowed_extensions=[
-                "jpg", "jpeg", "png", 'pdf' 'docx', 'doc'
+                "jpg", "jpeg", "png", "pdf", "docx", "doc"
             ])],
         null=True,
         blank=True,
@@ -680,7 +688,7 @@ class DocumentVerificationHistory(models.Model):
         ContentType,
         on_delete=models.CASCADE,
         null=False,
-        limit_choices_to={'model__in': ('DoctorDocument', 'ClinicDocument')}
+        limit_choices_to={'model__in': ('doctordocument', 'clinicdocument')}
     )
     verified_by = models.ForeignKey(
         User, on_delete=models.CASCADE, 
