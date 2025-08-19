@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.db import transaction
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
+from drf_spectacular.utils import extend_schema_field, OpenApiTypes
 
 from .models import (
     Clinic, 
@@ -284,7 +285,7 @@ class VerifiedBySerializer(serializers.Serializer):
     last_name = serializers.CharField()
 
 
-class DoctorShortSerilaizer(serializers.ModelSerializer):
+class DoctorShortSerializer(serializers.ModelSerializer):
     doctor_id = serializers.IntegerField(source="id")
     user = UserInfoSerializer(read_only=True)
     specialty = SpecialtySerializer(read_only=True)
@@ -519,6 +520,34 @@ class ReviewSerializer(serializers.ModelSerializer):
         ]
 
 
+class ReviewShortSerializer(serializers.ModelSerializer):
+    patient_full_name = serializers.SerializerMethodField()
+    patient_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Review
+        fields = [
+            "id",
+            "patient",
+            "patient_full_name",
+            'patient_image',
+            "rating",
+            "comment",
+        ]
+
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_patient_full_name(self, obj):
+        return obj.patient.user.get_full_name() if obj.patient else None
+
+    @extend_schema_field(OpenApiTypes.STR)
+    def get_patient_image(self, obj):
+        if obj.patient:
+            image = obj.patient.patient_images.first()
+            if image and hasattr(image, "image"):
+                return image.image.url
+        return None
+    
+
 class DayScheduleSerializer(serializers.Serializer):
     start_time = serializers.TimeField(required=False, allow_null=True)
     end_time = serializers.TimeField(required=False, allow_null=True)
@@ -534,7 +563,7 @@ class WorkingHoursSerializer(serializers.Serializer):
     sunday = DayScheduleSerializer(read_only=True)
 
 
-class DoctorDetailSerializer(DoctorShortSerilaizer):
+class DoctorDetailSerializer(DoctorShortSerializer):
     verified_by = VerifiedBySerializer(read_only=True)
     experience = DoctorExperienceSerializer(many=True, read_only=True)
     certificates = DoctorCertificateSerializer(many=True, read_only=True)
@@ -543,12 +572,10 @@ class DoctorDetailSerializer(DoctorShortSerilaizer):
     working_hours = WorkingHoursSerializer(read_only=True)
     education = DoctorEducationSerializer(many=True, read_only=True)
     social_media = DoctorSocialMediaSerializer(read_only=True)
-    total_reviews = serializers.IntegerField(read_only=True)
-    total_patients = serializers.IntegerField(read_only=True) 
-    rating = serializers.FloatField(read_only=True)
+    reviews = ReviewShortSerializer(many=True, read_only=True)
 
-    class Meta(DoctorShortSerilaizer.Meta):
-        fields = DoctorShortSerilaizer.Meta.fields + [
+    class Meta(DoctorShortSerializer.Meta):
+        fields = DoctorShortSerializer.Meta.fields + [
             'doctor_id',
             'user', 
             'specialty',
@@ -561,9 +588,7 @@ class DoctorDetailSerializer(DoctorShortSerilaizer):
             'working_hours',
             'education',
             'social_media',
-            'total_reviews',
-            'total_patients',
-            'rating'
+            'reviews',
         ]
     
 
