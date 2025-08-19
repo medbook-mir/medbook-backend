@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import (
     OpenApiExample,
@@ -8,7 +9,6 @@ from drf_spectacular.utils import (
 )
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -460,7 +460,7 @@ class DoctorOrClinicSignupView(APIView):
 
 class DoctorsView(BaseListViewSet):
     queryset = Doctor.objects.all()
-    serializer_class = ser.DoctorShortSerilaizer
+    serializer_class = ser.DoctorShortSerializer
     permission_classes = [AllowAny]
     swagger_model = Doctor
     swagger_model_name = 'Doctors'
@@ -503,7 +503,17 @@ class DoctorByIdView(BaseRetrieveViewSet):
     serializer_class = ser.DoctorDetailSerializer
     permission_classes = [AllowAny]
     swagger_model = Doctor
-    swagger_model_name = 'Doctors'
+    swagger_model_name = 'Doctor'
+
+    def get_queryset(self):
+        return super().get_queryset().prefetch_related(
+            Prefetch(
+                'reviews', 
+                queryset=Review.objects
+                .select_related('patient__user')
+                .prefetch_related('patient__patient_images')
+            )
+        )
 
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
@@ -559,6 +569,7 @@ class DoctorImageUploadView(BaseCreateRetrieveViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
+
 
 class PatientImageUploadView(BaseCreateRetrieveViewSet):
     queryset = PatientImage.objects.all()
