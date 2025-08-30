@@ -20,6 +20,7 @@
  **База данных**: PostgreSQL с сохранением данных  
  **Асинхронные задачи**: Celery + Redis  
  **Мониторинг**: Flower на `http://localhost:5555`
+ **Минио**: Minio на `http://localhost:9001`
 
 ## Требования
 
