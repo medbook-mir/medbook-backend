@@ -12,7 +12,7 @@ services:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       timeout: 5s
-    restart:  "on-failure:2" 
+    restart: "on-failure:2"
 
   db:
     image: postgres:13-alpine
@@ -30,7 +30,7 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
-    restart:  "on-failure:2" 
+    restart: "on-failure:2"
 
   backend:
     build:
@@ -40,7 +40,7 @@ services:
     environment:
       - PYTHONPATH=/app
       - DEBUG=${DEBUG:-false}
-      - SERVICE_TYPE=backend  
+      - SERVICE_TYPE=backend
     volumes:
       - ./backend:/app
       - static_volume:/app/src/staticfiles
@@ -53,13 +53,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
     command: ["sh", "/app/entrypoint.sh"]
-    restart:  "on-failure:2" 
+    restart: "on-failure:2"
 
   api:
     build:
@@ -69,12 +71,12 @@ services:
     environment:
       - PYTHONPATH=/app
       - DEBUG=${DEBUG:-false}
-      - SERVICE_TYPE=api 
+      - SERVICE_TYPE=api
     volumes:
       - ./backend:/app
       - static_volume:/app/src/staticfiles
     ports:
-      - "8001:8000"  
+      - "8001:8000"
     networks:
       - app_network
     depends_on:
@@ -82,13 +84,15 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+      minio:
+        condition: service_healthy
     logging:
       driver: "json-file"
       options:
         max-size: "10m"
         max-file: "3"
     command: ["sh", "/app/entrypoint.sh"]
-    restart:  "on-failure:2" 
+    restart: "on-failure:2"
 
   frontend:
     build:
@@ -101,7 +105,6 @@ services:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=http://backend:8000
     volumes:
-#      - ./frontend:/app
       - /app/node_modules
     ports:
       - "3000:3000"
@@ -109,34 +112,50 @@ services:
       - app_network
     depends_on:
       - backend
-    restart:  "on-failure:2" 
+    restart: "on-failure:2"
 
-  tests:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+  minio:
+    image: minio/minio:latest
+    container_name: medbook-minio
+    restart: always
+    command: server /data --console-address ":${MINIO_CONSOLE_PORT}"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    ports:
+      - "${MINIO_API_PORT}:9000"
+      - "${MINIO_CONSOLE_PORT}:9001"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      retries: 2
+    networks:
+      - app_network
+
+  minio-init:
+    image: minio/mc:latest
     env_file: .env
     environment:
-      - PYTHONPATH=/app
-      - TESTING=true
+      - AWS_STORAGE_BUCKET_NAME=${AWS_STORAGE_BUCKET_NAME}
+      - AWS_S3_ENDPOINT_URL=${AWS_S3_ENDPOINT_URL}
+      - AWS_ACCESS_KEY_ID=${MINIO_ROOT_USER}
+      - AWS_SECRET_ACCESS_KEY=${MINIO_ROOT_PASSWORD}
     volumes:
-      - ./backend:/app
+      - ./backend/init-minio.sh:/init-minio.sh
+    entrypoint: ["/bin/sh", "/init-minio.sh"]
     networks:
       - app_network
     depends_on:
-      db:
+      minio:
         condition: service_healthy
-    command: ["sh", "-c", "pytest src/medbook/tests/ --cov=src --cov-report=xml"]
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
 
 volumes:
   postgres_data:
   redis_data:
   static_volume:
+  minio_data:
 
 networks:
   app_network:
