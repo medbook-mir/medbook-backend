@@ -44,5 +44,5 @@
 |------------|------------------------------------------------|------|------------------------|
 | Backend    | [http://localhost:8000](http://localhost:8000) | 8000 | Django REST API        |
 | PostgreSQL | `host: localhost`                              | 5432 | Database               |
-| Swagger     | [http://localhost:8000](http://localhost:8000/swagger) | 8000 | Swagger task api |
+| Swagger     | [http://localhost:8000/swagger](http://localhost:8000/swagger) | 8000 | Swagger task api |
 
