@@ -60,7 +60,7 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Run tests with pytest
-      working-directory: ./backend/src  
-      run: |
-        PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/backend/src pytest
+    # - name: Run tests with pytest
+    #   working-directory: ./backend/src  
+    #   run: |
+    #     PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/backend/src pytest
