@@ -7,6 +7,7 @@ from celery.schedules import crontab
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 INSTALLED_APPS = [
+    "jazzmin",
     "medbook.apps.MedbookConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -123,6 +124,14 @@ SPECTACULAR_SETTINGS = {
     },
     "LOGIN_URL": "/api/token/",
     "LOGOUT_URL": "/api/logout/",
+}
+
+JAZZMIN_SETTINGS = {
+    "site_title": "MedBook Admin",
+    "site_header": "MedBook Administration",
+    "site_brand": "MedBook",
+    "welcome_sign": "Welcome to MedBook Admin",
+    "show_ui_builder": False,
 }
 
 CELERY_BEAT_SCHEDULE = {
