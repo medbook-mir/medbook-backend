@@ -11,6 +11,8 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
+from .views import test_minio
+
 
 from .views import (
     DecoratedTokenObtainPairView,
@@ -43,6 +45,7 @@ common_patterns = [
         RedirectView.as_view(url="/accounts/google/login/"),
         name="google_login",
     ),
+    path("test-minio/", test_minio, name="test_minio"),
     path("ping/", health_check),
 ]
 

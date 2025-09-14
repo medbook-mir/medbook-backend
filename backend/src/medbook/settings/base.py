@@ -1,10 +1,11 @@
 # medbook/settings/base.py
 import os
 from pathlib import Path
-
+from datetime import timedelta 
 from celery.schedules import crontab
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
 
 INSTALLED_APPS = [
     "jazzmin",
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "storages",
 ]
 
 MIDDLEWARE = [
@@ -36,7 +38,6 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 ROOT_URLCONF = "medbook.urls"
 
 TEMPLATES = [
@@ -111,7 +112,7 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "API for MedBook application",
     "DESCRIPTION": "API for MedBook application",
     "VERSION": "1.0.0",
-    "SERVE_INCLUDE_SCHEMA": False,
+    "SERVE_INCLUDE_SCHEMA": os.getenv("SERVE_INCLUDE_SCHEMA", "False") == "True",
     "COMPONENT_SPLIT_REQUEST": True,
     "SECURITY": [{"BearerAuth": []}],
     "COMPONENT_SECURITY_SCHEMES": {
@@ -201,4 +202,77 @@ SOCIALACCOUNT_PROVIDERS = {
         "SCOPE": ["profile", "email"],
         "AUTH_PARAMS": {"access_type": "online"},
     },
+}
+
+# S3 (MinIO) credentionlari
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
+AWS_QUERYSTRING_AUTH = os.getenv("AWS_QUERYSTRING_AUTH", "False") == "True"
+
+# statik fayl (css/js) MinIO da saqlash uchun kere boladi agar DEBUG=False bo'sa
+AWS_STATIC_BUCKET_NAME = os.getenv("AWS_STATIC_BUCKET_NAME", AWS_STORAGE_BUCKET_NAME)
+
+# MEDIA_URL и STATIC_URL MinIO saqlimiza keyinchali
+MEDIA_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/"
+STATIC_URL = f"{AWS_S3_ENDPOINT_URL}/{AWS_STATIC_BUCKET_NAME}/"
+
+# kstomno storages backend larni setting qilamiza
+# bo'tta ikkita bucket ishlatamiz bitta user faylla uchun ikkinchisi statik faylla uchun
+STORAGES = {
+    # Медиа по умолчанию в MinIO
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "bucket_name": AWS_STORAGE_BUCKET_NAME,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": (
+            "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            if DEBUG
+            else "storages.backends.s3boto3.S3Boto3Storage"
+        ),
+        "OPTIONS": (
+            {}
+            if DEBUG
+            else {
+                "bucket_name": AWS_STATIC_BUCKET_NAME,
+            }
+        ),
+    },
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=600),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=600),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": "",
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "JSON_ENCODER": None,
+    "JWK_URL": None,
+    "LEEWAY": 0,
+
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
+
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+
+    "JTI_CLAIM": "jti",
+
+    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
+    "SLIDING_TOKEN_LIFETIME": timedelta(days=500),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=500)
 }

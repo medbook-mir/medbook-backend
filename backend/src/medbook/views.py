@@ -48,6 +48,9 @@ from .models import (
     Review
 )
 from . import serializers as ser
+from django.core.files.storage import default_storage
+from django.http import JsonResponse
+from django.core.files.base import ContentFile
 
 
 User = get_user_model()
@@ -56,6 +59,9 @@ User = get_user_model()
 def health_check(request):
     return JsonResponse({"status": "ok"})
 
+def test_minio(request):
+    file_path = default_storage.save("reports/hello.txt", ContentFile(b"MinIO!"))
+    return JsonResponse({"status": "ok", "file_path": file_path})
 
 class TestListView(generics.ListAPIView):
     queryset = MedicalTest.objects.all()
@@ -1913,7 +1919,7 @@ class ReviewViewSet(BaseViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return self.success_response()
-
+    
 
 
 

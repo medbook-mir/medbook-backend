@@ -17,6 +17,7 @@
  **Бэкенд**: Django REST API на `http://localhost:8000`  
  **База данных**: PostgreSQL с сохранением данных  
  **Мониторинг**: Flower на `http://localhost:5555`
+ **Минио**: Minio на `http://localhost:9001`
 
 ## Требования
 
