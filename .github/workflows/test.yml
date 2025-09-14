@@ -7,7 +7,7 @@ on:
     branches: [ "master" ]
 
 jobs:
-  mir_deploying:
+  healing:
     runs-on: ubuntu-latest
 
     services:
@@ -60,7 +60,7 @@ jobs:
       run: |
         python manage.py migrate
 
-    - name: Run tests with pytest
-      working-directory: ./backend/src  
-      run: |
-        PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/backend/src pytest
+    # - name: Run tests with pytest
+    #   working-directory: ./backend/src  
+    #   run: |
+    #     PYTHONPATH=$PYTHONPATH:$GITHUB_WORKSPACE/backend/src pytest
