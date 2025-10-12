@@ -573,6 +573,11 @@ class DoctorDetailSerializer(DoctorShortSerializer):
     education = DoctorEducationSerializer(many=True, read_only=True)
     social_media = DoctorSocialMediaSerializer(read_only=True)
     reviews = ReviewShortSerializer(many=True, read_only=True)
+    online_consultation_fee = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    consultation_fee = serializers.DecimalField(max_digits=10, decimal_places=2, read_only=True)
+    average_consultation_time = serializers.IntegerField(read_only=True)
+    is_online_consultation_available = serializers.BooleanField(read_only=True)
+    bio = serializers.CharField(read_only=True)
 
     class Meta(DoctorShortSerializer.Meta):
         fields = DoctorShortSerializer.Meta.fields + [
@@ -589,6 +594,11 @@ class DoctorDetailSerializer(DoctorShortSerializer):
             'education',
             'social_media',
             'reviews',
+            'online_consultation_fee',
+            'consultation_fee',
+            'average_consultation_time',
+            'is_online_consultation_available',
+            'bio',
         ]
     
 
