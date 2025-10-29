@@ -7,6 +7,7 @@ from drf_spectacular.utils import (
     OpenApiResponse,
     extend_schema,
 )
+from django.core.validators import validate_email
 from rest_framework import generics, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -51,6 +52,8 @@ from . import serializers as ser
 from django.core.files.storage import default_storage
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
+from datetime import datetime
+from .models import User, Patient
 
 
 User = get_user_model()
@@ -70,7 +73,7 @@ class TestListView(generics.ListAPIView):
 
     @extend_schema(
         summary="Test API",
-        description="Это защищенный эндпоинт для получения списка медицинских тестов. Требуется аутентификация.",  # noqa: E501
+        description="Это защищенный эндпоинт для получения списка медицинских ��естов. Требуется аутентификация.",  # noqa: E501
         responses={200: ser.TestSerializer(many=True)},
         tags=["API Test"],
     )
@@ -863,7 +866,7 @@ class DoctorDocumentUploadView(BaseViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return self.success_response()
-    
+
 
 class DoctorLanguageViewSet(BaseViewSet):
     queryset = DoctorLanguage.objects.all()
@@ -1037,9 +1040,6 @@ class DoctorCertificateViewSet(BaseViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         return super().retrieve(request, *args, **kwargs)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return self.success_response(data=serializer.data)
 
     def create(self, request, *args, **kwargs):
         doctor = get_object_or_404(Doctor, user=request.user, is_active=True)
@@ -1919,47 +1919,138 @@ class ReviewViewSet(BaseViewSet):
         instance = self.get_object()
         self.perform_destroy(instance)
         return self.success_response()
-    
 
 
+class PatientProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Retrieve Patient Profile",
+        description="Fetch the profile details of the authenticated patient.",
+        responses={200: OpenApiResponse(description="Patient profile retrieved successfully.")},
+    )
+    def get(self, request):
+        patients = User.objects.filter(role='PATIENT')
+        data = []
+
+        for user in patients:
+            patient = getattr(user, 'patient', None)
+            data.append({
+                "id": str(user.id),
+                "fullName": user.get_full_name() or None,
+                "dateOfBirth": patient.birthday.strftime('%d/%m/%Y') if patient and patient.birthday else None,
+                "phoneNumber": user.phone_number,
+                "gender": user.gender,
+                "email": user.email,
+                "profileImageUrl": user.profile_image_url,
+                "role": user.role,
+            })
+
+        return Response({"success": True, "data": data})
 
 
+from .serializers import UpdatePatientProfileSerializer
 
+class UpdatePatientProfileByIdView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    @extend_schema(
+        summary="Обновление профиля пациента по ID",
+        description="Обновление данных пациента по его ID",
+        request=UpdatePatientProfileSerializer,
+        responses={
+            200: OpenApiResponse(description="Профиль пациента успешно обновлён."),
+            400: OpenApiResponse(description="Неверные входные данные."),
+            403: OpenApiResponse(description="Пользователь не является PATIENT."),
+            404: OpenApiResponse(description="Пациент не найден.")
+        }
+    )
+    def put(self, request, id):
+        patient = get_object_or_404(Patient, id=id)
+        user = patient.user
 
+        if user.role != "PATIENT":
+            return Response({
+                "success": False,
+                "message": "Пользователь не является пациентом."
+            }, status=status.HTTP_403_FORBIDDEN)
 
+        serializer = UpdatePatientProfileSerializer(data=request.data)
+        if not serializer.is_valid():
 
+            errors = {field: [str(msg) for msg in msgs] for field, msgs in serializer.errors.items()}
+            return Response({
+                "success": False,
+                "message": "Ошибка валидации данных.",
+                "errors": errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
+        data = serializer.validated_data
+        full_name = data["fullName"]
+        user.first_name, user.last_name = (full_name.split(" ", 1) if " " in full_name else (full_name, ""))
+        user.phone_number = data["phoneNumber"]
+        user.gender = data["gender"]
+        user.email = data["email"]
+        user.save()
 
+        patient.birthday = data["dateOfBirth"]
+        patient.save()
 
+        return Response({
+            "success": True,
+            "message": "Профиль пациента успешно обновлён."
+        }, status=status.HTTP_200_OK)
 
+from rest_framework.parsers import MultiPartParser, FormParser
+from .models import Patient, AbstractBaseImage, PatientImage
 
+MAX_IMAGE_SIZE_MB = 5
 
-# @document_upload_schema(
-#     model_name='patient',
-#     model_display_name='Patient',
-#     tag='Patients',
-#     additional_fields={
-#         'patient': {'type': 'integer', 'description': 'Patient ID'},
-#         'document_type': {'type': 'string', 'description': 'Type of patient document', 'example': 'medical_history'}
-#     },
-#     additional_request_fields={
-#         'document_type': {
-#             'type': 'string',
-#             'description': 'Type of patient document',
-#             'example': 'medical_history',
-#             'enum': ['medical_history', 'prescription', 'lab_result', 'insurance_card', 'other']
-#         }
-#     },
-#     additional_example_data={
-#         'patient': 1,
-#         'document_type': 'medical_history'
-#     }
-# )
-# class PatientDocumentUploadView(BaseDocumentView):
-#     serializer_class = PatientDocumentSerializer
-#     queryset = PatientDocument.objects.all()
-#     model = PatientDocument
+class UploadPatientProfileImageView(APIView):
+    parser_classes = [MultiPartParser, FormParser]
+    permission_classes = [IsAuthenticated]
 
-#     def get_queryset(self):
-#         return super().get_queryset().filter(instance__user=self.request.user)
+    @extend_schema(
+        summary="Загрузка изображения профиля пациента",
+        description="Позволяет загрузить изображение профиля пациента. Максимальный размер файла — 5 МБ.",
+        request=None,
+        responses={
+            200: OpenApiResponse(description="Изображение успешно загружено."),
+            400: OpenApiResponse(description="Ошибка загрузки файла (неверный формат или размер)."),
+            403: OpenApiResponse(description="Пользователь не является PATIENT."),
+            404: OpenApiResponse(description="Пациент не найден.")
+        }
+    )
+    def post(self, request):
+        user = request.user
+
+        if user.role != "PATIENT":
+            return Response({
+                "success": False,
+                "message": "Пользователь не является пациентом."
+            }, status=status.HTTP_403_FORBIDDEN)
+
+        patient = get_object_or_404(Patient, user=user)
+
+        if "image" not in request.FILES:
+            return Response({
+                "success": False,
+                "message": "Файл изображения не предоставлен."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        image_file = request.FILES["image"]
+
+        if image_file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024:
+            return Response({
+                "success": False,
+                "message": f"Файл слишком большой. Максимальный размер {MAX_IMAGE_SIZE_MB} МБ."
+            }, status=status.HTTP_400_BAD_REQUEST)
+
+        abstract_image = AbstractBaseImage.objects.create(image=image_file, status='active')
+
+        PatientImage.objects.create(abstractbaseimage_ptr_id=abstract_image.id, instance_id=patient.id)
+
+        return Response({
+            "success": True,
+            "message": "Изображение профиля успешно загружено."
+        }, status=status.HTTP_200_OK)
