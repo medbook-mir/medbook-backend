@@ -601,4 +601,10 @@ class DoctorDetailSerializer(DoctorShortSerializer):
             'bio',
         ]
     
+class UpdatePatientProfileSerializer(serializers.Serializer):
+    fullName = serializers.CharField(max_length=255)
+    dateOfBirth = serializers.DateField()
+    phoneNumber = serializers.CharField(max_length=20)
+    gender = serializers.ChoiceField(choices=["Male", "Female", "Other"])
+    email = serializers.EmailField()
 

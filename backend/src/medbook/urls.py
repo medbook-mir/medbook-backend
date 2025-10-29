@@ -13,14 +13,17 @@ from drf_spectacular.views import (
 )
 from .views import test_minio
 
-
 from .views import (
     DecoratedTokenObtainPairView,
     DecoratedTokenRefreshView,
     DoctorOrClinicSignupView,
+    PatientProfileView,
     SendOTPView,
     VerifyOTPView,
     health_check,
+    UpdatePatientProfileByIdView,
+    UploadPatientProfileImageView
+
 )
 
 SERVICE_TYPE = os.getenv("SERVICE_TYPE", "api")
@@ -49,6 +52,13 @@ common_patterns = [
     path("ping/", health_check),
 ]
 
+common_patterns += [
+    path("api/patient/profile/", PatientProfileView.as_view(), name="patient_profile"),
+    path('api/patient/profile/<int:id>/', UpdatePatientProfileByIdView.as_view(), name='update-patient-profile'),
+    path('api/patient/profile/image/', UploadPatientProfileImageView.as_view(), name='upload-patient-profile-image')
+
+]
+
 if SERVICE_TYPE == "api":
     urlpatterns = [
         path("", RedirectView.as_view(url="/swagger/", permanent=False)),
@@ -74,4 +84,3 @@ else:
 
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
