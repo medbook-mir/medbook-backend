@@ -2055,8 +2055,27 @@ class UploadPatientProfileImageView(APIView):
             "message": "Изображение профиля успешно загружено."
         }, status=status.HTTP_200_OK)
 
-from .models import Booking
-from .serializers import BookingSerializer
+# views.py
+from rest_framework import status, serializers
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from drf_spectacular.utils import extend_schema, OpenApiResponse
+from django.utils.crypto import get_random_string
+from django.contrib.auth import get_user_model
+
+from .models import Booking, Doctor
+from .serializers import BookingSerializer, DoctorSerializer, PatientSerializer
+
+User = get_user_model()
+
+class BookingCreateSerializer(serializers.Serializer):
+    doctorId = serializers.UUIDField()
+    appointmentDate = serializers.DateField()
+    appointmentTime = serializers.TimeField()
+    type = serializers.ChoiceField(choices=["online", "offline"])
+    notes = serializers.CharField(required=False, allow_blank=True)
+
 
 class BookingListView(APIView):
     permission_classes = [IsAuthenticated]
@@ -2072,3 +2091,54 @@ class BookingListView(APIView):
         ).order_by("-appointment_date", "-appointment_time")
         serializer = BookingSerializer(bookings, many=True)
         return Response({"success": True, "data": serializer.data})
+
+    @extend_schema(
+        summary="Create a Booking",
+        request=BookingCreateSerializer,
+        responses={201: BookingSerializer},
+    )
+    def post(self, request):
+        serializer = BookingCreateSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        validated_data = serializer.validated_data
+
+        doctor_id = validated_data["doctorId"]
+        appointment_date = validated_data["appointmentDate"]
+        appointment_time = validated_data["appointmentTime"]
+        booking_type = validated_data["type"]
+        notes = validated_data.get("notes", "")
+
+        try:
+            doctor = Doctor.objects.get(id=doctor_id)
+        except Doctor.DoesNotExist:
+            return Response(
+                {"success": False, "error": "Doctor not found."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if Booking.objects.filter(
+            doctor_id=doctor_id,
+            appointment_date=appointment_date,
+            appointment_time=appointment_time,
+            status__in=["Pending", "Paid Now", "Success"]
+        ).exists():
+            return Response(
+                {"success": False, "error": "This time slot is already booked for this doctor."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        appointment_number = f"APT-{get_random_string(6).upper()}"
+
+        booking = Booking.objects.create(
+            patient=request.user,
+            doctor=doctor,
+            appointment_number=appointment_number,
+            appointment_date=appointment_date,
+            appointment_time=appointment_time,
+            type=booking_type.capitalize(),
+            status="Pending",
+            notes=notes,
+        )
+
+        output_serializer = BookingSerializer(booking)
+        return Response({"success": True, "data": output_serializer.data}, status=status.HTTP_201_CREATED)

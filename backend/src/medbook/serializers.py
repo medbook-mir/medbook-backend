@@ -627,23 +627,33 @@ class DoctorSerializer(serializers.ModelSerializer):
         return obj.user.get_full_name() if obj.user else None
 
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
+
 class PatientSerializer(serializers.ModelSerializer):
     fullName = serializers.SerializerMethodField()
     phoneNumber = serializers.CharField(source="phone_number", default=None)
     email = serializers.EmailField(default=None)
 
     class Meta:
-        model = settings.AUTH_USER_MODEL
+        model = User  # <-- заменить на реальную модель
         fields = ["id", "fullName", "phoneNumber", "email"]
 
     def get_fullName(self, obj):
         return obj.get_full_name() if obj else None
 
 
+# serializers.py
+from rest_framework import serializers
+from .models import Booking, Doctor
+
+
 class BookingSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()
     patient = PatientSerializer()
     appointmentNumber = serializers.CharField(source="appointment_number")
+    date = serializers.SerializerMethodField()
+    time = serializers.SerializerMethodField()
     canCancel = serializers.BooleanField(source="can_cancel")
     canReschedule = serializers.BooleanField(source="can_reschedule")
     createdAt = serializers.DateTimeField(source="created_at", format="%d.%m.%Y %H:%M")
@@ -668,3 +678,18 @@ class BookingSerializer(serializers.ModelSerializer):
             "updatedAt",
             "cancelledAt",
         ]
+
+    def get_date(self, obj):
+        return obj.appointment_date.strftime("%Y-%m-%d")
+
+    def get_time(self, obj):
+        return obj.appointment_time.strftime("%H:%M")
+
+class BookingCreateSerializer(serializers.Serializer):
+    doctorId = serializers.IntegerField()
+    appointmentDate = serializers.DateField()
+    appointmentTime = serializers.TimeField(
+        input_formats=["%H:%M", "%H:%M:%S"]  # hh:mm и hh:mm:ss
+    )
+    type = serializers.ChoiceField(choices=["online", "offline"])
+    notes = serializers.CharField(required=False, allow_blank=True)
