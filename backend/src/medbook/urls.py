@@ -23,7 +23,9 @@ from .views import (
     health_check,
     UpdatePatientProfileByIdView,
     UploadPatientProfileImageView,
-    BookingListView
+    BookingListView,
+    BookingCancelView,
+    BookingRescheduleView
 
 )
 
@@ -58,6 +60,8 @@ common_patterns += [
     path('api/patient/profile/<int:id>/', UpdatePatientProfileByIdView.as_view(), name='update-patient-profile'),
     path('api/patient/profile/image/', UploadPatientProfileImageView.as_view(), name='upload-patient-profile-image'),
     path("api/bookings/", BookingListView.as_view(), name="booking-list"),
+    path('api/patient/bookings/<int:booking_id>/cancel/', BookingCancelView.as_view(), name='booking-cancel'),
+    path('api/patient/bookings/<int:booking_id>/reschedule/', BookingRescheduleView.as_view(), name='booking-reschedule'),
 
 ]
 

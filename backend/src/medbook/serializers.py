@@ -609,7 +609,6 @@ class UpdatePatientProfileSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
 from rest_framework import serializers
-from .models import Booking
 from .models import Doctor
 from django.conf import settings
 
@@ -636,17 +635,13 @@ class PatientSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(default=None)
 
     class Meta:
-        model = User  # <-- заменить на реальную модель
+        model = User
         fields = ["id", "fullName", "phoneNumber", "email"]
 
     def get_fullName(self, obj):
         return obj.get_full_name() if obj else None
 
-
-# serializers.py
-from rest_framework import serializers
 from .models import Booking, Doctor
-
 
 class BookingSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()
@@ -689,7 +684,22 @@ class BookingCreateSerializer(serializers.Serializer):
     doctorId = serializers.IntegerField()
     appointmentDate = serializers.DateField()
     appointmentTime = serializers.TimeField(
-        input_formats=["%H:%M", "%H:%M:%S"]  # hh:mm и hh:mm:ss
+        input_formats=["%H:%M", "%H:%M:%S"]
     )
     type = serializers.ChoiceField(choices=["online", "offline"])
     notes = serializers.CharField(required=False, allow_blank=True)
+
+
+class BookingCancelSerializer(serializers.Serializer):
+    cancellationReason = serializers.CharField(
+        max_length=500,
+        required=True,
+        allow_blank=False,
+        help_text="Reason why the booking is being cancelled"
+    )
+
+class BookingRescheduleSerializer(serializers.Serializer):
+    newDate = serializers.DateField(format="%Y-%m-%d")
+    newTime = serializers.TimeField(
+        input_formats=['%H:%M', '%H:%M:%S', '%H:%M:%S.%f']
+    )
