@@ -2054,3 +2054,21 @@ class UploadPatientProfileImageView(APIView):
             "success": True,
             "message": "Изображение профиля успешно загружено."
         }, status=status.HTTP_200_OK)
+
+from .models import Booking
+from .serializers import BookingSerializer
+
+class BookingListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Retrieve all Bookings",
+        description="Fetch all bookings from the database, including doctor and patient details.",
+        responses={200: OpenApiResponse(description="Bookings retrieved successfully.")},
+    )
+    def get(self, request):
+        bookings = Booking.objects.select_related(
+            "doctor__user", "doctor__clinic", "doctor__specialty", "patient"
+        ).order_by("-appointment_date", "-appointment_time")
+        serializer = BookingSerializer(bookings, many=True)
+        return Response({"success": True, "data": serializer.data})

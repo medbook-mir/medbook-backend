@@ -608,3 +608,63 @@ class UpdatePatientProfileSerializer(serializers.Serializer):
     gender = serializers.ChoiceField(choices=["Male", "Female", "Other"])
     email = serializers.EmailField()
 
+from rest_framework import serializers
+from .models import Booking
+from .models import Doctor
+from django.conf import settings
+
+class DoctorSerializer(serializers.ModelSerializer):
+    fullName = serializers.SerializerMethodField()
+    specialty = serializers.CharField(source="specialty.name", default=None)
+    clinic = serializers.CharField(source="clinic.name", default=None)
+    profileImageUrl = serializers.CharField(source="profile_image_url", default=None)
+
+    class Meta:
+        model = Doctor
+        fields = ["id", "fullName", "specialty", "clinic", "profileImageUrl"]
+
+    def get_fullName(self, obj):
+        return obj.user.get_full_name() if obj.user else None
+
+
+class PatientSerializer(serializers.ModelSerializer):
+    fullName = serializers.SerializerMethodField()
+    phoneNumber = serializers.CharField(source="phone_number", default=None)
+    email = serializers.EmailField(default=None)
+
+    class Meta:
+        model = settings.AUTH_USER_MODEL
+        fields = ["id", "fullName", "phoneNumber", "email"]
+
+    def get_fullName(self, obj):
+        return obj.get_full_name() if obj else None
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    doctor = DoctorSerializer()
+    patient = PatientSerializer()
+    appointmentNumber = serializers.CharField(source="appointment_number")
+    canCancel = serializers.BooleanField(source="can_cancel")
+    canReschedule = serializers.BooleanField(source="can_reschedule")
+    createdAt = serializers.DateTimeField(source="created_at", format="%d.%m.%Y %H:%M")
+    updatedAt = serializers.DateTimeField(source="updated_at", format="%d.%m.%Y %H:%M")
+    cancelledAt = serializers.DateTimeField(source="cancelled_at", format="%d.%m.%Y %H:%M", default=None)
+
+    class Meta:
+        model = Booking
+        fields = [
+            "id",
+            "appointmentNumber",
+            "date",
+            "time",
+            "type",
+            "status",
+            "notes",
+            "canCancel",
+            "canReschedule",
+            "doctor",
+            "patient",
+            "createdAt",
+            "updatedAt",
+            "cancelledAt",
+        ]

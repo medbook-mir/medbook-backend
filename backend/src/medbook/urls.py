@@ -22,7 +22,8 @@ from .views import (
     VerifyOTPView,
     health_check,
     UpdatePatientProfileByIdView,
-    UploadPatientProfileImageView
+    UploadPatientProfileImageView,
+    BookingListView
 
 )
 
@@ -55,7 +56,8 @@ common_patterns = [
 common_patterns += [
     path("api/patient/profile/", PatientProfileView.as_view(), name="patient_profile"),
     path('api/patient/profile/<int:id>/', UpdatePatientProfileByIdView.as_view(), name='update-patient-profile'),
-    path('api/patient/profile/image/', UploadPatientProfileImageView.as_view(), name='upload-patient-profile-image')
+    path('api/patient/profile/image/', UploadPatientProfileImageView.as_view(), name='upload-patient-profile-image'),
+    path("api/bookings/", BookingListView.as_view(), name="booking-list"),
 
 ]
 
