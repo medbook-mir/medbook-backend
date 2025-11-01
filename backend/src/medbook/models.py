@@ -758,3 +758,52 @@ class MedicalTest(models.Model):
 
     def __str__(self):
         return self.name
+
+class Booking(models.Model):
+    TYPE_CHOICES = (
+        ("Online", "Online"),
+        ("Offline", "Offline"),
+    )
+
+    STATUS_CHOICES = (
+        ("Pending", "Pending"),
+        ("Paid Now", "Paid Now"),
+        ("Success", "Success"),
+        ("Cancelled", "Cancelled"),
+    )
+
+    id = models.BigAutoField(primary_key=True)
+
+    patient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="medbook_bookings"
+    )
+    doctor = models.ForeignKey(
+        "medbook.Doctor",
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="medbook_bookings"
+    )
+
+    appointment_number = models.CharField(max_length=50, unique=True)
+    appointment_date = models.DateField()
+    appointment_time = models.TimeField()
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    notes = models.TextField(null=True, blank=True)
+    cancellation_reason = models.TextField(null=True, blank=True)
+
+    can_cancel = models.BooleanField(default=True)
+    can_reschedule = models.BooleanField(default=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "medbook_bookings"
+        ordering = ["-appointment_date", "-appointment_time"]
+
+    def __str__(self):
+        return f"{self.appointment_number} ({self.status})"
