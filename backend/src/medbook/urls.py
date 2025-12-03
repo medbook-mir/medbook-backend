@@ -25,8 +25,10 @@ from .views import (
     UploadPatientProfileImageView,
     BookingListView,
     BookingCancelView,
-    BookingRescheduleView
-
+    BookingRescheduleView,
+    PatientChatListView,
+    PatientChatDetailView,
+    SendMessageView,
 )
 
 SERVICE_TYPE = os.getenv("SERVICE_TYPE", "api")
@@ -64,7 +66,9 @@ common_patterns += [
     path("api/bookings/<int:pk>/", BookingDetailView.as_view(), name="booking-detail"),
     path('api/patient/bookings/<int:booking_id>/cancel/', BookingCancelView.as_view(), name='booking-cancel'),
     path('api/patient/bookings/<int:booking_id>/reschedule/', BookingRescheduleView.as_view(), name='booking-reschedule'),
-
+    path("patient/chats/", PatientChatListView.as_view(), name="patient-chat-list"),
+    path("patient/chats/<int:chat_id>/", PatientChatDetailView.as_view(), name="patient-chat-detail"),
+    path("patient/chats/<int:chat_id>/send/", SendMessageView.as_view(), name="patient-chat-send"),
 ]
 
 if SERVICE_TYPE == "api":

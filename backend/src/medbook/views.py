@@ -2301,3 +2301,104 @@ class BookingRescheduleView(APIView):
 
         output_serializer = BookingSerializer(booking)
         return Response({"success": True, "data": output_serializer.data}, status=status.HTTP_200_OK)
+
+from .models import Chat, Message
+from .serializers import (
+    ChatListSerializer,
+    MessageSerializer,
+    SendMessageSerializer,
+)
+
+
+class PatientChatListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Get Patient's Chat List",
+        responses=ChatListSerializer(many=True)
+    )
+    def get(self, request):
+
+        page = int(request.query_params.get("page", 1))
+        limit = int(request.query_params.get("limit", 20))
+        offset = (page - 1) * limit
+
+        chats = request.user.patient_chats.all().order_by('-updated_at')
+        total = chats.count()
+        chats = chats[offset:offset + limit]
+
+        serializer = ChatListSerializer(chats, many=True, context={"request": request})
+
+        return Response({
+            "success": True,
+            "data": {
+                "chats": serializer.data,
+                "pagination": {
+                    "page": page,
+                    "limit": limit,
+                    "total": total,
+                    "pages": (total + limit - 1) // limit
+                }
+            }
+        })
+
+
+class PatientChatDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_chat(self, request, chat_id):
+        try:
+            return Chat.objects.get(id=chat_id, patient=request.user)
+        except Chat.DoesNotExist:
+            return None
+
+    @extend_schema(
+        summary="Get Chat Messages",
+        responses=MessageSerializer(many=True)
+    )
+    def get(self, request, chat_id):
+        chat = self.get_chat(request, chat_id)
+        if not chat:
+            return Response({"success": False, "error": "Chat not found"}, status=404)
+
+        Message.objects.filter(chat=chat, sender_type="doctor", is_read=False).update(is_read=True)
+
+        messages = chat.messages.all()
+        serializer = MessageSerializer(messages, many=True)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        })
+
+
+class SendMessageView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Send Message in Chat",
+        request=SendMessageSerializer,
+        responses={201: MessageSerializer}
+    )
+    def post(self, request, chat_id):
+        try:
+            chat = Chat.objects.get(id=chat_id, patient=request.user)
+        except Chat.DoesNotExist:
+            return Response({"success": False, "error": "Chat not found"}, status=404)
+
+        serializer = SendMessageSerializer(
+            data=request.data,
+            context={"request": request, "chat": chat}
+        )
+        serializer.is_valid(raise_exception=True)
+
+        message = Message.objects.create(
+            chat=chat,
+            sender=request.user,
+            sender_type="patient",
+            content=serializer.validated_data["content"]
+        )
+
+        return Response({
+            "success": True,
+            "data": MessageSerializer(message).data
+        }, status=201)
