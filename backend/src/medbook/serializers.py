@@ -703,3 +703,94 @@ class BookingRescheduleSerializer(serializers.Serializer):
     newTime = serializers.TimeField(
         input_formats=['%H:%M', '%H:%M:%S', '%H:%M:%S.%f']
     )
+
+from .models import Chat, Message
+
+User = get_user_model()
+
+class DoctorShortSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(source="get_full_name")
+    initials = serializers.SerializerMethodField()
+    imageUrl = serializers.SerializerMethodField()
+
+    class Meta:
+        model = User
+        fields = ["id", "name", "initials", "imageUrl"]
+
+    def get_initials(self, obj):
+        full_name = obj.get_full_name().strip() or obj.username
+        parts = full_name.split()
+
+        if parts:
+            initials = "".join([p[0] for p in parts[:2]]).upper()
+            return initials or obj.username[:2].upper()
+
+        return obj.username[:2].upper()
+
+    def get_imageUrl(self, obj):
+        return None
+
+class LastMessageSerializer(serializers.ModelSerializer):
+    text = serializers.CharField(source="content")
+    timestamp = serializers.DateTimeField(source="created_at")
+    isRead = serializers.BooleanField(source="is_read")
+
+    class Meta:
+        model = Message
+        fields = ["text", "timestamp", "isRead"]
+
+class ChatListSerializer(serializers.ModelSerializer):
+    chatId = serializers.IntegerField(source="id")
+    doctor = serializers.SerializerMethodField()
+    lastMessage = serializers.SerializerMethodField()
+    unreadCount = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Chat
+        fields = ["chatId", "doctor", "lastMessage", "unreadCount"]
+
+    def get_doctor(self, obj):
+        return DoctorShortSerializer(obj.doctor.user, context=self.context).data
+
+    def get_lastMessage(self, obj):
+        msg = obj.messages.order_by("-created_at").first()
+        if not msg:
+            return None
+
+        return LastMessageSerializer(msg, context=self.context).data
+
+    def get_unreadCount(self, obj):
+        return obj.messages.filter(
+            sender_type="doctor",
+            is_read=False
+        ).count()
+
+class MessageSerializer(serializers.ModelSerializer):
+    senderId = serializers.IntegerField(source="sender.id")
+    senderType = serializers.CharField(source="sender_type")
+    isRead = serializers.BooleanField(source="is_read")
+    timestamp = serializers.DateTimeField(source="created_at")
+
+    class Meta:
+        model = Message
+        fields = [
+            "id",
+            "senderId",
+            "senderType",
+            "content",
+            "isRead",
+            "timestamp"
+        ]
+class SendMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Message
+        fields = ["content"]
+
+    def validate(self, attrs):
+        chat = self.context["chat"]
+        user = self.context["request"].user
+
+        if chat.patient != user:
+            raise serializers.ValidationError("You are not allowed to send message in this chat")
+
+        return attrs

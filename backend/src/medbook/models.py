@@ -807,3 +807,66 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.appointment_number} ({self.status})"
+
+
+
+class Chat(models.Model):
+    patient = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="patient_chats"
+    )
+    doctor = models.ForeignKey(
+        "medbook.Doctor",
+        on_delete=models.CASCADE,
+        related_name="doctor_chats"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('patient', 'doctor')
+        db_table = "medbook_chats"
+        ordering = ['-updated_at']
+        indexes = [
+            models.Index(fields=['patient', '-updated_at']),
+            models.Index(fields=['doctor', '-updated_at']),
+        ]
+
+    def __str__(self):
+        return f"Chat {self.patient.get_full_name()} - Dr.{self.doctor.user.get_full_name()}"
+
+
+class Message(models.Model):
+    class SenderType(models.TextChoices):
+        PATIENT = "patient", "Patient"
+        DOCTOR = "doctor", "Doctor"
+
+    chat = models.ForeignKey(Chat, on_delete=models.CASCADE, related_name="messages")
+    sender = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="sent_chat_messages"
+    )
+    sender_type = models.CharField(max_length=10, choices=SenderType.choices)
+    content = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "medbook_messages"
+        ordering = ['created_at']
+        indexes = [
+            models.Index(fields=['chat', '-created_at']),
+            models.Index(fields=['is_read', 'sender_type']),
+        ]
+
+    def save(self, *args, **kwargs):
+        is_new = self.pk is None
+        super().save(*args, **kwargs)
+        if is_new:
+            self.chat.updated_at = self.created_at
+            self.chat.save(update_fields=['updated_at'])
+
+    def __str__(self):
+        return f"{self.get_sender_type_display()}: {self.content[:30]}"

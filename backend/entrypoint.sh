@@ -47,6 +47,9 @@ if [[ "$TESTING" != "true" ]]; then
             echo "🔄 [LOCAL-BACKEND] Creating initial fixtures..."
             python manage.py loaddata fixtures/initial_data.json
 
+            echo "Creating demo chats and messages..."
+            python manage.py seed_chats
+
             echo "📦 [LOCAL-BACKEND] Collecting static files..."
             python manage.py collectstatic --noinput
 
