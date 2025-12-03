@@ -2055,6 +2055,51 @@ class UploadPatientProfileImageView(APIView):
             "message": "Изображение профиля успешно загружено."
         }, status=status.HTTP_200_OK)
 
+from django.templatetags.static import static
+from .models import Patient, PatientImage
+
+class PatientProfileImageDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+    DEFAULT_AVATAR_PATH = "images/avatars/default_avatar.png"
+
+    @extend_schema(
+        summary="Получить изображение профиля пациента по ID",
+        description="""
+        Возвращает URL аватарки пациента.
+        Если аватарка не загружена — возвращает URL локального мок-аватара из static.
+        """,
+        responses={
+            200: OpenApiResponse(
+                response={
+                    "type": "object",
+                    "properties": {
+                        "success": {"type": "boolean"},
+                        "image_url": {"type": "string", "format": "uri"},
+                    },
+                    "required": ["success", "image_url"]
+                },
+                description="URL изображения профиля пациента или мок по умолчанию"
+            ),
+            404: OpenApiResponse(description="Пациент не найден"),
+        }
+    )
+    def get(self, request, pk):
+        patient = get_object_or_404(Patient, id=pk)
+
+        try:
+            patient_image = PatientImage.objects.get(instance_id=patient.id)
+            if patient_image.image and patient_image.image.name:
+                image_url = patient_image.image.url
+            else:
+                raise PatientImage.DoesNotExist
+        except PatientImage.DoesNotExist:
+            image_url = request.build_absolute_uri(static(self.DEFAULT_AVATAR_PATH))
+
+        return Response({
+            "success": True,
+            "image_url": image_url
+        }, status=status.HTTP_200_OK)
+
 from rest_framework import status, serializers
 from rest_framework.permissions import IsAuthenticated
 from drf_spectacular.utils import extend_schema, OpenApiResponse
@@ -2141,6 +2186,44 @@ class BookingListView(APIView):
 
         output_serializer = BookingSerializer(booking)
         return Response({"success": True, "data": output_serializer.data}, status=status.HTTP_201_CREATED)
+
+from .models import Booking
+from .serializers import BookingSerializer
+
+
+class BookingDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Get booking details by ID",
+        description="Returns a single booking that belongs to the authenticated patient.",
+        responses={
+            200: BookingSerializer,
+            404: OpenApiResponse(description="Booking not found or does not belong to you"),
+        },
+    )
+    def get(self, request, pk):
+        try:
+            booking = Booking.objects.select_related(
+                "doctor__user",
+                "doctor__clinic",
+                "doctor__specialty",
+                "patient"
+            ).get(
+                id=pk,
+                patient=request.user
+            )
+        except Booking.DoesNotExist:
+            return Response(
+                {
+                    "success": False,
+                    "error": "Booking not found or you do not have permission to view it."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = BookingSerializer(booking)
+        return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
 
 class CancelBookingSerializer(serializers.Serializer):
     cancellationReason = serializers.CharField(max_length=500)
