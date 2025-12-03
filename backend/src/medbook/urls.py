@@ -11,7 +11,7 @@ from drf_spectacular.views import (
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
-from .views import test_minio
+from .views import test_minio, BookingDetailView
 
 from .views import (
     DecoratedTokenObtainPairView,
@@ -60,6 +60,7 @@ common_patterns += [
     path('api/patient/profile/<int:id>/', UpdatePatientProfileByIdView.as_view(), name='update-patient-profile'),
     path('api/patient/profile/image/', UploadPatientProfileImageView.as_view(), name='upload-patient-profile-image'),
     path("api/bookings/", BookingListView.as_view(), name="booking-list"),
+    path("api/bookings/<int:pk>/", BookingDetailView.as_view(), name="booking-detail"),
     path('api/patient/bookings/<int:booking_id>/cancel/', BookingCancelView.as_view(), name='booking-cancel'),
     path('api/patient/bookings/<int:booking_id>/reschedule/', BookingRescheduleView.as_view(), name='booking-reschedule'),
 

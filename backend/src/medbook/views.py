@@ -2142,6 +2142,44 @@ class BookingListView(APIView):
         output_serializer = BookingSerializer(booking)
         return Response({"success": True, "data": output_serializer.data}, status=status.HTTP_201_CREATED)
 
+from .models import Booking
+from .serializers import BookingSerializer
+
+
+class BookingDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Get booking details by ID",
+        description="Returns a single booking that belongs to the authenticated patient.",
+        responses={
+            200: BookingSerializer,
+            404: OpenApiResponse(description="Booking not found or does not belong to you"),
+        },
+    )
+    def get(self, request, pk):
+        try:
+            booking = Booking.objects.select_related(
+                "doctor__user",
+                "doctor__clinic",
+                "doctor__specialty",
+                "patient"
+            ).get(
+                id=pk,
+                patient=request.user
+            )
+        except Booking.DoesNotExist:
+            return Response(
+                {
+                    "success": False,
+                    "error": "Booking not found or you do not have permission to view it."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        serializer = BookingSerializer(booking)
+        return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)
+
 class CancelBookingSerializer(serializers.Serializer):
     cancellationReason = serializers.CharField(max_length=500)
 
