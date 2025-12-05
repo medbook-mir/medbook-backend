@@ -794,3 +794,16 @@ class SendMessageSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You are not allowed to send message in this chat")
 
         return attrs
+
+class MarkAsReadResponseSerializer(serializers.Serializer):
+    marked_as_read = serializers.IntegerField(
+        min_value=0,
+        help_text="Количество сообщений, которые были помечены как прочитанные"
+    )
+
+
+class DeleteChatResponseSerializer(serializers.Serializer):
+    message = serializers.CharField(default="Chat deleted successfully")
+
+class EmptySerializer(serializers.Serializer):
+    pass
