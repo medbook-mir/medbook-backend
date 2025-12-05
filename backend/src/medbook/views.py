@@ -2370,6 +2370,34 @@ class PatientChatDetailView(APIView):
             "data": serializer.data
         })
 
+    def get_object(self, chat_id):
+        return get_object_or_404(Chat, id=chat_id, patient=self.request.user)
+
+    @extend_schema(summary="Get Chat Messages", responses=MessageSerializer(many=True))
+    def get(self, request, chat_id):
+        chat = self.get_object(chat_id)
+        Message.objects.filter(
+            chat=chat,
+            sender_type=Message.SenderType.DOCTOR,
+            is_read=False
+        ).update(is_read=True)
+
+        messages = chat.messages.all()
+        serializer = MessageSerializer(messages, many=True)
+        return Response({
+            "success": True,
+            "data": serializer.data
+        })
+
+    @extend_schema(summary="Delete Chat (patient side)", responses={204: None})
+    def delete(self, request, chat_id):
+        chat = self.get_object(chat_id)
+        chat.delete()
+        return Response({
+            "success": True,
+            "message": "Chat deleted successfully"
+        }, status=status.HTTP_204_NO_CONTENT)
+
 
 class SendMessageView(APIView):
     permission_classes = [IsAuthenticated]
@@ -2402,3 +2430,29 @@ class SendMessageView(APIView):
             "success": True,
             "data": MessageSerializer(message).data
         }, status=201)
+
+from .models import Chat, Message
+from .serializers import MessageSerializer
+
+
+class PatientMarkChatAsReadView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        summary="Mark all doctor's messages in chat as read",
+        description="PUT /patient/chats/{chatId}/read",
+        responses={200: None}
+    )
+    def put(self, request, chat_id):
+        chat = get_object_or_404(Chat, id=chat_id, patient=request.user)
+
+        updated_count = Message.objects.filter(
+            chat=chat,
+            sender_type=Message.SenderType.DOCTOR,
+            is_read=False
+        ).update(is_read=True)
+
+        return Response({
+            "success": True,
+            "data": {"marked_as_read": updated_count}
+        }, status=status.HTTP_200_OK)
