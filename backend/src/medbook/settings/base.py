@@ -8,6 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY','secret_key')
 
 INSTALLED_APPS = [
+    "corsheaders",
     "jazzmin",
     "medbook.apps.MedbookConfig",
     "django.contrib.admin",
@@ -16,7 +17,6 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "corsheaders",
     "drf_spectacular",
     "rest_framework_simplejwt",
     "rest_framework",
@@ -28,6 +28,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -143,8 +144,12 @@ CELERY_BEAT_SCHEDULE = {
 }
 
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
     "http://localhost:8000",
     "http://127.0.0.1:8000",
+    "https://www.api.medvisit.uz",
+    "https://api.medvisit.uz",
 ]
 
 CORS_ALLOW_HEADERS = [
