@@ -20,7 +20,10 @@ attempt=1
 connected=false
 
 while [ $attempt -le $max_attempts ]; do
-    if psql "$DATABASE_URL" -c '\q' 2>/dev/null; then
+    if PGCONNECT_TIMEOUT=10 psql -X -w \
+        --dbname="$DATABASE_URL" \
+        --set=ON_ERROR_STOP=1 \
+        --command='SELECT 1;' >/dev/null; then
         connected=true
         break
     fi

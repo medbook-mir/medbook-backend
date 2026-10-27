@@ -5,6 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     gcc \
     libpq-dev \
+    postgresql-client \
     locales \
     && rm -rf /var/lib/apt/lists/*
 
